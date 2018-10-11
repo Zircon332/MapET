@@ -4,6 +4,13 @@ import tkinter as tk
 posx = 300
 posy = 250
 
+def move(x, y):
+    global posx
+    global posy
+    posx += x
+    posy -= y
+    player.place(x=posx,y=posy)
+    
 #moving functions
 ##def left():
 ##    global posx
@@ -36,10 +43,10 @@ buttons.grid(row=30,column=20)
 
 #using buttons while I slowly figure out the key_inputs
 #the buttons with commands
-leftb = tk.Button(buttons,text="LEFT",fg="black",command=(lambda:move(-1,0)),height=2,width=5)
-upb = tk.Button(buttons,text="UP",fg="black",command=(lambda:move(0,1)),height=2,width=5)
-downb = tk.Button(buttons,text="DOWN",fg="black",command=(lambda:move(0,-1)),height=2,width=5)
-rightb = tk.Button(buttons,text="RIGHT",fg="black",command=(lambda:move(1,0)),height=2,width=5)
+leftb = tk.Button(buttons,text="LEFT",fg="black",command=(lambda:move(-10,0)),height=2,width=5)
+upb = tk.Button(buttons,text="UP",fg="black",command=(lambda:move(0,10)),height=2,width=5)
+downb = tk.Button(buttons,text="DOWN",fg="black",command=(lambda:move(0,-10)),height=2,width=5)
+rightb = tk.Button(buttons,text="RIGHT",fg="black",command=(lambda:move(10,0)),height=2,width=5)
 printb = tk.Button(root,text="PrintCoords",fg="black",command=lambda: printxy(),height=2,width=10)
 
 #placing(gridding) the buttons
@@ -71,12 +78,6 @@ def key(event):
     if repr(event.char) == "'d'":
         print("Right")
 
-def move(x, y):
-    global posx
-    global posy
-    posx += x
-    posy += y
-    player.place(x=posx,y=posy)
 
 frame = tk.Frame(root, width=100, height=100,bg="blue")
 frame.bind("<Key>", key)
@@ -85,6 +86,7 @@ frame.bind("<Down>", lambda event, x=0,y=-10: move(x,y))
 frame.bind("<Left>", lambda event, x=-10,y=0: move(x,y))
 frame.bind("<Right>", lambda event, x=10,y=0: move(x,y))
 frame.grid(row=10,column=0)
+frame.focus_set()
 
 #the end
 root.mainloop()
