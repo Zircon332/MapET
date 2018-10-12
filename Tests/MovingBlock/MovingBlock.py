@@ -1,9 +1,20 @@
 import tkinter as tk
+import os
+import winsound
 
 #initial position
 posx = 300
 posy = 250
 
+def teleport(event):
+    global posx
+    global posy
+    #frame.focus_set()
+    print(event.x, event.y)
+    posx = event.x
+    posy = event.y
+    player.place(x=posx,y=posy)
+    
 def move(x, y):
     global posx
     global posy
@@ -20,14 +31,19 @@ def printxy():
 def key(event):
     if repr(event.char) == "' '":
         print("Jumped")
+        winsound.Beep(1000,1000)
     if repr(event.char) == "'w'":
         print("Up")
+        winsound.Beep(800,1000)
     if repr(event.char) == "'s'":
         print("Down")
+        winsound.Beep(600,1000)
     if repr(event.char) == "'a'":
         print("Left")
+        winsound.Beep(300,1000)
     if repr(event.char) == "'d'":
         print("Right")
+        winsound.Beep(400,1000)
 
 #Main app thing
 root = tk.Tk()
@@ -51,9 +67,14 @@ downb.grid(row=2,column=1)
 rightb.grid(row=2,column=2)
 printb.place(x=700,y=50)
 
-#This black box thingy(a frame for you to live in)
-playground = tk.Frame(root, height=500, width=600, bd=1, bg="black")
+#This box(a frame for you to live in)
+playground = tk.Frame(root, height=500, width=600, bd=1, bg="Black")
+beachtown = tk.PhotoImage(file="Beach town.gif")
+backgroundmap = tk.Label(playground,image=beachtown,width=600,height=500)
+backgroundmap.grid()
 playground.grid(row=0,column=0, padx=5,pady=5)
+playground.bind("<Button-1>", teleport)
+backgroundmap.bind("<Button-1>", teleport)
 
 #Key binding
 frame = tk.Frame(root, width=100, height=100,bg="blue")
