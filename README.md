@@ -15,39 +15,39 @@ Features
   <tr></tr>
   <tr>
     <td>Map Select</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td>Map Attributes</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td>Tutorial System</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td>Screen Size Feature</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     
   </tr>
   <tr>
     <td>Map Loading</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td>Player/Npc Movement</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td></td>
     <td></td>
     <td>Key Binds</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     
   </tr>
     <td>GUI Load</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td>Cell system</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td></td>
     <td></td>
     <td></td>
     <td></td>
   <tr>
     <td>User input</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td>Database</td>
-    <td><img src="http://progressed.io/bar/0?title=Progress"></td>
+    <td><img src="http://progressed.io/bar/0"></td>
     <td></td>
     <td></td>
     <td></td>
