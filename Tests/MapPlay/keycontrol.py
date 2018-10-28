@@ -20,9 +20,14 @@ import config
 
 def set_controls():
     def move(x,y):
-        config.posx += x
-        config.posy -= y
-        config.player.grid(column=config.posx,row=config.posy)
+        test_x = config.pos[0] + x
+        test_y = config.pos[1] - y
+        if [test_x,test_y] not in config.wall:            
+            if (config.pos[0] + x) != 0 and (config.pos[0] + x) != (config.bordersize-1):
+                config.pos[0] += x
+            if (config.pos[1] - y) != 0 and (config.pos[1] - y) != (config.bordersize-1):
+                config.pos[1] -= y
+            config.player.grid(column=config.pos[0],row=config.pos[1])
 
     config.root.bind_all("<Up>", lambda event, x=0,y=1: move(x,y))
     config.root.bind_all("<Down>", lambda event, x=0,y=-1: move(x,y))
