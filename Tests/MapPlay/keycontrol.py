@@ -14,22 +14,47 @@
 ##    The positions x and y are posx and posy
 ##    Player movement is measured in grids
     
-
+import tkinter as tk
 import config
-#actual module starts here
+
+
+#Empty function to clear binds
+def clear(event):
+    print("Cleared")
+
+c = 0
+##def addwall(event):
+##    global c
+##    newcoord = [event.x // 20 , event.y // 21]
+##    config.wallcoord.append(newcoord)
+##    config.wall.append(tk.Label(config.playground,width=2,height=1,bg="grey"))
+##    config.wall[c].grid(column=newcoord[0],row=newcoord[1])
+##    config.wall[c].bind("<1>",lambda event, i=i: removewall(i))
+##    c += 1
+##def removewall(i):
+##    print(i)
+##    config.wallcoord.remove(i)
+##    config.wall[c].destroy()
+
 
 def set_controls():
     def move(x,y):
         test_x = config.pos[0] + x
         test_y = config.pos[1] - y
-        if [test_x,test_y] not in config.wall:            
+        if [test_x,test_y] not in config.wallcoord:            
             if (config.pos[0] + x) != 0 and (config.pos[0] + x) != (config.bordersize-1):
                 config.pos[0] += x
             if (config.pos[1] - y) != 0 and (config.pos[1] - y) != (config.bordersize-1):
                 config.pos[1] -= y
             config.player.grid(column=config.pos[0],row=config.pos[1])
-
+        
+    #Bind movements
     config.root.bind_all("<Up>", lambda event, x=0,y=1: move(x,y))
     config.root.bind_all("<Down>", lambda event, x=0,y=-1: move(x,y))
     config.root.bind_all("<Left>", lambda event, x=-1,y=0: move(x,y))
     config.root.bind_all("<Right>", lambda event, x=1,y=0: move(x,y))
+
+##    #Bind wall maker
+##    config.playground.bind("<1>",addwall)
+
+
