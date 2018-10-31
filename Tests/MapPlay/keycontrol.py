@@ -36,6 +36,16 @@ c = 0
 ##    config.wallcoord.remove(i)
 ##    config.wall[c].destroy()
 
+full = 0
+def fullscreen(event):
+    global full
+    if full:
+        config.root.attributes("-fullscreen", False)
+        full = 0
+    else:
+        config.root.attributes("-fullscreen", True)
+        full = 1
+
 
 def set_controls():
     def move(x,y):
@@ -57,4 +67,4 @@ def set_controls():
 ##    #Bind wall maker
 ##    config.playground.bind("<1>",addwall)
 
-
+    config.root.bind_all("<F12>",fullscreen)
