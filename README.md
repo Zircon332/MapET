@@ -17,7 +17,7 @@ Features
     <td>Map Select</td>
     <td><img src="http://progressed.io/bar/1"></td>
     <td>Map Attributes</td>
-    <td><img src="http://progressed.io/bar/0"></td>
+    <td><img src="http://progressed.io/bar/2"></td>
     <td>Tutorial System</td>
     <td><img src="http://progressed.io/bar/0"></td>
     <td>Screen Size Feature</td>
