@@ -16,7 +16,8 @@
     
 import tkinter as tk
 import config
-
+import pickle
+import os
 
 #Empty function to clear binds
 def clear(event):
@@ -46,6 +47,12 @@ def fullscreen(event):
         config.root.attributes("-fullscreen", True)
         full = 1
 
+def save():
+    path = os.path.expanduser('~') + '\Desktop\MapET\Tests\MapPlay\data'
+    
+    print(path)
+    pickle.dump(config.wallcoord,open(os.path.join(path,"DamienFace.p"),"wb"))
+
 
 def set_controls():
     def move(x,y):
@@ -57,7 +64,8 @@ def set_controls():
             if (config.pos[1] - y) != 0 and (config.pos[1] - y) != (config.bordersize-1):
                 config.pos[1] -= y
             config.player.grid(column=config.pos[0],row=config.pos[1])
-        
+            config.miniplayer.grid(column=config.pos[0],row=config.pos[1])
+            
     #Bind movements
     config.root.bind_all("<Up>", lambda event, x=0,y=1: move(x,y))
     config.root.bind_all("<Down>", lambda event, x=0,y=-1: move(x,y))
@@ -67,4 +75,6 @@ def set_controls():
 ##    #Bind wall maker
 ##    config.playground.bind("<1>",addwall)
 
-    config.root.bind_all("<F12>",fullscreen)
+    config.root.bind_all("<F11>",fullscreen)
+
+    
