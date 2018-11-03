@@ -61,10 +61,12 @@ def set_controls():
         if [test_x,test_y] not in config.wallcoord:            
             if (config.pos[0] + x) != 0 and (config.pos[0] + x) != (config.bordersize-1):
                 config.pos[0] += x
+                config.minimap.move(config.miniplayer, x*10, 0)
             if (config.pos[1] - y) != 0 and (config.pos[1] - y) != (config.bordersize-1):
                 config.pos[1] -= y
+                config.minimap.move(config.miniplayer, 0, -y*10)
             config.player.grid(column=config.pos[0],row=config.pos[1])
-            config.miniplayer.grid(column=config.pos[0],row=config.pos[1])
+            
             
     #Bind movements
     config.root.bind_all("<Up>", lambda event, x=0,y=1: move(x,y))

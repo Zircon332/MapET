@@ -17,8 +17,7 @@ screen_size = str(screen_width) + "x" + str(screen_height)
 
 playground = tk.Frame(root, bd=1, bg="Black",width=1000,height=1000)
 player = tk.Label(playground,width=4,height=2,bg="red")
-minimap = tk.Frame(root, bd=1, bg="Black", width=500, height=500)
-miniplayer = tk.Label(minimap,width=2,height=1,bg="red",text="A")
+minimap = tk.Canvas(root, bg="Black", width=200, height=200)
 
 #Set border size
 bordersize = 20

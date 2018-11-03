@@ -49,9 +49,11 @@ def set_map():
             config.wall[i].grid_remove()
     c = 0
     for i in config.wallcoord:
-        config.wall.append(tk.Label(config.playground,width=2,height=1,bg="grey"))
+        config.wall.append(tk.Label(config.playground,width=4,height=2,bg="grey"))
         config.wall[c].grid(column=i[0],row=i[1])
         c += 1
+    set_minimap()
+        
 setmapbtn = tk.Button(config.root,text="Set the map", command=set_map_prompt)
 setmapbtn.place(x=700,y=100)
 setmapprompt = tk.Label(config.root,text="")
@@ -69,8 +71,9 @@ config.filename = os.listdir("data")
 
 def set_map_from_file():
     try:
-        config.filelist.curselection()[0]
-        config.wallcoord = pickle.load(open(os.path.join(os.path.expanduser('~'),'Desktop\MapET\Tests\MapPlay\data',"DamienFace.p"),"rb"))
+        index = config.filelist.curselection()[0]
+        filename = config.filelist.get(index)
+        config.wallcoord = pickle.load(open(os.path.join(os.path.expanduser('~'),'Desktop\MapET\Tests\MapPlay\data',filename),"rb"))
         set_map()
     except:
         loadmapprompt.config(text="No selected map")
@@ -89,21 +92,22 @@ for item in config.filename:
 #Hey it's you
 config.player.grid(column=config.pos[0],row=config.pos[1])
 
+def set_miniwall():
+    border = config.minimap.create_rectangle(0,0,200,10,fill="grey")
+    border = config.minimap.create_rectangle(0,0,10,200,fill="grey")
+    border = config.minimap.create_rectangle(190,0,200,200,fill="grey")
+    border = config.minimap.create_rectangle(0,190,200,200,fill="grey")
+    config.miniplayer = config.minimap.create_rectangle(config.pos[0]*10,config.pos[1]*10,config.pos[0]*10+10,config.pos[1]*10+10,fill="red")
+  
+def set_minimap():
+    config.minimap.delete(tk.ALL)
+    set_miniwall()
+    for i in config.wallcoord:
+        config.minimap.create_rectangle(i[0]*10,i[1]*10,i[0]*10+10,i[1]*10+10,fill="grey")
 
 #Minimap
-config.minimap.place(x=1000,y=0)
-for i in range(config.bordersize):
-    border = tk.Label(config.minimap,width=2,height=1,bg="grey")
-    border.grid(column=i,row=0)
-    if i >= 1:
-        border = tk.Label(config.minimap,width=2,height=1,bg="grey")
-        border.grid(column=0,row=i)
-        border = tk.Label(config.minimap,width=2,height=1,bg="grey")
-        border.grid(column=(config.bordersize-1),row=i)
-        border = tk.Label(config.minimap,width=2,height=1,bg="grey")
-        border.grid(column=i,row=(config.bordersize-1))
-config.miniplayer.grid(column=config.pos[0],row=config.pos[1])
-
+config.minimap.place(x=1200,y=0)
+set_miniwall()
 #set key controls
 kct.set_controls()
 
