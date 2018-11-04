@@ -4,12 +4,12 @@
 import tkinter as tk
 
 #Start position and speed mult
-pos = [6,6]
+pos = [2,2]
 speed_mult = 1
 
 #Set border size
 bordersize = 50
-zoomsize = 5
+zoomsize = 10
 
 #Camera from position of player, top left
 camcoord = [pos[0]-zoomsize/2, pos[1]-zoomsize/2]

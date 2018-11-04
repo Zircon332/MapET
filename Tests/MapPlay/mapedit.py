@@ -2,9 +2,15 @@
 
 import tkinter as tk
 import config
-
+end1 = end2 = 0
 def mapedit():
+    
+    
     def togglewall(i):
+        global end1
+        global end2
+        end2 = end1
+        end1 = i
         if pix[i].cget("bg") == "grey":
             pix[i].config(bg="white")
         else:
@@ -35,7 +41,31 @@ def mapedit():
     def switchplay():
         mapapp.withdraw()
         config.root.deiconify()
+
+    def create_line():
+        global end1
+        global end2
+        #which row
+        if end1//20 == end2//20:
+            if end1 < end2:
+                while end2-1 > end1:
+                    end2 -= 1
+                    pix[end2].config(bg="grey")
+            if end1 > end2:
+                while end2+1 < end1:
+                    end2 += 1
+                    pix[end2].config(bg="grey")        
+        elif str(end1)[-1] == str(end2)[-1]:
+            if end1 < end2:
+                while end2-20 > end1:
+                    end2 -= 20
+                    pix[end2].config(bg="grey")
+            if end1 > end2:
+                while end2+20 < end1:
+                    end2 += 20
+                    pix[end2].config(bg="grey")
         
+
     mapapp = tk.Tk()
     mapapp.title("MapEditor")
     mapapp.geometry("800x700+0+0")
@@ -66,4 +96,7 @@ def mapedit():
     switchbutton = tk.Button(mapapp,text="Switch to Play mode",command=switchplay)
     switchbutton.place(x=450,y=50)
 
+    linebutton = tk.Button(mapapp,text="Make a line from last two points",command=create_line)
+    linebutton.place(x=450,y=100)
+    
     mapapp.mainloop()
