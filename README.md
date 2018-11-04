@@ -23,10 +23,8 @@ Features
     <td><img src="http://progressed.io/bar/0"></td>
     <td>Screen Size Feature</td>
     <td><img src="http://progressed.io/bar/40"></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Infinitely large map</td>
+    <td><img src="http://progressed.io/bar/0"></td>
   </tr>
   <tr>
     <td>Map Loading</td>
@@ -37,10 +35,8 @@ Features
     <td></td>
     <td>Key Binds</td>
     <td><img src="http://progressed.io/bar/70"></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>minimap</td>
+    <td><img src="http://progressed.io/bar/50"></td>
   </tr>
   <tr>
     <td>GUI Load</td>
@@ -49,12 +45,8 @@ Features
     <td><img src="http://progressed.io/bar/50"></td>
     <td></td>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Camera follow</td>
+    <td><img src="http://progressed.io/bar/10"></td><td></td>
  </tr>
   <tr>
     <td>User input</td>
@@ -65,25 +57,37 @@ Features
     <td></td>
     <td></td>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Color Picker</td>
+    <td><img src="http://progressed.io/bar/0"></td>
   </tr>
   
   <tr>
-    <td>Infinitely large map</td>
-    <td><img src="http://progressed.io/bar/0"></td>
-    <td>minimap</td>
-    <td><img src="http://progressed.io/bar/50"></td>
-    <td>Camera follow</td>
-    <td><img src="http://progressed.io/bar/10"></td>
-    <td>Color Picker</td>
-    <td><img src="http://progressed.io/bar/0"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td>Zoom in out</td>
     <td><img src="http://progressed.io/bar/0"></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td>Escape backup save</td>
     <td><img src="http://progressed.io/bar/50"></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td>Speed</td>
     <td><img src="http://progressed.io/bar/20"></td>    
   </tr>
