@@ -18,6 +18,7 @@ import tkinter as tk
 import config
 import pickle
 import os
+import time
 
 #Empty function to clear binds
 def clear(event):
@@ -56,18 +57,22 @@ def save():
 
 def set_controls():
     def move(x,y):
+        x *= config.speed_mult
+        y *= config.speed_mult
         test_x = config.pos[0] + x
         test_y = config.pos[1] - y
         if [test_x,test_y] not in config.wallcoord:            
-            if (config.pos[0] + x) != 0 and (config.pos[0] + x) != (config.bordersize-1):
+            if (config.pos[0] + x) > 0 and (config.pos[0] + x) < (config.bordersize-1):
                 config.pos[0] += x
                 config.minimap.move(config.miniplayer, x*10, 0)
-            if (config.pos[1] - y) != 0 and (config.pos[1] - y) != (config.bordersize-1):
+                config.minimap2.move(config.miniplayer, x, 0)
+            if (config.pos[1] - y) > 0 and (config.pos[1] - y) < (config.bordersize-1):
                 config.pos[1] -= y
                 config.minimap.move(config.miniplayer, 0, -y*10)
-            config.player.grid(column=config.pos[0],row=config.pos[1])
-            
-            
+                config.minimap2.move(config.miniplayer, 0, -y)
+            config.player.grid(column=config.pos[0],row=config.pos[1])    
+            time.sleep(.001)
+                
     #Bind movements
     config.root.bind_all("<Up>", lambda event, x=0,y=1: move(x,y))
     config.root.bind_all("<Down>", lambda event, x=0,y=-1: move(x,y))

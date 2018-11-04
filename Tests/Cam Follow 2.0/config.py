@@ -4,11 +4,15 @@
 import tkinter as tk
 
 #Start position and speed mult
-pos = [1,1]
+pos = [6,6]
 speed_mult = 1
 
 #Set border size
-bordersize = 20
+bordersize = 50
+zoomsize = 5
+
+#Camera from position of player, top left
+camcoord = [pos[0]-zoomsize/2, pos[1]-zoomsize/2]
 
 #Declaring interactive things
 root = tk.Tk()
@@ -19,14 +23,13 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 screen_size = str(screen_width) + "x" + str(screen_height)
 
-playground = tk.Frame(root, bd=1, bg="Black",width=1000,height=1000)
-player = tk.Label(playground,width=2,height=1,bg="red")
-minimap = tk.Canvas(root, bg="Black", width=200, height=200, highlightthickness=0,bd=0)
-minimap2 = tk.Canvas(root, bg="Black", width=20, height=20, highlightthickness=0,bd=0)
+screen = tk.Canvas(root, bg="Black", width=bordersize*10, height=bordersize*10, highlightthickness=0,bd=0)
 
-#list of all coords that are walls, excluding border
+#list of all coords that are walls, excluding border, can be negative
 wallcoord = [[0, 0]]
-wall=[]
-c = 0
 
-    
+#Empty screen wall coords that keeps track of what should be displayed 
+screen_wallcoord = []
+
+follow = 0
+

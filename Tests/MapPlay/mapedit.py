@@ -17,8 +17,8 @@ def mapedit():
             if pix[i].cget("bg") == "grey":
                 xi = i
                 yi = 0
-                while xi >= 20:
-                    xi -= 20
+                while xi >= config.bordersize:
+                    xi -= config.bordersize
                     yi += 1
                 coord = [int(xi),int(yi)]
                 tempwallcoord.append(coord)
@@ -29,7 +29,7 @@ def mapedit():
     #Shows existing walls
     def setwall():
         for walls in config.wallcoord:
-            index = walls[0] + (20 * walls[1])
+            index = walls[0] + (config.bordersize * walls[1])
             pix[index].config(bg="grey")
 
     def switchplay():
