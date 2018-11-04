@@ -45,6 +45,8 @@ Features
     <td><img src="http://progressed.io/bar/50"></td>
     <td></td>
     <td></td>
+    <td></td>
+    <td></td>
     <td>Camera follow</td>
     <td><img src="http://progressed.io/bar/10"></td><td></td>
  </tr>
@@ -68,6 +70,8 @@ Features
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+    <td></td>
     <td>Zoom in out</td>
     <td><img src="http://progressed.io/bar/0"></td>
    </tr>
@@ -78,10 +82,14 @@ Features
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+    <td></td>
     <td>Escape backup save</td>
     <td><img src="http://progressed.io/bar/50"></td>
    </tr>
    <tr>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
