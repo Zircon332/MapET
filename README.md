@@ -11,30 +11,38 @@ Features
     <td colspan="2">Level Editor</td>
     <td colspan="2">Tutorial</td>
     <td colspan="2">Settings</td>
+    <td colspan="2">Misc</td>
   </tr>
   <tr></tr>
   <tr>
     <td>Map Select</td>
-    <td><img src="http://progressed.io/bar/1"></td>
+    <td><img src="http://progressed.io/bar/70"></td>
     <td>Map Attributes</td>
-    <td><img src="http://progressed.io/bar/2"></td>
+    <td><img src="http://progressed.io/bar/5"></td>
     <td>Tutorial System</td>
     <td><img src="http://progressed.io/bar/0"></td>
     <td>Screen Size Feature</td>
-    <td><img src="http://progressed.io/bar/5"></td>
-    
+    <td><img src="http://progressed.io/bar/40"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
     <td>Map Loading</td>
-    <td><img src="http://progressed.io/bar/50"></td>
+    <td><img src="http://progressed.io/bar/70"></td>
     <td>Player/Npc Movement</td>
     <td><img src="http://progressed.io/bar/0"></td>
     <td></td>
     <td></td>
     <td>Key Binds</td>
-    <td><img src="http://progressed.io/bar/50"></td>
-    
+    <td><img src="http://progressed.io/bar/70"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
+  <tr>
     <td>GUI Load</td>
     <td><img src="http://progressed.io/bar/10"></td>
     <td>Cell system</td>
@@ -43,16 +51,43 @@ Features
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+ </tr>
   <tr>
     <td>User input</td>
     <td><img src="http://progressed.io/bar/50"></td>
     <td>Database</td>
-    <td><img src="http://progressed.io/bar/1"></td>
+    <td><img src="http://progressed.io/bar/10"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
+  
+  <tr>
+    <td>Infinitely large map</td>
+    <td><img src="http://progressed.io/bar/0"></td>
+    <td>minimap</td>
+    <td><img src="http://progressed.io/bar/50"></td>
+    <td>Camera follow</td>
+    <td><img src="http://progressed.io/bar/10"></td>
+    <td>Color Picker</td>
+    <td><img src="http://progressed.io/bar/0"></td>
+    <td>Zoom in out</td>
+    <td><img src="http://progressed.io/bar/0"></td>
+    <td>Escape backup save</td>
+    <td><img src="http://progressed.io/bar/50"></td>
+    <td>Speed</td>
+    <td><img src="http://progressed.io/bar/20"></td>    
+  </tr>
+
 </table>
 
 
