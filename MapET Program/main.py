@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import config  
 import input 
-# import play
+import play
 # import mapet
 import pickle
 #Unfinished Things
@@ -29,57 +29,70 @@ class MainApplication(tk.Frame):
         # create a pulldown menu, and add it to the menu bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=lambda:self.filedialogf())
-        self.filemenu.add_command(label="Save",  command=print("test"))
+        self.filemenu.add_command(label="Save",  command=lambda:print("test"))
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=root.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
         # create more pulldown menus
         self.editmenu = tk.Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Cut", command=print("test"))
-        self.editmenu.add_command(label="Copy", command=print("test"))
-        self.editmenu.add_command(label="Paste", command=print("test"))
+        self.editmenu.add_command(label="Cut", command=lambda:print("test"))
+        self.editmenu.add_command(label="Copy", command=lambda:print("test"))
+        self.editmenu.add_command(label="Paste", command=lambda:print("test"))
         self.menubar.add_cascade(label="Edit", menu=self.editmenu)
 
         self.helpmenu = tk.Menu(self.menubar, tearoff=0)
-        self.helpmenu.add_command(label="About", command=print("test"))
+        self.helpmenu.add_command(label="About", command=lambda:print("test"))
         self.menubar.add_cascade(label="Help", menu=self.helpmenu)
-
-        # display the menu
         self.parent.config(menu=self.menubar)
-
-        self.framebtn = tk.Frame(self, bg="black", height=10000,width=1000)
-        self.framebtn.place(x=10,y=10, anchor="c", relx=.5, rely=.5)
-        self.mapselectbtn = tk.Button(self.framebtn,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=10,font=("arial",20))
+        
+        self.buttonframe = tk.Frame(self, bg="black", height=10000,width=1000)
+        self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=10,font=("arial",20))
+        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10,font=("arial",20))
+        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10,font=("arial",20))
+        self.programexitbtn = tk.Button(self.buttonframe, text="Quit", command=root.destroy,width=12,padx=10,pady=10, font=("arial",20))
+        self.placeguif()
+        
+    # display the menu
+    def placeguif(self):
+        self.buttonframe.place(x=10,y=10, anchor="c", relx=.5, rely=.5)
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
-        self.mapetbtn = tk.Button(self.framebtn,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10,font=("arial",20))
         self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
-        self.settingsbtn = tk.Button(self.framebtn,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10,font=("arial",20))
         self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
-        self.programexitbtn = tk.Button(self.framebtn, text="Quit", command=root.destroy,width=12,padx=10,pady=10, font=("arial",20))
         self.programexitbtn.grid(row=3,ipadx=10,ipady=10)
     
     def fileopeningf(self,file):
+        self.buttonframe.grid_forget()
         self.mapselectbtn.grid_forget()
         self.mapetbtn.grid_forget()
         self.settingsbtn.grid_forget()
-        self.programexitbtn.grid_forget()
-        # if file == "mapselect":
-        #     playgame = play.PlayGame
-        # elif file == "mapeditor":
-        #     mapet.mapeditorf()
+        self.programexitbtn.grid_forget()    
         if file == "settings":
             self.settingsf()
+        else:
+            self.mapetlogo.place_forget()
+            self.buttonframe.place_forget()
+            if file == "mapselect":
+                play.playgamef(root)
+            #elif file == "mapeditor":
+            #   mapet.mapeditorf()
 
+    def settingbackf(self):
+        self.fullscreenbtn.grid_forget()
+        self.mapetbtn.grid_forget()
+        self.settingsbtn.grid_forget()
+        self.backbtn.grid_forget()
+        self.placeguif()
+        
     def settingsf(self):
-        self.fullscreenbtn = tk.Button(self.framebtn,text="Toggle Fullscreen",command=lambda:self.fullscreenf(),width=12,padx=10,pady=10)
+        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",command=lambda:self.fullscreenf(),width=12,padx=10,pady=10, font=("arial",20))
         self.fullscreenbtn.grid(row=0)
-        self.mapetbtn = tk.Button(self.framebtn,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10)
+        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10, font=("arial",20))
         self.mapetbtn.grid(row=1)
-        self.settingsbtn = tk.Button(self.framebtn,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10)
+        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10, font=("arial",20))
         self.settingsbtn.grid(row=2)
-        self.programexitbtn = tk.Button(self.framebtn, text="Quit", command=root.destroy,width=12,padx=10,pady=10)
-        self.programexitbtn.grid(row=3)
+        self.backbtn = tk.Button(self.buttonframe, text="Back", command=lambda:self.settingbackf(),width=12,padx=10,pady=10, font=("arial",20))
+        self.backbtn.grid(row=3)
 
     def fullscreenf(self):
         self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen'))
