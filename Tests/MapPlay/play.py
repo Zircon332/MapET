@@ -74,13 +74,9 @@ savebtn.place(x=700,y=200)
 config.filelist = tk.Listbox(config.root)
 config.filelist.place(x=700,y=300)
 
-config.filename = os.listdir("data")
-
 def set_map_from_file():
     try:
-        index = config.filelist.curselection()[0]
-        filename = config.filelist.get(index)
-        config.wallcoord = pickle.load(open(os.path.join(os.path.expanduser('~'),'Desktop\MapET\Tests\MapPlay\data',filename),"rb"))
+        config.wallcoord = pickle.load(open("data\DamienFace.p","rb"))
         set_map()
     except:
         loadmapprompt.config(text="No selected map")
