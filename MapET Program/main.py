@@ -2,15 +2,13 @@ import tkinter as tk
 from tkinter import filedialog
 import config  
 import input 
-import play
-import mapet
+# import play
+# import mapet
 import pickle
 #Unfinished Things
 #Center buttons
 #menu bar functions
 class MainApplication(tk.Frame):
-    #Variables
-    
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -60,11 +58,11 @@ class MainApplication(tk.Frame):
         self.mapetbtn.grid_forget()
         self.settingsbtn.grid_forget()
         self.programexitbtn.grid_forget()
-        if file == "mapselect":
-            playgame = play.PlayGame
-        elif file == "mapeditor":
-            mapet.mapeditorf()
-        elif file == "settings":
+        # if file == "mapselect":
+        #     playgame = play.PlayGame
+        # elif file == "mapeditor":
+        #     mapet.mapeditorf()
+        if file == "settings":
             self.settingsf()
 
     def settingsf(self):
