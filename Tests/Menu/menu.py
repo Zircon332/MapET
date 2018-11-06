@@ -1,6 +1,6 @@
 import tkinter as tk
 import os
-
+import pickle
 def create_gui():
     gui = tk.Frame(height=800,width=800)
     gui.place(x=0,y=0)
@@ -16,12 +16,11 @@ def create_gui():
 
 def fileopening(x):
     if "mapselect":
-        open(os.path.join(os.path.expanduser('~'),'Desktop\Github\MapET\Tests\MapPlay\play.py',filename),"rb")
-    
-config.filename = os.listdir("Tests")
+            pickle.load(open(os.path.join(MapET/Tests/MapPlay/play.py)
+        
 
 #Main app thing
-root = tk.Tk()
+thingy = tk.Tk()
 root.geometry("800x800")
 create_gui()
 #frame for buttons
