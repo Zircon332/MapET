@@ -12,6 +12,7 @@ class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.parent.title("MapET")
         self.screen_width = self.parent.winfo_screenwidth()
         self.screen_height = self.parent.winfo_screenheight()
         self.parent.geometry("%dx%d+%d+%d" % (self.screen_width,self.screen_height,0,0))
@@ -19,11 +20,15 @@ class MainApplication(tk.Frame):
         self.createguif()
 
     def createguif(self):
+        self.photo = tk.PhotoImage(file="..\Desktop\Github\MapET\MapET Program\uboi.gif")
+        self.mapetlogo =  tk.Label(self.parent, image=self.logoimg)
+        self.mapetlogo.image = self.photo
+        self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
         self.menubar = tk.Menu(self.parent)
         # create a pulldown menu, and add it to the menu bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=lambda:self.filedialogf())
-        self.filemenu.add_command(label="Save", command=print("test"))
+        self.filemenu.add_command(label="Save",  command=print("test"))
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=root.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
@@ -42,16 +47,16 @@ class MainApplication(tk.Frame):
         # display the menu
         self.parent.config(menu=self.menubar)
 
-        self.framebtn = tk.Frame(self, bg="black", height=100,width=100)
-        self.framebtn.place(x=10,y=10)
-        self.mapselectbtn = tk.Button(self.framebtn,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12)
-        self.mapselectbtn.grid(row=0)
-        self.mapetbtn = tk.Button(self.framebtn,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12)
-        self.mapetbtn.grid(row=1)
-        self.settingsbtn = tk.Button(self.framebtn,text="Settings",command=lambda:self.fileopeningf("settings"),width=12)
-        self.settingsbtn.grid(row=2)
-        self.programexitbtn = tk.Button(self.framebtn, text="Quit", command=root.destroy,width=12)
-        self.programexitbtn.grid(row=3)
+        self.framebtn = tk.Frame(self, bg="black", height=10000,width=100)
+        self.framebtn.place(x=10,y=10, anchor="c", relx=.5, rely=.5)
+        self.mapselectbtn = tk.Button(self.framebtn,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=10,font=("arial",20))
+        self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
+        self.mapetbtn = tk.Button(self.framebtn,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10,font=("arial",20))
+        self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
+        self.settingsbtn = tk.Button(self.framebtn,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10,font=("arial",20))
+        self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
+        self.programexitbtn = tk.Button(self.framebtn, text="Quit", command=root.destroy,width=12,padx=10,pady=10, font=("arial",20))
+        self.programexitbtn.grid(row=3,ipadx=10,ipady=10)
     
     def fileopeningf(self,file):
         self.mapselectbtn.grid_forget()
@@ -66,13 +71,13 @@ class MainApplication(tk.Frame):
             self.settingsf()
 
     def settingsf(self):
-        self.fullscreenbtn = tk.Button(self.framebtn,text="Toggle Fullscreen",command=lambda:self.fullscreenf(),width=12)
+        self.fullscreenbtn = tk.Button(self.framebtn,text="Toggle Fullscreen",command=lambda:self.fullscreenf(),width=12,padx=10,pady=10)
         self.fullscreenbtn.grid(row=0)
         self.mapetbtn = tk.Button(self.framebtn,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10)
         self.mapetbtn.grid(row=1)
-        self.settingsbtn = tk.Button(self.framebtn,text="Settings",command=lambda:self.fileopeningf("settings"),width=12)
+        self.settingsbtn = tk.Button(self.framebtn,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10)
         self.settingsbtn.grid(row=2)
-        self.programexitbtn = tk.Button(self.framebtn, text="Quit", command=root.destroy,width=12)
+        self.programexitbtn = tk.Button(self.framebtn, text="Quit", command=root.destroy,width=12,padx=10,pady=10)
         self.programexitbtn.grid(row=3)
 
     def fullscreenf(self):
