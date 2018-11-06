@@ -20,11 +20,12 @@ class MainApplication(tk.Frame):
         self.createguif()
 
     def createguif(self):
-        self.photo = tk.PhotoImage(file="..\Desktop\Github\MapET\MapET Program\uboi.gif")
+        self.logoimg = tk.PhotoImage(file="images\logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg)
-        self.mapetlogo.image = self.photo
+        self.mapetlogo.image = self.logoimg
         self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
         self.menubar = tk.Menu(self.parent)
+        
         # create a pulldown menu, and add it to the menu bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=lambda:self.filedialogf())
@@ -47,7 +48,7 @@ class MainApplication(tk.Frame):
         # display the menu
         self.parent.config(menu=self.menubar)
 
-        self.framebtn = tk.Frame(self, bg="black", height=10000,width=100)
+        self.framebtn = tk.Frame(self, bg="black", height=10000,width=1000)
         self.framebtn.place(x=10,y=10, anchor="c", relx=.5, rely=.5)
         self.mapselectbtn = tk.Button(self.framebtn,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=10,font=("arial",20))
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
