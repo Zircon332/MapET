@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import config  
 import play
-# import mapet
+import mapet
 import pickle
 #Unfinished Things
 ##Center buttons
@@ -76,8 +76,8 @@ class MainApplication(tk.Frame):
             self.buttonframe.place_forget()
             if file == "mapselect":
                 play.playgamef(root)
-            #elif file == "mapeditor":
-            #   mapet.mapeditorf()
+            elif file == "mapeditor":
+               mapet.Mapedit(root,20,[])
 
     def settingbackf(self):
         self.fullscreenbtn.grid_forget()

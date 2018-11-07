@@ -3,7 +3,7 @@ import pickle
 import os
 
 
-class set_controls():
+class SetPlayControls():
     def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,wallcoord,screenwallcoord,follow):
         self.parent = parent
         self.playercoord = playercoord
@@ -33,7 +33,6 @@ class set_controls():
         for i in self.screenwallcoord:
             self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill="grey",outline="grey")
         del self.screenwallcoord[:]
-        print(self.screenwallcoord)
                 
     def movef(self,x,y):
         self.x, self.y = x, y
@@ -68,4 +67,6 @@ class set_controls():
                     self.setmapfollowf()
 
 
-    
+class SetEditControls:
+    def __init__(self,parent):
+        self.parent = parent

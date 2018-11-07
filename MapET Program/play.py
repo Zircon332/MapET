@@ -4,13 +4,14 @@ import input
 import config
 import pickle
 
-class playgui:
+class PlayMap:
     def __init__(self, parent, mapname):
         self.parent = parent
         self.playercoord = [2,2]
         self.speedmult = 1
         self.bordersize = 50
         self.zoomsize = 10
+        #Camera position, top left from position of player 
         self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
         self.wallcoord = []
         self.screenwallcoord = []
@@ -26,7 +27,7 @@ class playgui:
         self.set_map()
     
         #set key controls
-        self.keyinput = input.set_controls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
+        self.keyinput = input.SetPlayControls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
 
         #Switch cam to follow
         self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
@@ -67,6 +68,6 @@ class playgui:
 
 #Runs the class
 def playgamef(root):
-    playgui(root,"DamienFace.p")
+    playmap = PlayMap(root,"DamienFace.p")
 
 
