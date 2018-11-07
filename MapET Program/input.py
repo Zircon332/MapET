@@ -4,7 +4,7 @@ import os
 
 
 class set_controls():
-    def __init__(self,parent,screen,playercoord,speedmult,bordersize,zoomsize,camcoord,wallcoord,screenwallcoord,follow):
+    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,wallcoord,screenwallcoord,follow):
         self.parent = parent
         self.playercoord = playercoord
         self.speedmult = speedmult
@@ -15,27 +15,32 @@ class set_controls():
         self.screenwallcoord = screenwallcoord
         self.follow = follow
         self.screen = screen
-
+        self.player = player
+        
         #Bind movements
-        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: move(x,y))
-        self.parent.bind_all("<Down>", lambda event, x=0,y=1: move(x,y))
-        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: move(x,y))
-        self.parent.bind_all("<Right>", lambda event, x=1,y=0: move(x,y))
+        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.movef(x,y))
+        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.movef(x,y))
+        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.movef(x,y))
+        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.movef(x,y))
 
         
-    def set_map_follow():
+    def setmapfollowf(self):
         self.zoomratio = 10 * self.bordersize / self.zoomsize
-        self.screen.delete(tk.ALL)
-        self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*zoomratio+self.zoomratio,fill="red")
-        for i in self.screen_wallcoord:
+        self.screen.delete(tk.ALL)      #Delete previoius things in screen
+        #Create player at center
+        self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,fill="red")
+        #Set then clear the wall coordinates on the screen
+        for i in self.screenwallcoord:
             self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill="grey",outline="grey")
-        del self.screen_wallcoord[:]
+        del self.screenwallcoord[:]
+        print(self.screenwallcoord)
                 
-    def move(x,y):
-        self.x *= self.speed_mult
-        self.y *= self.speed_mult
-        self.test_x = self.playercoord[0] + x
-        self.test_y = self.playercoord[1] + y
+    def movef(self,x,y):
+        self.x, self.y = x, y
+        self.x *= self.speedmult
+        self.y *= self.speedmult
+        self.test_x = self.playercoord[0] + self.x
+        self.test_y = self.playercoord[1] + self.y
         if [self.test_x,self.test_y] not in self.wallcoord:            
             if self.test_x > 0 and self.test_x < (self.bordersize-1):
                 self.playercoord[0] += self.x
@@ -47,8 +52,8 @@ class set_controls():
                         self.screenx = i[0] - self.camcoord[0] 
                         self.screeny = i[1] - self.camcoord[1]
                         if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
-                            self.screen_wallcoord.append([self.screenx,self.screeny])
-                    self.set_map_follow()
+                            self.screenwallcoord.append([self.screenx,self.screeny])
+                    self.setmapfollowf()
             if self.test_y > 0 and self.test_y < (self.bordersize-1):
                 self.playercoord[1] += self.y
                 self.camcoord[1] += y
@@ -58,8 +63,9 @@ class set_controls():
                     for i in self.wallcoord:
                         self.screenx = i[0] - self.camcoord[0] 
                         self.screeny = i[1] - self.camcoord[1]
-                        if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= zoomsize:
-                            self.screen_wallcoord.append([self.screenx,self.screeny])
-                    self.set_map_follow()
+                        if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
+                            self.screenwallcoord.append([self.screenx,self.screeny])
+                    self.setmapfollowf()
+
 
     
