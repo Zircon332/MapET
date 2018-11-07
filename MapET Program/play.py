@@ -8,12 +8,12 @@ class playgui:
     def __init__(self, parent, mapname):
         self.parent = parent
         self.playercoord = [2,2]
-        self.speed_mult = 1
+        self.speedmult = 1
         self.bordersize = 50
         self.zoomsize = 10
         self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
         self.wallcoord = []
-        self.screen_wallcoord = []
+        self.screenwallcoord = []
         self.follow = 0
         
         #Set map coords from file
@@ -26,7 +26,7 @@ class playgui:
         self.set_map()
     
         #set key controls
-        #input.set_controls()
+        input.set_controls(self,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
 
         #Switch cam to follow
         self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
