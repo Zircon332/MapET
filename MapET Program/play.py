@@ -26,7 +26,7 @@ class playgui:
         self.set_map()
     
         #set key controls
-        input.set_controls(self,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
+        input.set_controls(self,self.parent,self.screen,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
 
         #Switch cam to follow
         self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
