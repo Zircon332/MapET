@@ -19,14 +19,16 @@ class MainApplication(tk.Frame):
         self.parent.attributes("-fullscreen", False)
         self.createguif()
 
+    #Creates logo, menubar and buttons
     def createguif(self):
+        #Logo
         self.logoimg = tk.PhotoImage(file="images\logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
         self.mapetlogo.image = self.logoimg
         self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
         self.menubar = tk.Menu(self.parent)
         
-        # create a pulldown menu, and add it to the menu bar
+        #Pulldown menu, and add it to the menu bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=lambda:self.filedialogf())
         self.filemenu.add_command(label="Save",  command=lambda:print("test"))
@@ -34,7 +36,7 @@ class MainApplication(tk.Frame):
         self.filemenu.add_command(label="Exit", command=root.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
-        # create more pulldown menus
+        #More pulldown menus
         self.editmenu = tk.Menu(self.menubar, tearoff=0)
         self.editmenu.add_command(label="Cut", command=lambda:print("test"))
         self.editmenu.add_command(label="Copy", command=lambda:print("test"))
@@ -46,13 +48,14 @@ class MainApplication(tk.Frame):
         self.menubar.add_cascade(label="Help", menu=self.helpmenu)
         self.parent.config(menu=self.menubar)
 
-        # creates buttons and the frame, then place with function
+        #creates buttons and their frame, then place with function
         self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)
         self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=20,font=("arial",20))
         self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=20,font=("arial",20))
         self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=20,font=("arial",20))
         self.programexitbtn = tk.Button(self.buttonframe, text="Quit", command=root.destroy,width=12,padx=10,pady=20, font=("arial",20))
         self.placeguif()
+
         
     # display the menu
     # Maybe use this instead
