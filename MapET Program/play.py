@@ -1,7 +1,7 @@
 import os
 import tkinter as tk
 import input
-import config
+import choosemap
 import pickle
 
 class PlayMap:

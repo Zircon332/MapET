@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-#import select
+import choosemap
 import play
 import mapet
 import pickle
@@ -46,7 +46,7 @@ class MainApplication(tk.Frame):
         self.menubar.add_cascade(label="Help", menu=self.helpmenu)
         self.parent.config(menu=self.menubar)
 
-        # creates buttons and the frame
+        # creates buttons and the frame, then place with function
         self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)
         self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=20,font=("arial",20))
         self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=20,font=("arial",20))
@@ -76,9 +76,9 @@ class MainApplication(tk.Frame):
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
             if file == "mapselect":
-                play.playgamef(root)
+                choosegui = choosemap.ChooseMap(self.parent, file)                
             elif file == "mapeditor":
-               mapet.Mapedit(root,20,[])
+               choosegui = choosemap.ChooseMap(self.parent, file)
 
     def settingbackf(self):
         self.fullscreenbtn.grid_forget()

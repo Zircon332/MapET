@@ -1,8 +1,7 @@
 #Create and edit maps
 
 import tkinter as tk
-import config
-
+import choosemap
 
 class Mapedit:    
     def __init__(self,parent,bordersize,wallcoord):
