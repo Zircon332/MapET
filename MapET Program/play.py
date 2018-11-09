@@ -40,14 +40,17 @@ class PlayMap:
         for i in self.wallcoord:
             self.screen.create_rectangle(i[0]*10,i[1]*10,i[0]*10+10,i[1]*10+10,fill="grey",outline="grey")
 
+    # sets walls and player
     def set_wall(self):
         self.bds = self.bordersize * 10
         self.border = self.screen.create_polygon([0,0,self.bds,0,self.bds,self.bds,0,self.bds,0,0,10,0,10,self.bds-10,self.bds-10,self.bds-10,self.bds-10,10,0,10],fill="grey",outline="grey")
         self.player = self.screen.create_rectangle(self.playercoord[0]*10,self.playercoord[1]*10,self.playercoord[0]*10+10,self.playercoord[1]*10+10,fill="red")
 
+    # toggle to switch
     def followswitch(self):
         if self.follow == 0:
             self.follow = 1
+            # does the function in input, updating the screen before needing to move
             for i in self.wallcoord:
                 self.screenx = i[0] - self.camcoord[0] 
                 self.screeny = i[1] - self.camcoord[1]
@@ -60,11 +63,13 @@ class PlayMap:
                 self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill="grey",outline="grey")
             del self.screenwallcoord[:]
         else:
+            self.set_wall()
             self.follow = 0
+            # recreate and update player and walls
             self.set_map()
+            self.keyinput.player = self.player
         #Update follow value in keyinput
         self.keyinput.follow = self.follow
-        
 
 #Runs the class
 def playgamef(root):
