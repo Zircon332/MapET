@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog
-import config  
+#import select
 import play
 import mapet
 import pickle
+
 #Unfinished Things
 ##Center buttons
 ##menu bar functions
