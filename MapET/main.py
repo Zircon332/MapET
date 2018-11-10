@@ -17,10 +17,10 @@ class MainApplication(tk.Frame):
         self.screen_height = self.parent.winfo_screenheight()
         self.parent.geometry("%dx%d+%d+%d" % (self.screen_width,self.screen_height,0,0))
         self.parent.attributes("-fullscreen", False)
-        self.createguif()
+        self.creategui()
 
     # Creates logo, menubar and buttons
-    def createguif(self):
+    def creategui(self):
         # MapET Logo Banner
         self.logoimg = tk.PhotoImage(file="images/logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
@@ -30,7 +30,7 @@ class MainApplication(tk.Frame):
         
         # 'File' Menu Bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Open", command=lambda:self.filedialogf())
+        self.filemenu.add_command(label="Open", command=lambda:self.filedialog())
         self.filemenu.add_command(label="Save",  command=lambda:print("test"))
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=root.quit)
@@ -51,62 +51,68 @@ class MainApplication(tk.Frame):
 
         # creates buttons and their frame, then place with function
         self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)
-        self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",command=lambda:self.fileopeningf("mapselect"),width=12,padx=10,pady=20,font=("calibri",20))
-        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=20,font=("calibri",20))
-        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=20,font=("calibri",20))
+        self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",command=lambda:self.fileopening("mapselect"),width=12,padx=10,pady=20,font=("calibri",20))
+        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopening("mapeditor"),width=12,padx=10,pady=20,font=("calibri",20))
+        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopening("settings"),width=12,padx=10,pady=20,font=("calibri",20))
         self.programexitbtn = tk.Button(self.buttonframe, text="Quit", command=root.destroy,width=12,padx=10,pady=20, font=("calibri",20))
-        self.placeguif()
-
-        
+        self.placegui()
     # display main buttons
-    ## Maybe use this instead
-    ## use winfo_rootx and winfo_rooty to get the coordinates relative to the screen. And yes, wm_geometry is the way to place a toplevel window precisely.
-    def placeguif(self):
+    # Maybe use this instead
+    # use winfo_rootx and winfo_rooty to get the coordinates relative to the screen. And yes, wm_geometry is the way to place a toplevel window precisely.
+    def placegui(self):
         self.buttonframe.place(x=10,y=10, anchor="c", relx=0.48, rely=0.5)
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
         self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
         self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
         self.programexitbtn.grid(row=3,ipadx=10,ipady=10)
 
-    # Hides Main buttons, then    display Settings buttons / display Map Selection
-    def fileopeningf(self,file):
-        self.buttonframe.grid_forget()
-        self.mapselectbtn.grid_forget()
-        self.mapetbtn.grid_forget()
-        self.settingsbtn.grid_forget()
-        self.programexitbtn.grid_forget()    
+    # Hides Main buttons, then display Settings buttons / display Map Selection
+    def fileopening(self,file):
+        for child in self.buttonframe.winfo_children():
+            child.grid_forget()
+        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopening("settings"),width=12,padx=10,pady=20,font=("calibri",20))
         if file == "settings":
-            self.settingsf()
+            self.settings()
         else:
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
             if file == "mapselect":
-                choosemap.ChooseMap(self.parent, file)                
+                self.backbuttonpage()
+                choosemap.ChooseMap(self.parent, file)              
             elif file == "mapeditor":
+                self.backbuttonpage()
                 choosemap.ChooseMap(self.parent, file)
 
     # Hides Settings buttons and display Main buttons
-    def settingbackf(self):
+    def settingback(self):
         self.fullscreenbtn.grid_forget()
-        self.mapetbtn.grid_forget()
-        self.settingsbtn.grid_forget()
         self.backbtn.grid_forget()
-        self.placeguif()
+        self.placegui()
 
     # display Settings button
-    def settingsf(self):
-        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",command=lambda:self.fullscreenf(),width=12,padx=10,pady=10, font=("calibri",20))
+    def settings(self):
+        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",command=lambda:self.fullscreen(),width=12,padx=10,pady=10, font=("calibri",20))
         self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10)
-        self.backbtn = tk.Button(self.buttonframe, text="Back", command=lambda:self.settingbackf(),width=12,padx=10,pady=10, font=("calibri",20))
+        self.backbtn = tk.Button(self.buttonframe, text="Back", command=lambda:self.settingback(),width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.grid(row=3,ipadx=10,ipady=10)
-
     # Toggle Fullscreen
-    def fullscreenf(self):
+    def fullscreen(self):
         self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen'))
 
     # Opens file dialog to choose a file
-    def filedialogf(self):
+    def filedialog(self):
         self.filedialogpath = filedialog.askopenfilename()
+
+    def backbuttonpage(self):
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),width=12,padx=10,pady=10, font=("calibri",20))
+        self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
+        choosemapmain = choosemap.ChooseMap
+        def deleteall():
+            for child in choosemapmain(root,file):
+                child.grid_forget()
+            self.placegui()
+                
+
 
 
 # Start the program

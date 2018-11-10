@@ -75,4 +75,3 @@ class PlayMap:
 def playgamef(root):
     PlayMap(root,"DamienFace.p")
 
-
