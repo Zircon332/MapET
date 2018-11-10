@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 import play
 import mapet
+import pickle
 
 class ChooseMap():
     def __init__(self, parent, file):
@@ -43,10 +44,11 @@ class ChooseMap():
     # Opens selected file, hide map select container, display play/mapet
     def openmapf(self,mapname):
         print("Opening",mapname)
-        coord = open(os.path.join("maps",mapname,"coord.txt"),"r")
+        coord = pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
         if self.file == "mapselect":
             self.mapall.place_forget()
             play.playgamef(self.parent)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
             mapet.Mapedit(self.parent,20,coord)
+
