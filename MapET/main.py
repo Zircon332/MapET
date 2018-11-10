@@ -66,14 +66,17 @@ class MainApplication(tk.Frame):
         self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
         self.programexitbtn.grid(row=3,ipadx=10,ipady=10)
 
-    # Hides Main buttons, then display Settings buttons / display Map Selection
+    # #1-Hides Main buttons, #2-then display Settings buttons / #3-display Map Selection
     def fileopening(self,file):
-        for child in self.buttonframe.winfo_children():
+        for child in self.buttonframe.winfo_children(): #1
             child.grid_forget()
-        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopening("settings"),width=12,padx=10,pady=20,font=("calibri",20))
+        self.settingsbtn = tk.Button(self.buttonframe,
+                                    text="Settings",    #2
+                                    command=lambda:self.fileopening("settings"),
+                                    width=12,padx=10,pady=20,font=("calibri",20))
         if file == "settings":
             self.settings()
-        else:
+        else: #3
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
             if file == "mapselect":
@@ -106,9 +109,8 @@ class MainApplication(tk.Frame):
     def backbuttonpage(self):
         self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
-        choosemapmain = choosemap.ChooseMap
         def deleteall():
-            for child in choosemapmain(root,file):
+            for child in choosemap.ChooseMap.__class__(root,mapall):
                 child.grid_forget()
             self.placegui()
                 
