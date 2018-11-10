@@ -22,7 +22,7 @@ class MainApplication(tk.Frame):
     # Creates logo, menubar and buttons
     def createguif(self):
         # MapET Logo Banner
-        self.logoimg = tk.PhotoImage(file="images\logo.gif")
+        self.logoimg = tk.PhotoImage(file="images/logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
         self.mapetlogo.image = self.logoimg
         self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
@@ -81,9 +81,9 @@ class MainApplication(tk.Frame):
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
             if file == "mapselect":
-                choosegui = choosemap.ChooseMap(self.parent, file)                
+                choosemap.ChooseMap(self.parent, file)                
             elif file == "mapeditor":
-               choosegui = choosemap.ChooseMap(self.parent, file)
+                choosemap.ChooseMap(self.parent, file)
 
     # Hides Settings buttons and display Main buttons
     def settingbackf(self):
@@ -97,10 +97,6 @@ class MainApplication(tk.Frame):
     def settingsf(self):
         self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",command=lambda:self.fullscreenf(),width=12,padx=10,pady=10, font=("arial",20))
         self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10)
-        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopeningf("mapeditor"),width=12,padx=10,pady=10, font=("arial",20))
-        self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
-        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopeningf("settings"),width=12,padx=10,pady=10, font=("arial",20))
-        self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
         self.backbtn = tk.Button(self.buttonframe, text="Back", command=lambda:self.settingbackf(),width=12,padx=10,pady=10, font=("arial",20))
         self.backbtn.grid(row=3,ipadx=10,ipady=10)
 
@@ -118,4 +114,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     MainApplication(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
+
 

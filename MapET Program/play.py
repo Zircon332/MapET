@@ -73,6 +73,6 @@ class PlayMap:
 
 #Runs the class
 def playgamef(root):
-    playmap = PlayMap(root,"DamienFace.p")
+    PlayMap(root,"DamienFace.p")
 
 
