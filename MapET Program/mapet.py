@@ -2,6 +2,7 @@
 
 import tkinter as tk
 import choosemap
+import input
 
 class Mapedit:    
     def __init__(self,parent,bordersize,wallcoord):
@@ -18,14 +19,17 @@ class Mapedit:
         self.end1 = 0
         self.end2 = 0
 
-        # set axes
+        ##################### MAP GRID #####################
+        # display axes
         self.gridaxisx = []
         self.gridaxisy = []
-        for i in range(self.bordersize+1):
-            self.gridaxisx.append(tk.Label(self.frame,height=1,width=0,text=i))
-            self.gridaxisy.append(tk.Label(self.frame,height=1,width=0,text=i))
-            self.gridaxisx[i].grid(column=i,row=0)
-            self.gridaxisy[i].grid(column=0,row=i)
+        self.xshift = self.yshift = 0   # set both shifts to 0, shifting moves the screen
+        for i in range(self.bordersize):
+            self.gridaxisx.append(tk.Label(self.frame,height=1,width=0,text=i+self.xshift))
+            self.gridaxisy.append(tk.Label(self.frame,height=1,width=0,text=i+self.yshift))
+            self.gridaxisx[i].grid(column=i+1,row=0)
+            self.gridaxisy[i].grid(column=0,row=i+1)
+        # display grid
         #Pix list to store every pixel, c for index
         self.c = 0
         self.pix=[]
@@ -40,16 +44,25 @@ class Mapedit:
 
         #Sets up previously created walls
         self.setwallf()
-
+        ##################### map grid ###################
+        
+        #################### BUTTONS #####################
+        # button for updating new coord
         self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.updatemapf)
         self.updatebutton.place(relx=0.1,rely=0.05)
 
+        # button for switching to play mode(currently not working)
         self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplayf)
         self.switchbutton.place(relx=.9,rely=.1)
 
+        # button for creating lines
         self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.createlinef)
         self.linebutton.place(relx=.9,rely=.2)
 
+        # set input
+        input.SetEditControls(self.parent, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift)
+        #################### buttons #####################
+    
 
     def togglewallf(self,i):
         self.end2 = self.end1

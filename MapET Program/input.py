@@ -59,7 +59,7 @@ class SetPlayControls():
                 self.screenwallcoord.append([self.screenx,self.screeny])
         # update screen in camfollow mode
         self.zoomratio = 10 * self.bordersize / self.zoomsize
-        self.screen.delete(tk.ALL)      #Delete previoius things in screen
+        self.screen.delete(tk.ALL)      #Delete previous things in screen
         #Create player at center
         self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,fill="red")
         #Set then clear the wall coordinates on the screen
@@ -70,5 +70,26 @@ class SetPlayControls():
 
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent):
+    def __init__(self,parent,bordersize,wallcoord,gridaxisx,gridaxisy,xshift,yshift):
+        # Carry over data
         self.parent = parent
+        self.bordersize = bordersize
+        self.wallcoord = wallcoord
+        self.gridaxisx = gridaxisx
+        self.gridaxisy = gridaxisy
+        self.xshift = xshift
+        self.yshift = yshift
+
+        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmapf(x,y))
+        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmapf(x,y))
+        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmapf(x,y))
+        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmapf(x,y))
+
+    # shift the coords of the grid
+    def shiftmapf(self,x,y):
+        self.xshift += x
+        self.yshift += y
+        # update the axes numbers
+        for i in range(len(self.gridaxisx)):
+            self.gridaxisx[i].config(text=i+self.xshift)
+            self.gridaxisy[i].config(text=i+self.yshift)
