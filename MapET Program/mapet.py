@@ -8,7 +8,7 @@ class Mapedit:
         self.parent = parent
         self.bordersize = bordersize
         self.wallcoord = wallcoord
-        
+       
         self.showcoord = tk.Label(self.parent,text=self.wallcoord)
         self.showcoord.place(relx=.01,y=.01)
 
@@ -17,14 +17,22 @@ class Mapedit:
 
         self.end1 = 0
         self.end2 = 0
-        
+
+        # set axes
+        self.gridaxisx = []
+        self.gridaxisy = []
+        for i in range(self.bordersize+1):
+            self.gridaxisx.append(tk.Label(self.frame,height=1,width=0,text=i))
+            self.gridaxisy.append(tk.Label(self.frame,height=1,width=0,text=i))
+            self.gridaxisx[i].grid(column=i,row=0)
+            self.gridaxisy[i].grid(column=0,row=i)
         #Pix list to store every pixel, c for index
         self.c = 0
         self.pix=[]
         for y in range(self.bordersize):
             for x in range(self.bordersize):
                 self.pix.append(tk.Label(self.frame,height=1,width=2,background="white",bd=2,relief="groove"))
-                self.pix[self.c].grid(column=x,row=y)
+                self.pix[self.c].grid(column=x+1,row=y+1)
                 self.c = self.c + 1
 
         for i in range(self.bordersize**2):
@@ -34,7 +42,7 @@ class Mapedit:
         self.setwallf()
 
         self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.updatemapf)
-        self.updatebutton.place(relx=0,rely=0.05)
+        self.updatebutton.place(relx=0.1,rely=0.05)
 
         self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplayf)
         self.switchbutton.place(relx=.9,rely=.1)
@@ -67,12 +75,13 @@ class Mapedit:
         #Display the list of coords
         self.showcoord.config(text=self.wallcoord)
                 
-    #Shows existing walls
+    # display existing walls in the grid
     def setwallf(self):
         for walls in self.wallcoord:
-            self.index = walls[0] + (self.bordersize * walls[1])
+            self.index = int(walls[0]) + (self.bordersize * walls[1])
             self.pix[self.index].config(bg="grey")
 
+    # does nothing for now, but it should go to play
     def switchplayf(self):
         self.parent.withdraw()
 ##        self.parent.deiconify()
