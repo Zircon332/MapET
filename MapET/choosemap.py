@@ -51,5 +51,4 @@ class ChooseMap():
         elif self.file == "mapeditor":
             self.mapall.place_forget()
             mapet.Mapedit(self.parent,20,coord)
-            
-        
+
