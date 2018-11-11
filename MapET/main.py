@@ -119,10 +119,11 @@ class MainApplication(tk.Frame):
         self.filedialogpath = filedialog.askopenfilename()
     test = choosemap.ChooseMap
     def backbuttonpage(self):
-        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),width=12,padx=10,pady=10, font=("calibri",20))
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
+                                width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
         def deleteall():
-            for child in choosemap.ChooseMap(mapall.winfo_children()):
+            for child in choosemap.ChooseMap.__init__.mapall.winfo_children()):
                 child.grid_forget()
             self.placegui()
             
