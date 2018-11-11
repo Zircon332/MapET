@@ -70,7 +70,7 @@ class SetPlayControls():
 
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent,bordersize,wallcoord,gridaxisx,gridaxisy,xshift,yshift):
+    def __init__(self,parent,bordersize,wallcoord,gridaxisx,gridaxisy,xshift,yshift, screenwallcoord, pix):
         # Carry over data
         self.parent = parent
         self.bordersize = bordersize
@@ -79,6 +79,9 @@ class SetEditControls:
         self.gridaxisy = gridaxisy
         self.xshift = xshift
         self.yshift = yshift
+        self.screenwallcoord = screenwallcoord
+        self.pix = pix
+        self.cameracoord = [0,0]
 
         self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmapf(x,y))
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmapf(x,y))
@@ -93,3 +96,31 @@ class SetEditControls:
         for i in range(len(self.gridaxisx)):
             self.gridaxisx[i].config(text=i+self.xshift)
             self.gridaxisy[i].config(text=i+self.yshift)
+        if self.xshift + self.bordersize == 100 or self.xshift == -10:
+            for i in self.gridaxisx:
+                i.config(font=("arial",6))
+        if self.xshift > -10 and self.xshift + self.bordersize < 100:
+            for i in self.gridaxisx:
+                i.config(font=("arial",8))
+        self.updatescreenmapf(x,y)
+        
+    def updatescreenmapf(self,x,y):
+        self.cameracoord[0] += x
+        self.cameracoord[1] += y
+
+        # append new coords for walls
+        for i in self.screenwallcoord:
+            i[0] -= x
+            i[1] -= y
+            
+        # clear the screen
+        for i in range(self.bordersize**2):
+            self.pix[i].config(bg="white")
+
+        # display new walls
+        for walls in self.screenwallcoord:
+            if walls[0] >= self.cameracoord[0] and walls[0] <= self.cameracoord[0]+self.bordersize:
+                if walls[1] >= self.cameracoord[1] and walls[1] <= self.cameracoord[1]+self.bordersize:    
+                    self.index = int(walls[0]) + (self.bordersize * walls[1])
+                    if self.index >= 0 and self.index <= 400:
+                        self.pix[self.index].config(bg="grey")

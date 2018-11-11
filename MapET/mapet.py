@@ -9,7 +9,8 @@ class Mapedit:
         self.parent = parent
         self.bordersize = bordersize
         self.wallcoord = wallcoord
-       
+        self.screenwallcoord = wallcoord
+        
         self.showcoord = tk.Label(self.parent,text=self.wallcoord)
         self.showcoord.place(relx=.01,y=.01)
 
@@ -25,8 +26,8 @@ class Mapedit:
         self.gridaxisy = []
         self.xshift = self.yshift = 0   # set both shifts to 0, shifting moves the screen
         for i in range(self.bordersize):
-            self.gridaxisx.append(tk.Label(self.frame,height=1,width=0,text=i+self.xshift))
-            self.gridaxisy.append(tk.Label(self.frame,height=1,width=0,text=i+self.yshift))
+            self.gridaxisx.append(tk.Label(self.frame,height=1,width=0,text=i+self.xshift,font=("Arial",8)))
+            self.gridaxisy.append(tk.Label(self.frame,height=1,width=0,text=i+self.yshift,font=("Arial",8)))
             self.gridaxisx[i].grid(column=i+1,row=0)
             self.gridaxisy[i].grid(column=0,row=i+1)
         # display grid
@@ -60,7 +61,7 @@ class Mapedit:
         self.linebutton.place(relx=.9,rely=.2)
 
         # set input
-        input.SetEditControls(self.parent, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift)
+        input.SetEditControls(self.parent, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
         #################### buttons #####################
     
 
