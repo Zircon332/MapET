@@ -51,10 +51,18 @@ class MainApplication(tk.Frame):
 
         # creates buttons and their frame, then place with function
         self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)
-        self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",command=lambda:self.fileopening("mapselect"),width=12,padx=10,pady=20,font=("calibri",20))
-        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",command=lambda:self.fileopening("mapeditor"),width=12,padx=10,pady=20,font=("calibri",20))
-        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",command=lambda:self.fileopening("settings"),width=12,padx=10,pady=20,font=("calibri",20))
-        self.programexitbtn = tk.Button(self.buttonframe, text="Quit", command=root.destroy,width=12,padx=10,pady=20, font=("calibri",20))
+        self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",
+                                    command=lambda:self.fileopening("mapselect"),
+                                    width=12,padx=10,pady=20,font=("calibri",20))
+        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",
+                                    command=lambda:self.fileopening("mapeditor"),
+                                    width=12,padx=10,pady=20,font=("calibri",20))
+        self.settingsbtn = tk.Button(self.buttonframe,
+                                    text="Settings",command=lambda:self.fileopening("settings"),
+                                    width=12,padx=10,pady=20,font=("calibri",20))
+        self.programexitbtn = tk.Button(self.buttonframe, text="Quit",
+                                     command=root.destroy,
+                                     width=12,padx=10,pady=20, font=("calibri",20))
         self.placegui()
     # display main buttons
     # Maybe use this instead
@@ -94,9 +102,13 @@ class MainApplication(tk.Frame):
 
     # display Settings button
     def settings(self):
-        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",command=lambda:self.fullscreen(),width=12,padx=10,pady=10, font=("calibri",20))
+        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
+                                    command=lambda:self.fullscreen(),
+                                    width=12,padx=10,pady=10, font=("calibri",20))
         self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10)
-        self.backbtn = tk.Button(self.buttonframe, text="Back", command=lambda:self.settingback(),width=12,padx=10,pady=10, font=("calibri",20))
+        self.backbtn = tk.Button(self.buttonframe, text="Back",
+                                    command=lambda:self.settingback(),
+                                    width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.grid(row=3,ipadx=10,ipady=10)
     # Toggle Fullscreen
     def fullscreen(self):
@@ -105,22 +117,19 @@ class MainApplication(tk.Frame):
     # Opens file dialog to choose a file
     def filedialog(self):
         self.filedialogpath = filedialog.askopenfilename()
-
+    test = choosemap.ChooseMap
     def backbuttonpage(self):
         self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
         def deleteall():
-            for child in choosemap.ChooseMap.__class__(root,mapall):
+            for child in choosemap.ChooseMap(mapall.winfo_children()):
                 child.grid_forget()
             self.placegui()
-                
-
-
+            
 
 # Start the program
 if __name__ == "__main__":
     root = tk.Tk()
     MainApplication(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
-
 
