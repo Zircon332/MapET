@@ -9,7 +9,7 @@ class ChooseMap():
         self.parent = parent
         self.file = file
 
-        # container for this whole page 
+        # container for this whole page
         self.mapall = tk.Frame(self.parent,width=1000,height=1000)
         self.mapall.place(relx=.1,rely=.1)
 
@@ -31,7 +31,7 @@ class ChooseMap():
             self.maptext.append(tk.Label(self.mapbox[i],text=mapname,width=10,height=1,font=("arial",20)))
             self.mapbtn.append(tk.Button(self.mapbox[i],text="Choose map",width=10,height=1,command=lambda m=mapname:self.openmapf(m),font=("arial",15)))
             # grid them
-            self.mapbox[i].grid(column=self.coli,row=self.rowi)  
+            self.mapbox[i].grid(column=self.coli,row=self.rowi)
             self.mapimg[i].grid(column=0,row=1)
             self.maptext[i].grid(column=0,row=2)
             self.mapbtn[i].grid(column=0,row=3)
@@ -47,8 +47,7 @@ class ChooseMap():
         coord = pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
         if self.file == "mapselect":
             self.mapall.place_forget()
-            play.playgamef(self.parent)
+            self.pl = play.playgamef(self.parent)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
-            mapet.Mapedit(self.parent,20,coord)
-
+            self.mp = mapet.Mapedit(self.parent,20,coord)
