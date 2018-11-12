@@ -25,9 +25,8 @@ class MainApplication(tk.Frame):
         self.logoimg = tk.PhotoImage(file="images/logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
         self.mapetlogo.image = self.logoimg
-        self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
         self.menubar = tk.Menu(self.parent)
-        
+
         # 'File' Menu Bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=lambda:self.filedialog())
@@ -68,6 +67,7 @@ class MainApplication(tk.Frame):
     # Maybe use this instead
     # use winfo_rootx and winfo_rooty to get the coordinates relative to the screen. And yes, wm_geometry is the way to place a toplevel window precisely.
     def placegui(self):
+        self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
         self.buttonframe.place(x=10,y=10, anchor="c", relx=0.48, rely=0.5)
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
         self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
@@ -89,10 +89,10 @@ class MainApplication(tk.Frame):
             self.buttonframe.place_forget()
             if file == "mapselect":
                 self.backbuttonpage()
-                choosemap.ChooseMap(self.parent, file)              
+                self.cm = choosemap.ChooseMap(self.parent, file)
             elif file == "mapeditor":
                 self.backbuttonpage()
-                choosemap.ChooseMap(self.parent, file)
+                self.cm = choosemap.ChooseMap(self.parent, file)
 
     # Hides Settings buttons and display Main buttons
     def settingback(self):
@@ -117,20 +117,38 @@ class MainApplication(tk.Frame):
     # Opens file dialog to choose a file
     def filedialog(self):
         self.filedialogpath = filedialog.askopenfilename()
-    test = choosemap.ChooseMap
+
     def backbuttonpage(self):
         self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
                                 width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
+
         def deleteall():
-            for child in choosemap.ChooseMap.__init__.mapall.winfo_children()):
-                child.grid_forget()
+            try:
+                self.cm.mapall.destroy()
+            except:
+                pass
+
+            try:
+                self.cm.pl.screen.destroy()
+                self.cm.pl.switch.destroy()
+            except:
+                pass
+
+            try:
+                self.cm.mp.frame.destroy()
+                self.cm.mp.showcoord.destroy()
+                self.cm.mp.switchbutton.destroy()
+                self.cm.mp.updatebutton.destroy()
+                self.cm.mp.linebutton.destroy()
+            except:
+                pass
+
+            self.backbtn.destroy()
             self.placegui()
-            
 
 # Start the program
 if __name__ == "__main__":
     root = tk.Tk()
     MainApplication(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
-

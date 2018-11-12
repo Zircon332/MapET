@@ -11,12 +11,12 @@ class PlayMap:
         self.speedmult = 1
         self.bordersize = 50
         self.zoomsize = 10
-        #Camera position, top left from position of player 
+        #Camera position, top left from position of player
         self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
         self.wallcoord = []
         self.screenwallcoord = []
         self.follow = 0
-        
+
         #Set map coords from file
         self.wallcoord = pickle.load(open(os.path.join('data',mapname),"rb"))
 
@@ -25,14 +25,13 @@ class PlayMap:
         self.screen = tk.Canvas(self.parent, bg="Black", width=self.bordersize*10, height=self.bordersize*10, highlightthickness=0,bd=0)
         self.screen.place(relx=.1,rely=.1)
         self.set_map()
-    
+
         #set key controls
         self.keyinput = input.SetPlayControls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
 
         #Switch cam to follow
         self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
         self.switch.place(relx=.9,rely=.1)
-        
 
     def set_map(self):
         self.screen.delete(tk.ALL)
@@ -52,7 +51,7 @@ class PlayMap:
             self.follow = 1
             # does the function in input, updating the screen before needing to move
             for i in self.wallcoord:
-                self.screenx = i[0] - self.camcoord[0] 
+                self.screenx = i[0] - self.camcoord[0]
                 self.screeny = i[1] - self.camcoord[1]
                 if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
                     self.screenwallcoord.append([self.screenx,self.screeny])
@@ -73,5 +72,5 @@ class PlayMap:
 
 #Runs the class
 def playgamef(root):
-    PlayMap(root,"DamienFace.p")
-
+    p = PlayMap(root,"DamienFace.p")
+    return p
