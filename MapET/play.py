@@ -71,6 +71,6 @@ class PlayMap:
         self.keyinput.follow = self.follow
 
 #Runs the class
-def playgamef(root):
+def playgame(root):
     p = PlayMap(root,"DamienFace.p")
     return p

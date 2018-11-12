@@ -19,13 +19,13 @@ class SetPlayControls():
         self.player = player
         
         #Bind movements
-        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.movef(x,y))
-        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.movef(x,y))
-        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.movef(x,y))
-        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.movef(x,y))
+        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.move(x,y))
+        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
+        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
+        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
 
     # move the player according to input
-    def movef(self, x, y):
+    def move(self, x, y):
         self.x, self.y = x, y
         # Increase speed with multiplier, if any
         self.x *= self.speedmult
@@ -40,18 +40,18 @@ class SetPlayControls():
                 if self.follow == 0:                            # normal moving
                     self.screen.move(self.player, self.x*10, 0)
                 else:                                           # cam follow move
-                    self.cammovef()
+                    self.cammove()
             if self.test_y > 0 and self.test_y < (self.bordersize-1):
                 self.playercoord[1] += self.y
                 self.camcoord[1] += y
                 if self.follow == 0:                            # normal moving
                     self.screen.move(self.player, 0, self.y*10)
                 else:                                           # cam follow move
-                    self.cammovef()
+                    self.cammove()
         self.screen.update_idletasks()
 
     # append everything that will be shown in screen into a list
-    def cammovef(self):
+    def cammove(self):
         for i in self.wallcoord:
             self.screenx = i[0] - self.camcoord[0] 
             self.screeny = i[1] - self.camcoord[1]
@@ -83,13 +83,13 @@ class SetEditControls:
         self.pix = pix
         self.cameracoord = [0,0]
 
-        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmapf(x,y))
-        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmapf(x,y))
-        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmapf(x,y))
-        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmapf(x,y))
+        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
+        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
+        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmap(x,y))
+        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmap(x,y))
 
     # shift the coords of the grid
-    def shiftmapf(self,x,y):
+    def shiftmap(self,x,y):
         self.xshift += x
         self.yshift += y
         # update the axes numbers
@@ -102,9 +102,9 @@ class SetEditControls:
         if self.xshift > -10 and self.xshift + self.bordersize < 100:
             for i in self.gridaxisx:
                 i.config(font=("arial",8))
-        self.updatescreenmapf(x,y)
+        self.updatescreenmap(x,y)
         
-    def updatescreenmapf(self,x,y):
+    def updatescreenmap(self,x,y):
         self.cameracoord[0] += x
         self.cameracoord[1] += y
 

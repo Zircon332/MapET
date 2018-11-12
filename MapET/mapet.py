@@ -1,3 +1,4 @@
+
 #Create and edit maps
 
 import tkinter as tk
@@ -41,23 +42,23 @@ class Mapedit:
                 self.c = self.c + 1
 
         for i in range(self.bordersize**2):
-            self.pix[i].bind("<1>",lambda event, i=i: self.togglewallf(i))
+            self.pix[i].bind("<1>",lambda event, i=i: self.togglewall(i))
 
         #Sets up previously created walls
-        self.setwallf()
+        self.setwall()
         ##################### map grid ###################
         
         #################### BUTTONS #####################
         # button for updating new coord
-        self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.updatemapf)
+        self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.updatemap)
         self.updatebutton.place(relx=0.1,rely=0.05)
 
         # button for switching to play mode(currently not working)
-        self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplayf)
+        self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplay)
         self.switchbutton.place(relx=.9,rely=.1)
 
         # button for creating lines
-        self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.createlinef)
+        self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.createline)
         self.linebutton.place(relx=.9,rely=.2)
 
         # set input
@@ -65,7 +66,7 @@ class Mapedit:
         #################### buttons #####################
     
 
-    def togglewallf(self,i):
+    def togglewall(self,i):
         self.end2 = self.end1
         self.end1 = i
         if self.pix[i].cget("bg") == "grey":
@@ -74,7 +75,7 @@ class Mapedit:
             self.pix[i].config(bg="grey")
 
     #Update the new map into the list config.wallcoord
-    def updatemapf(self):
+    def updatemap(self):
         self.tempwallcoord = []
         for i in range(self.bordersize**2):
             if self.pix[i].cget("bg") == "grey":
@@ -90,18 +91,18 @@ class Mapedit:
         self.showcoord.config(text=self.wallcoord)
                 
     # display existing walls in the grid
-    def setwallf(self):
+    def setwall(self):
         for walls in self.wallcoord:
             self.index = int(walls[0]) + (self.bordersize * walls[1])
             self.pix[self.index].config(bg="grey")
 
     # does nothing for now, but it should go to play
-    def switchplayf(self):
+    def switchplay(self):
         self.parent.withdraw()
 ##        self.parent.deiconify()
 
     #Create a line between last two points if they are on the same line
-    def createlinef(self):
+    def createline(self):
         #Finding out which row
         if self.end1//self.bordersize == self.end2//self.bordersize:
             if self.end1 < self.end2:
