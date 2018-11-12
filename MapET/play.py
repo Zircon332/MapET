@@ -22,15 +22,21 @@ class PlayMap:
 
 
         #Playground Screen
-        self.screen = tk.Canvas(self.parent, bg="Black", width=self.bordersize*10, height=self.bordersize*10, highlightthickness=0,bd=0)
+        self.mainframe = tk.Frame(self.parent, width=1000, height=1000)
+        self.mainframe.place(x=0,y=0)
+
+        parent.backbtn.destroy()
+        parent.backbuttonpage(self.mainframe)
+
+        self.screen = tk.Canvas(self.mainframe, bg="Black", width=self.bordersize*10, height=self.bordersize*10, highlightthickness=0,bd=0)
         self.screen.place(relx=.1,rely=.1)
         self.set_map()
 
         #set key controls
-        self.keyinput = input.SetPlayControls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
+        self.keyinput = input.SetPlayControls(self.mainframe,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
 
         #Switch cam to follow
-        self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
+        self.switch = tk.Button(self.mainframe,text="Switch to Follow", command=self.followswitch)
         self.switch.place(relx=.9,rely=.1)
 
     def set_map(self):

@@ -4,17 +4,23 @@ import tkinter as tk
 import choosemap
 import input
 
-class Mapedit:    
+class Mapedit:
     def __init__(self,parent,bordersize,wallcoord):
         self.parent = parent
         self.bordersize = bordersize
         self.wallcoord = wallcoord
         self.screenwallcoord = wallcoord
-        
-        self.showcoord = tk.Label(self.parent,text=self.wallcoord)
+
+        self.mainframe = tk.Frame(self.parent, width=1000, height= 1000)
+        self.mainframe.place(x=0,y=0)
+
+        parent.backbtn.destroy()
+        parent.backbuttonpage(self.mainframe)
+
+        self.showcoord = tk.Label(self.mainframe,text=self.wallcoord)
         self.showcoord.place(relx=.01,y=.01)
 
-        self.frame = tk.Frame(self.parent)
+        self.frame = tk.Frame(self.mainframe)
         self.frame.place(relx=0.5,rely=0.5, anchor="c")
 
         self.end1 = 0
@@ -46,24 +52,24 @@ class Mapedit:
         #Sets up previously created walls
         self.setwallf()
         ##################### map grid ###################
-        
+
         #################### BUTTONS #####################
         # button for updating new coord
-        self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.updatemapf)
+        self.updatebutton = tk.Button(self.mainframe,text="Update new map",command=self.updatemapf)
         self.updatebutton.place(relx=0.1,rely=0.05)
 
         # button for switching to play mode(currently not working)
-        self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplayf)
+        self.switchbutton = tk.Button(self.mainframe,text="Switch to Play mode",command=self.switchplayf)
         self.switchbutton.place(relx=.9,rely=.1)
 
         # button for creating lines
-        self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.createlinef)
+        self.linebutton = tk.Button(self.mainframe,text="Make a line from last two points",command=self.createlinef)
         self.linebutton.place(relx=.9,rely=.2)
 
         # set input
-        input.SetEditControls(self.parent, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
+        input.SetEditControls(self.mainframe, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
         #################### buttons #####################
-    
+
 
     def togglewallf(self,i):
         self.end2 = self.end1
@@ -88,7 +94,7 @@ class Mapedit:
         self.wallcoord = self.tempwallcoord
         #Display the list of coords
         self.showcoord.config(text=self.wallcoord)
-                
+
     # display existing walls in the grid
     def setwallf(self):
         for walls in self.wallcoord:
@@ -97,8 +103,8 @@ class Mapedit:
 
     # does nothing for now, but it should go to play
     def switchplayf(self):
-        self.parent.withdraw()
-##        self.parent.deiconify()
+        self.mainframe.withdraw()
+##        self.mainframe.deiconify()
 
     #Create a line between last two points if they are on the same line
     def createlinef(self):
@@ -111,7 +117,7 @@ class Mapedit:
             if self.end1 > self.end2:
                 while self.end2+1 < self.end1:
                     self.end2 += 1
-                    self.pix[self.end2].config(bg="grey")        
+                    self.pix[self.end2].config(bg="grey")
         elif str(self.end1)[-1] == str(self.end2)[-1]:
             if self.end1 < self.end2:
                 while self.end2-self.bordersize > self.end1:
@@ -121,4 +127,3 @@ class Mapedit:
                 while self.end2+self.bordersize < self.end1:
                     self.end2 += self.bordersize
                     self.pix[self.end2].config(bg="grey")
-

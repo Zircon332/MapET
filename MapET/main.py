@@ -88,11 +88,9 @@ class MainApplication(tk.Frame):
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
             if file == "mapselect":
-                self.backbuttonpage()
-                self.cm = choosemap.ChooseMap(self.parent, file)
+                self.cm = choosemap.ChooseMap(self, file)
             elif file == "mapeditor":
-                self.backbuttonpage()
-                self.cm = choosemap.ChooseMap(self.parent, file)
+                self.cm = choosemap.ChooseMap(self, file)
 
     # Hides Settings buttons and display Main buttons
     def settingback(self):
@@ -118,32 +116,13 @@ class MainApplication(tk.Frame):
     def filedialog(self):
         self.filedialogpath = filedialog.askopenfilename()
 
-    def backbuttonpage(self):
-        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
+    def backbuttonpage(self, frame):
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(frame),
                                 width=12,padx=10,pady=10, font=("calibri",20))
         self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
 
-        def deleteall():
-            try:
-                self.cm.mapall.destroy()
-            except:
-                pass
-
-            try:
-                self.cm.pl.screen.destroy()
-                self.cm.pl.switch.destroy()
-            except:
-                pass
-
-            try:
-                self.cm.mp.frame.destroy()
-                self.cm.mp.showcoord.destroy()
-                self.cm.mp.switchbutton.destroy()
-                self.cm.mp.updatebutton.destroy()
-                self.cm.mp.linebutton.destroy()
-            except:
-                pass
-
+        def deleteall(frame):
+            frame.destroy()
             self.backbtn.destroy()
             self.placegui()
 

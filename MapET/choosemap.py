@@ -10,8 +10,10 @@ class ChooseMap():
         self.file = file
 
         # container for this whole page
-        self.mapall = tk.Frame(self.parent,width=1000,height=1000)
-        self.mapall.place(relx=.1,rely=.1)
+        self.mapall = tk.Frame(self.parent)
+        self.mapall.place(x=0,y=0)
+
+        parent.backbuttonpage(self.mapall)
 
         ## Display files in folder
         # list of all files
