@@ -91,7 +91,7 @@ class SetEditControls:
         # Bind clicks to grid
         for x in range(self.gridsize):
             for y in range(self.gridsize):
-            self.pix[i].bind("<1>",lambda event, i=i: self.togglewall(i))
+                self.pix[x,y].bind("<1>",lambda event, x=x,y=y: self.togglewall(x,y))
 
 
     # shift the coords of the grid
@@ -102,7 +102,7 @@ class SetEditControls:
         for i in range(len(self.gridaxisx)):
             self.gridaxisx[i].config(text=i+self.xshift)
             self.gridaxisy[i].config(text=i+self.yshift)
-        if self.xshift + self.bordersize == 100 or self.xshift == -10:
+        if self.xshift + self.gridsize == 100 or self.xshift == -10:
             for i in self.gridaxisx:
                 i.config(font=("arial",6))
         if self.xshift > -10 and self.xshift + self.bordersize < 100:
@@ -113,30 +113,53 @@ class SetEditControls:
     def updatescreenmap(self,x,y):
         self.cameracoord[0] += x
         self.cameracoord[1] += y
-
-        # append new coords for walls
-        for i in self.screenwallcoord:
-            i[0] -= x
-            i[1] -= y
             
         # clear the screen
-        for i in range(self.bordersize**2):
-            self.pix[i].config(bg="white")
+        self.clearscreen()   
 
         # display new walls
-        for walls in self.screenwallcoord:
-            if walls[0] >= self.cameracoord[0] and walls[0] <= self.cameracoord[0]+self.bordersize:
-                if walls[1] >= self.cameracoord[1] and walls[1] <= self.cameracoord[1]+self.bordersize:    
-                    self.index = int(walls[0]) + (self.bordersize * walls[1])
+        for walls in self.wallcoord:
+            if walls[0] >= self.cameracoord[0] and walls[0] <= self.cameracoord[0]+self.gridsize:
+                if walls[1] >= self.cameracoord[1] and walls[1] <= self.cameracoord[1]+self.gridsize:    
+                    self.index = int(walls[0]) + (self.gridsize * walls[1])
                     if self.index >= 0 and self.index <= 400:
                         self.pix[self.index].config(bg="grey")
 
-    # Create or remove grid when clicked
-    def togglewall(self,i):
-        self.end2 = self.end1
-        self.end1 = i
-        if self.pix[i].cget("bg") == "grey":
-            self.pix[i].config(bg="white")
-        else:
-            self.pix[i].config(bg="grey")
+    def clearscreen(self):
+        for x in range(self.gridsze):
+            for y in range(self.gridsize):
+                 self.pix[x,y].config(bg="white")
 
+    # Create or remove grid when clicked
+    def togglewall(self,x,y):
+        self.end2 = self.end1
+        self.end1 = [x,y]
+        if self.pix[x,y].cget("bg") == "grey":
+            self.pix[x,y].config(bg="white")
+        else:
+            self.pix[x,y].config(bg="grey")
+
+
+    # Create a line between last two points if they are on the same line
+    def createline(self):
+        # Finding out which row
+        if self.end1[0] == self.end2[0]:
+            if self.end1[1] < self.end2[1]:
+                while self.end2[1]-1 > self.end1[1]:
+                    self.end2[1] -= 1
+                    self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+            elif self.end1[1] > self.end2[1]:
+                while self.end2[0]+1 < self.end1[0]:
+                    self.end2[0] += 1
+                    self.pix[self.end2[0],self.end2[1]].config(bg="grey")        
+        elif self.end1[1] == self.end2[1]:
+            if self.end1[0] < self.end2[0]:
+                while self.end2[0]-1 > self.end1[0]:
+                    self.end2[0] -= 1
+                    self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+            if self.end1[1] > self.end2[1]:
+                while self.end2[0]+1 < self.end1[0]:
+                    self.end2[0] += 1
+                    self.pix[self.end1[0],self.end2[1]].config(bg="grey")
+
+        

@@ -13,8 +13,8 @@ class Mapedit:
         self.screenwallcoord = wallcoord
         
         # Stores the last two coords selected
-        self.end1 = 0
-        self.end2 = 0
+        self.end1 = []
+        self.end2 = []
 
         # Label for displaying list of coords (should be removed before finalizing)
         self.showcoord = tk.Label(self.parent,text=self.wallcoord)
@@ -28,8 +28,8 @@ class Mapedit:
         # display axes
         self.gridaxisx = []
         self.gridaxisy = []
-        self.xshift = self.yshift = 0   # set both shifts to 0, shifting moves the screen
-        for i in range(self.bordersize):
+        self.xshift = self.yshift = 0   # initialize both shifts to 0, shifting moves the screen
+        for i in range(self.gridsize):
             self.gridaxisx.append(tk.Label(self.frame,height=1,width=0,text=i+self.xshift,font=("Arial",8)))
             self.gridaxisy.append(tk.Label(self.frame,height=1,width=0,text=i+self.yshift,font=("Arial",8)))
             self.gridaxisx[i].grid(column=i+1,row=0)
@@ -37,8 +37,8 @@ class Mapedit:
         # display grid
         # Pix dictionary to store every pixel, c for index
         self.pix={}
-        for y in range(self.bordersize):
-            for x in range(self.bordersize):
+        for y in range(self.gridsize):
+            for x in range(self.gridsize):
                 self.pix[x,y] = (tk.Label(self.frame,height=1,width=2,background="white",bd=2,relief="groove"))
                 self.pix[x,y].grid(column=x+1,row=y+1)
 
@@ -46,6 +46,10 @@ class Mapedit:
         self.setwall()
         ################################ map grid #############################################################
         
+
+        # Set input
+        self.keyinput = input.SetEditControls(self.parent, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
+
         
         #----------------------------- BUTTONS ---------------------------------------------------------------
         # Button for updating new coord
@@ -57,34 +61,25 @@ class Mapedit:
         self.switchbutton.place(relx=.9,rely=.1)
 
         # Button for creating lines
-        self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.createline)
+        self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.keyinput.createline)
         self.linebutton.place(relx=.9,rely=.2)
 
-        # Set input
-        input.SetEditControls(self.parent, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
         ############################### buttons ##############################################################
 
-#_Functions__________________________________________________________________________________________________________________________________________________________    
 
+
+#____________________________Functions__________________________________________________________________________________________________________________________________________________________    
+
+    
     # display existing walls in the grid
     def setwall(self):
         for walls in self.wallcoord:
-            self.index = int(walls[0]) + (self.bordersize * walls[1])
+            x = walls[0]
+            y = walls[1]
             self.pix[x,y].config(bg="grey")
 
     # Update the new map coords into the list config.wallcoord
     def savemapcoord(self):
-        self.tempwallcoord = []
-        for x in range(self.gridsize):
-            for 
-            if self.pix[i].cget("bg") == "grey":
-                xi = i
-                yi = 0
-                while xi >= self.bordersize:
-                    xi -= self.bordersize
-                    yi += 1
-                coord = [int(xi),int(yi)]
-                self.tempwallcoord.append(coord)
         self.wallcoord = self.tempwallcoord
         #Display the list of coords
         self.showcoord.config(text=self.wallcoord)
@@ -95,25 +90,5 @@ class Mapedit:
         self.parent.withdraw()
 ##        self.parent.deiconify()
 
-    #Create a line between last two points if they are on the same line
-    def createline(self):
-        #Finding out which row
-        if self.end1//self.bordersize == self.end2//self.bordersize:
-            if self.end1 < self.end2:
-                while self.end2-1 > self.end1:
-                    self.end2 -= 1
-                    self.pix[self.end2].config(bg="grey")
-            if self.end1 > self.end2:
-                while self.end2+1 < self.end1:
-                    self.end2 += 1
-                    self.pix[self.end2].config(bg="grey")        
-        elif str(self.end1)[-1] == str(self.end2)[-1]:
-            if self.end1 < self.end2:
-                while self.end2-self.bordersize > self.end1:
-                    self.end2 -= self.bordersize
-                    self.pix[self.end2].config(bg="grey")
-            if self.end1 > self.end2:
-                while self.end2+self.bordersize < self.end1:
-                    self.end2 += self.bordersize
-                    self.pix[self.end2].config(bg="grey")
+
 
