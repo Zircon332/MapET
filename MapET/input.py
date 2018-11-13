@@ -70,7 +70,7 @@ class SetPlayControls():
 
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent,gridsize,wallcoord,gridaxisx,gridaxisy,xshift,yshift, screenwallcoord, pix):
+    def __init__(self,parent,gridsize,wallcoord,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
         # Carry over data
         self.parent = parent
         self.gridsize = gridsize
@@ -79,8 +79,10 @@ class SetEditControls:
         self.gridaxisy = gridaxisy
         self.xshift = xshift
         self.yshift = yshift
-        self.screenwallcoord = screenwallcoord
+        
         self.pix = pix
+        self.end1 = end1
+        self.end2 = end2
         self.cameracoord = [0,0]
 
         self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
@@ -96,19 +98,26 @@ class SetEditControls:
 
     # shift the coords of the grid
     def shiftmap(self,x,y):
-        self.xshift += x
-        self.yshift += y
-        # update the axes numbers
-        for i in range(len(self.gridaxisx)):
-            self.gridaxisx[i].config(text=i+self.xshift)
-            self.gridaxisy[i].config(text=i+self.yshift)
-        if self.xshift + self.gridsize == 100 or self.xshift == -10:
-            for i in self.gridaxisx:
-                i.config(font=("arial",6))
-        if self.xshift > -10 and self.xshift + self.bordersize < 100:
-            for i in self.gridaxisx:
-                i.config(font=("arial",8))
-        self.updatescreenmap(x,y)
+        if self.xshift+x >= 0 and self.yshift+y >= 0:
+            self.xshift += x
+            self.yshift += y
+            # update the axes numbers
+            for i in range(len(self.gridaxisx)):
+                self.gridaxisx[i].config(text=i+self.xshift)
+                self.gridaxisy[i].config(text=i+self.yshift)
+            if self.xshift + self.gridsize == 100:
+                for i in self.gridaxisx:
+                    i.config(font=("arial",6))
+            elif self.xshift + self.gridsize == 99:
+                for i in self.gridaxisx:
+                    i.config(font=("arial",8))
+            # keep track of clicked grid after moving
+            self.end1[0] -= x
+            self.end1[1] -= y
+            self.end2[0] -= x
+            self.end2[1] -= y
+            # update map on screen
+            self.updatescreenmap(x,y)
         
     def updatescreenmap(self,x,y):
         self.cameracoord[0] += x
@@ -119,24 +128,25 @@ class SetEditControls:
 
         # display new walls
         for walls in self.wallcoord:
-            if walls[0] >= self.cameracoord[0] and walls[0] <= self.cameracoord[0]+self.gridsize:
-                if walls[1] >= self.cameracoord[1] and walls[1] <= self.cameracoord[1]+self.gridsize:    
-                    self.index = int(walls[0]) + (self.gridsize * walls[1])
-                    if self.index >= 0 and self.index <= 400:
-                        self.pix[self.index].config(bg="grey")
+            if walls[0]-self.cameracoord[0] >= 0 and walls[0]-self.cameracoord[0] < 20 and walls[1]-self.cameracoord[1] >= 0 and walls[1]-self.cameracoord[1] < 20:
+                self.pix[walls[0]-self.cameracoord[0],walls[1]-self.cameracoord[1]].config(bg="grey")
 
+    # makes every grid white (doesn't delete coords)
     def clearscreen(self):
-        for x in range(self.gridsze):
+        for x in range(self.gridsize):
             for y in range(self.gridsize):
-                 self.pix[x,y].config(bg="white")
+                self.pix[x,y].config(bg="white")
+                
 
     # Create or remove grid when clicked
     def togglewall(self,x,y):
         self.end2 = self.end1
         self.end1 = [x,y]
         if self.pix[x,y].cget("bg") == "grey":
+            self.wallcoord.remove([x+self.xshift,y+self.yshift])
             self.pix[x,y].config(bg="white")
         else:
+            self.wallcoord.append([x+self.xshift,y+self.yshift])
             self.pix[x,y].config(bg="grey")
 
 
@@ -147,19 +157,27 @@ class SetEditControls:
             if self.end1[1] < self.end2[1]:
                 while self.end2[1]-1 > self.end1[1]:
                     self.end2[1] -= 1
-                    self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.end2[1] >= 0 and self.end2[1] < 20:
+                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")
             elif self.end1[1] > self.end2[1]:
-                while self.end2[0]+1 < self.end1[0]:
-                    self.end2[0] += 1
-                    self.pix[self.end2[0],self.end2[1]].config(bg="grey")        
+                while self.end2[1]+1 < self.end1[1]:
+                    self.end2[1] += 1
+                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.end2[1] >= 0 and self.end2[1] < 20:
+                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")        
         elif self.end1[1] == self.end2[1]:
             if self.end1[0] < self.end2[0]:
                 while self.end2[0]-1 > self.end1[0]:
                     self.end2[0] -= 1
-                    self.pix[self.end2[0],self.end2[1]].config(bg="grey")
-            if self.end1[1] > self.end2[1]:
+                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.end2[0] >= 0 and self.end2[0] < 20:
+                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+            if self.end1[0] > self.end2[0]:
                 while self.end2[0]+1 < self.end1[0]:
                     self.end2[0] += 1
-                    self.pix[self.end1[0],self.end2[1]].config(bg="grey")
+                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.end2[0] >= 0 and self.end2[0] < 20:
+                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")
 
         

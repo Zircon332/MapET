@@ -10,11 +10,10 @@ class Mapedit:
         self.parent = parent
         self.gridsize = gridsize
         self.wallcoord = wallcoord
-        self.screenwallcoord = wallcoord
         
         # Stores the last two coords selected
-        self.end1 = []
-        self.end2 = []
+        self.end1 = [0,0]
+        self.end2 = [0,0]
 
         # Label for displaying list of coords (should be removed before finalizing)
         self.showcoord = tk.Label(self.parent,text=self.wallcoord)
@@ -48,7 +47,7 @@ class Mapedit:
         
 
         # Set input
-        self.keyinput = input.SetEditControls(self.parent, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
+        self.keyinput = input.SetEditControls(self.parent, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
 
         
         #----------------------------- BUTTONS ---------------------------------------------------------------
