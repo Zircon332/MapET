@@ -8,6 +8,8 @@ import pickle
 #Unfinished Things
 ##Center buttons
 ##menu bar functions
+##Minimap
+##undo button
 class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)

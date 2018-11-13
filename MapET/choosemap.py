@@ -44,9 +44,10 @@ class ChooseMap():
     # Opens selected file, hide map select container, display play/mapet
     def openmap(self,mapname):
         print("Opening",mapname)
-        pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
+        file = pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
         if self.file == "mapselect":
             self.mapall.place_forget()
             self.pl = play.playgame(self.parent)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
+            self.mp = mapet.Mapedit(self.parent, 20, file)

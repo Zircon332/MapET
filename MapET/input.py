@@ -70,10 +70,10 @@ class SetPlayControls():
 
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent,bordersize,wallcoord,gridaxisx,gridaxisy,xshift,yshift, screenwallcoord, pix):
+    def __init__(self,parent,gridsize,wallcoord,gridaxisx,gridaxisy,xshift,yshift, screenwallcoord, pix):
         # Carry over data
         self.parent = parent
-        self.bordersize = bordersize
+        self.gridsize = gridsize
         self.wallcoord = wallcoord
         self.gridaxisx = gridaxisx
         self.gridaxisy = gridaxisy
@@ -87,6 +87,12 @@ class SetEditControls:
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
         self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmap(x,y))
         self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmap(x,y))
+
+        # Bind clicks to grid
+        for x in range(self.gridsize):
+            for y in range(self.gridsize):
+            self.pix[i].bind("<1>",lambda event, i=i: self.togglewall(i))
+
 
     # shift the coords of the grid
     def shiftmap(self,x,y):
@@ -124,3 +130,13 @@ class SetEditControls:
                     self.index = int(walls[0]) + (self.bordersize * walls[1])
                     if self.index >= 0 and self.index <= 400:
                         self.pix[self.index].config(bg="grey")
+
+    # Create or remove grid when clicked
+    def togglewall(self,i):
+        self.end2 = self.end1
+        self.end1 = i
+        if self.pix[i].cget("bg") == "grey":
+            self.pix[i].config(bg="white")
+        else:
+            self.pix[i].config(bg="grey")
+

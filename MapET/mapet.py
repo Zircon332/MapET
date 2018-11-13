@@ -1,27 +1,30 @@
-
 #Create and edit maps
 
 import tkinter as tk
 import choosemap
 import input
+import play
 
 class Mapedit:    
-    def __init__(self,parent,bordersize,wallcoord):
+    def __init__(self,parent,gridsize,wallcoord):
         self.parent = parent
-        self.bordersize = bordersize
+        self.gridsize = gridsize
         self.wallcoord = wallcoord
         self.screenwallcoord = wallcoord
         
-        self.showcoord = tk.Label(self.parent,text=self.wallcoord)
-        self.showcoord.place(relx=.01,y=.01)
-
-        self.frame = tk.Frame(self.parent)
-        self.frame.place(relx=0.5,rely=0.5, anchor="c")
-
+        # Stores the last two coords selected
         self.end1 = 0
         self.end2 = 0
 
-        ##################### MAP GRID #####################
+        # Label for displaying list of coords (should be removed before finalizing)
+        self.showcoord = tk.Label(self.parent,text=self.wallcoord)
+        self.showcoord.place(relx=.01,y=.9)
+
+        # Frame for grid
+        self.frame = tk.Frame(self.parent)
+        self.frame.place(relx=0.5,rely=0.5, anchor="c")
+
+        #----------------------------- MAP GRID ---------------------------------------------------------------
         # display axes
         self.gridaxisx = []
         self.gridaxisy = []
@@ -32,52 +35,48 @@ class Mapedit:
             self.gridaxisx[i].grid(column=i+1,row=0)
             self.gridaxisy[i].grid(column=0,row=i+1)
         # display grid
-        #Pix list to store every pixel, c for index
-        self.c = 0
-        self.pix=[]
+        # Pix dictionary to store every pixel, c for index
+        self.pix={}
         for y in range(self.bordersize):
             for x in range(self.bordersize):
-                self.pix.append(tk.Label(self.frame,height=1,width=2,background="white",bd=2,relief="groove"))
-                self.pix[self.c].grid(column=x+1,row=y+1)
-                self.c = self.c + 1
+                self.pix[x,y] = (tk.Label(self.frame,height=1,width=2,background="white",bd=2,relief="groove"))
+                self.pix[x,y].grid(column=x+1,row=y+1)
 
-        for i in range(self.bordersize**2):
-            self.pix[i].bind("<1>",lambda event, i=i: self.togglewall(i))
-
-        #Sets up previously created walls
+        # Sets up previously created walls
         self.setwall()
-        ##################### map grid ###################
+        ################################ map grid #############################################################
         
-        #################### BUTTONS #####################
-        # button for updating new coord
-        self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.updatemap)
+        
+        #----------------------------- BUTTONS ---------------------------------------------------------------
+        # Button for updating new coord
+        self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.savemapcoord)
         self.updatebutton.place(relx=0.1,rely=0.05)
 
-        # button for switching to play mode(currently not working)
+        # Button for switching to play mode(currently not working)
         self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplay)
         self.switchbutton.place(relx=.9,rely=.1)
 
-        # button for creating lines
+        # Button for creating lines
         self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.createline)
         self.linebutton.place(relx=.9,rely=.2)
 
-        # set input
+        # Set input
         input.SetEditControls(self.parent, self.bordersize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.screenwallcoord, self.pix)
-        #################### buttons #####################
-    
+        ############################### buttons ##############################################################
 
-    def togglewall(self,i):
-        self.end2 = self.end1
-        self.end1 = i
-        if self.pix[i].cget("bg") == "grey":
-            self.pix[i].config(bg="white")
-        else:
-            self.pix[i].config(bg="grey")
+#_Functions__________________________________________________________________________________________________________________________________________________________    
 
-    #Update the new map into the list config.wallcoord
-    def updatemap(self):
+    # display existing walls in the grid
+    def setwall(self):
+        for walls in self.wallcoord:
+            self.index = int(walls[0]) + (self.bordersize * walls[1])
+            self.pix[x,y].config(bg="grey")
+
+    # Update the new map coords into the list config.wallcoord
+    def savemapcoord(self):
         self.tempwallcoord = []
-        for i in range(self.bordersize**2):
+        for x in range(self.gridsize):
+            for 
             if self.pix[i].cget("bg") == "grey":
                 xi = i
                 yi = 0
@@ -89,12 +88,7 @@ class Mapedit:
         self.wallcoord = self.tempwallcoord
         #Display the list of coords
         self.showcoord.config(text=self.wallcoord)
-                
-    # display existing walls in the grid
-    def setwall(self):
-        for walls in self.wallcoord:
-            self.index = int(walls[0]) + (self.bordersize * walls[1])
-            self.pix[self.index].config(bg="grey")
+
 
     # does nothing for now, but it should go to play
     def switchplay(self):
