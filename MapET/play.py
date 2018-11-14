@@ -5,7 +5,7 @@ import choosemap
 import pickle
 
 class PlayMap:
-    def __init__(self, parent, mapname):
+    def __init__(self, parent, wallcoord):
         self.parent = parent
         self.playercoord = [2,2]
         self.speedmult = 1
@@ -13,13 +13,9 @@ class PlayMap:
         self.zoomsize = 10
         #Camera position, top left from position of player
         self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
-        self.wallcoord = []
+        self.wallcoord = wallcoord
         self.screenwallcoord = []
         self.follow = 0
-
-        #Set map coords from file
-        self.wallcoord = pickle.load(open(os.path.join('data',mapname),"rb"))
-
 
         #Playground Screen
         self.screen = tk.Canvas(self.parent, bg="Black", width=self.bordersize*10, height=self.bordersize*10, highlightthickness=0,bd=0)
@@ -69,8 +65,3 @@ class PlayMap:
             self.keyinput.player = self.player
         #Update follow value in keyinput
         self.keyinput.follow = self.follow
-
-#Runs the class
-def playgame(root):
-    p = PlayMap(root,"DamienFace.p")
-    return p

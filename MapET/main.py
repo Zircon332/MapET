@@ -27,8 +27,9 @@ class MainApplication(tk.Frame):
         self.logoimg = tk.PhotoImage(file="images/logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
         self.mapetlogo.image = self.logoimg
-        self.menubar = tk.Menu(self.parent)
 
+        # Menu bar
+        self.menubar = tk.Menu(self.parent)
         # 'File' Menu Bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=lambda:self.filedialog())
@@ -69,7 +70,7 @@ class MainApplication(tk.Frame):
     # Maybe use this instead
     # use winfo_rootx and winfo_rooty to get the coordinates relative to the screen. And yes, wm_geometry is the way to place a toplevel window precisely.
     def placegui(self):
-        self.mapetlogo.place(relx=.5, rely=.2, anchor="c")
+        self.mapetlogo.place(relx=.5, rely=.15, anchor="c")
         self.buttonframe.place(x=10,y=10, anchor="c", relx=0.48, rely=0.5)
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
         self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
@@ -122,8 +123,8 @@ class MainApplication(tk.Frame):
 
     def backbuttonpage(self):
         self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
-                                width=12,padx=10,pady=10, font=("calibri",20))
-        self.backbtn.place(x=10,y=10, anchor="sw", relx=0.8, rely=0.9)
+                                width=12,padx=3,pady=3, font=("calibri",15))
+        self.backbtn.place(anchor="nw", relx=0.02, rely=0.02)
 
         def deleteall():
             try:
@@ -140,9 +141,8 @@ class MainApplication(tk.Frame):
             try:
                 self.cm.mp.frame.destroy()
                 self.cm.mp.showcoord.destroy()
-                self.cm.mp.switchbutton.destroy()
-                self.cm.mp.updatebutton.destroy()
-                self.cm.mp.linebutton.destroy()
+                self.cm.mp.typeframe.destroy()
+                self.cm.mp.btnframe.destroy()
             except:
                 pass
 

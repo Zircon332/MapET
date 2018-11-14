@@ -28,10 +28,16 @@ class Mapedit:
         self.keyinput = input.SetEditControls(self.parent, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
         
         # Buttons
-        self.btnframe1 = tk.Frame(self.parent)
-        self.btnframe1.place(relx=.8, rely=.2, anchor="nw")
+        self.btnframe = tk.Frame(self.parent)
+        self.btnframe.place(relx=.9, rely=.2, anchor="ne")
         self.createbuttons()
 
+        # Cell types select box
+        self.types = ["land","water","walls","lava","home","goal","spikes","door"]
+        self.typecolor = ["white","cyan","grey","red","green","blue","black","brown"]
+        self.typeframe = tk.Frame(self.parent)
+        self.typeframe.place(relx=.15, rely=.2, anchor="n")
+        self.createtypes()
 
 #____________________________Functions__________________________________________________________________________________________________________________________________________________________    
 
@@ -59,19 +65,32 @@ class Mapedit:
 
     def createbuttons(self):
         # Button for updating new coord
-        self.updatebutton = tk.Button(self.btnframe1,text="Update new map",command=self.savemapcoord)
+        self.updatebutton = tk.Button(self.btnframe,text="Update new map",command=self.savemapcoord)
         self.updatebutton.grid(row=0,pady=20,sticky="w")
 
         # Button for switching to play mode(currently not working)
-        self.switchbutton = tk.Button(self.btnframe1,text="Switch to Play mode",command=self.switchplay)
+        self.switchbutton = tk.Button(self.btnframe,text="Switch to Play mode",command=self.switchplay)
         self.switchbutton.grid(row=1,pady=20,sticky="w")
 
         # Button for creating lines
-        self.linebutton = tk.Button(self.btnframe1,text="Make a line from last two points",command=self.keyinput.createline)
+        self.linebutton = tk.Button(self.btnframe,text="Make a line from last two points",command=self.keyinput.createline)
         self.linebutton.grid(row=2,pady=20,sticky="w")
 
-        self.clearbutton = tk.Button(self.btnframe1,text="Make a line from last two points",command=self.cleargrid)
+        self.clearbutton = tk.Button(self.btnframe,text="Clear walls",command=self.cleargrid)
         self.clearbutton.grid(row=3,pady=20,sticky="w")
+
+    # types of things that can be added to the map
+    def createtypes(self):
+        self.typename = []
+        self.typeimg = []
+        self.typebtn = []
+        for i in range(len(self.types)):
+            self.typename.append(tk.Label(self.typeframe,height=2,width=9,pady=1,text=self.types[i],font=("Calibri", 15)))
+            self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,bg=self.typecolor[i],pady=2))
+            self.typebtn.append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
+            self.typename[i].grid(row=i, column=0)
+            self.typeimg[i].grid(row=i, column=1)
+            self.typebtn[i].grid(row=i, column=2)
 
 
     # display existing walls in the grid
@@ -91,9 +110,12 @@ class Mapedit:
         self.parent.withdraw()
 ##        self.parent.deiconify()
 
-    # erase all coord in keyinput (cause everything is transfered there )
+    # erase all coord in keyinput (cause everything is transfered there)
     def cleargrid(self):
         for x in range(self.keyinput.gridsize):
             for y in range(self.keyinput.gridsize):
                 self.keyinput.pix[x,y].config(bg="white")
         del self.keyinput.wallcoord[:]
+
+    def selecttype(self,index):
+        self.keyinput.color = self.typecolor[index]

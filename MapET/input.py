@@ -23,6 +23,7 @@ class SetPlayControls():
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
         self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
         self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
+        self.parent.bind_all("<Shift_L>", lambda event, x=1,y=0: self.move(x,y))
 
     # move the player according to input
     def move(self, x, y):
@@ -84,18 +85,35 @@ class SetEditControls:
         self.end1 = end1
         self.end2 = end2
         self.cameracoord = [0,0]
+        self.color = "white"
 
         self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
         self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmap(x,y))
         self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmap(x,y))
 
+        # Opens menu for going back
+        self.parent.bind_all("<Escape>", self.backmenu)
+
+        # Undo bind
+        self.parent.bind_all("<Control-z>", lambda event, x=1,y=0: self.shiftmap(x,y))
+        
         # Bind clicks to grid
         for x in range(self.gridsize):
             for y in range(self.gridsize):
                 self.pix[x,y].bind("<1>",lambda event, x=x,y=y: self.togglewall(x,y))
 
+    def backmenu(self,key):
+        print()
+##        self.frame.destroy()
+##        self.showcoord.destroy()
+##        self.typeframe.destroy()
+##        self.btnframe.destroy()
 
+
+    def paa(self):
+        print("as")
+        
     # shift the coords of the grid
     def shiftmap(self,x,y):
         if self.xshift+x >= 0 and self.yshift+y >= 0:
@@ -129,7 +147,7 @@ class SetEditControls:
         # display new walls
         for walls in self.wallcoord:
             if walls[0]-self.cameracoord[0] >= 0 and walls[0]-self.cameracoord[0] < 20 and walls[1]-self.cameracoord[1] >= 0 and walls[1]-self.cameracoord[1] < 20:
-                self.pix[walls[0]-self.cameracoord[0],walls[1]-self.cameracoord[1]].config(bg="grey")
+                self.pix[walls[0]-self.cameracoord[0],walls[1]-self.cameracoord[1]].config(bg=self.color)
 
     # makes every grid white (doesn't delete coords)
     def clearscreen(self):
@@ -142,42 +160,64 @@ class SetEditControls:
     def togglewall(self,x,y):
         self.end2 = self.end1
         self.end1 = [x,y]
-        if self.pix[x,y].cget("bg") == "grey":
-            self.wallcoord.remove([x+self.xshift,y+self.yshift])
-            self.pix[x,y].config(bg="white")
+        if self.color != "white":
+            if self.pix[x,y].cget("bg") == self.color:
+                self.wallcoord.remove([x+self.xshift,y+self.yshift])
+                self.pix[x,y].config(bg="white")
+            elif self.pix[x,y].cget("bg") == "white":
+                self.wallcoord.append([x+self.xshift,y+self.yshift])
+                self.pix[x,y].config(bg=self.color)
+            elif self.pix[x,y].cget("bg") != "white":
+                self.pix[x,y].config(bg=self.color)
         else:
-            self.wallcoord.append([x+self.xshift,y+self.yshift])
-            self.pix[x,y].config(bg="grey")
-
-
+            if self.pix[x,y].cget("bg") != "white":
+                self.wallcoord.remove([x+self.xshift,y+self.yshift])
+                self.pix[x,y].config(bg=self.color)
+            
     # Create a line between last two points if they are on the same line
     def createline(self):
         # Finding out which row
         if self.end1[0] == self.end2[0]:
             if self.end1[1] < self.end2[1]:
                 while self.end2[1]-1 > self.end1[1]:
-                    self.end2[1] -= 1
-                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                    if self.end2[1] >= 0 and self.end2[1] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+                    self.end2[1] -= 1                                                                        # one end gets closer to the other end
+                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":  # if white is chosen
+                        self.wallcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])           # remove the pix
+                    else:                                                                                    # if the color chosen isnt white
+                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":                        # and if the pix in between are white
+                            self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])       # appends all the coords in between (therefore, only empty pix are appended)
+                    if self.end2[1] >= 0 and self.end2[1] < 20:                                              # shows only the ones within the frame
+                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
             elif self.end1[1] > self.end2[1]:
                 while self.end2[1]+1 < self.end1[1]:
                     self.end2[1] += 1
-                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":  # if white is chosen
+                        self.wallcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])           # remove the pix
+                    else:
+                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
+                            self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
                     if self.end2[1] >= 0 and self.end2[1] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")        
+                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)        
         elif self.end1[1] == self.end2[1]:
             if self.end1[0] < self.end2[0]:
                 while self.end2[0]-1 > self.end1[0]:
                     self.end2[0] -= 1
-                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":  # if white is chosen
+                        self.wallcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])           # remove the pix
+                    else:
+                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
+                            self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
                     if self.end2[0] >= 0 and self.end2[0] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
             if self.end1[0] > self.end2[0]:
                 while self.end2[0]+1 < self.end1[0]:
                     self.end2[0] += 1
-                    self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":  # if white is chosen
+                        self.wallcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])           # remove the pix
+                    else:
+                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
+                            self.wallcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
                     if self.end2[0] >= 0 and self.end2[0] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg="grey")
+                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
 
         
