@@ -22,8 +22,21 @@ class Mapedit:
         # Frame for grid
         self.frame = tk.Frame(self.parent)
         self.frame.place(relx=0.5,rely=0.5, anchor="c")
+        self.createmapgrid()  # map the grid
 
-        #----------------------------- MAP GRID ---------------------------------------------------------------
+        # Set input
+        self.keyinput = input.SetEditControls(self.parent, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
+        
+        # Buttons
+        self.btnframe1 = tk.Frame(self.parent)
+        self.btnframe1.place(relx=.8, rely=.2, anchor="nw")
+        self.createbuttons()
+
+
+#____________________________Functions__________________________________________________________________________________________________________________________________________________________    
+
+    # Creates the center grid for mapedit
+    def createmapgrid(self):
         # display axes
         self.gridaxisx = []
         self.gridaxisy = []
@@ -43,33 +56,20 @@ class Mapedit:
 
         # Sets up previously created walls
         self.setwall()
-        ################################ map grid #############################################################
-        
 
-        # Set input
-        self.keyinput = input.SetEditControls(self.parent, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
-
-        
-        #----------------------------- BUTTONS ---------------------------------------------------------------
+    def createbuttons(self):
         # Button for updating new coord
-        self.updatebutton = tk.Button(self.parent,text="Update new map",command=self.savemapcoord)
-        self.updatebutton.place(relx=0.1,rely=0.05)
+        self.updatebutton = tk.Button(self.btnframe1,text="Update new map",command=self.savemapcoord)
+        self.updatebutton.grid(row=0,pady=40,sticky="w")
 
         # Button for switching to play mode(currently not working)
-        self.switchbutton = tk.Button(self.parent,text="Switch to Play mode",command=self.switchplay)
-        self.switchbutton.place(relx=.9,rely=.1)
+        self.switchbutton = tk.Button(self.btnframe1,text="Switch to Play mode",command=self.switchplay)
+        self.switchbutton.grid(row=1,pady=40,sticky="w")
 
         # Button for creating lines
-        self.linebutton = tk.Button(self.parent,text="Make a line from last two points",command=self.keyinput.createline)
-        self.linebutton.place(relx=.9,rely=.2)
+        self.linebutton = tk.Button(self.btnframe1,text="Make a line from last two points",command=self.keyinput.createline)
+        self.linebutton.grid(row=2,pady=40,sticky="w")
 
-        ############################### buttons ##############################################################
-
-
-
-#____________________________Functions__________________________________________________________________________________________________________________________________________________________    
-
-    
     # display existing walls in the grid
     def setwall(self):
         for walls in self.wallcoord:
