@@ -61,50 +61,50 @@ class ChooseMap():
         file = pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
         if self.file == "mapselect":
             self.mapall.place_forget()
-            self.pl = play.PlayMap(self.parent, file)
+            self.pl = play.PlayMap(self.parent, file, mapname)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
-            self.mp = mapet.Mapedit(self.parent, 20, file)
+            self.mp = mapet.Mapedit(self.parent, 20, file, mapname)
 
     # Function to create new map
     def createmap(self):
 
-        def replace(warnroot,name):
-            os.rmdir(os.path.join("maps",name))
-            os.mkdir(os.path.join("maps",name))
+        def replace(warnroot,mapname):
+            os.rmdir(os.path.join("maps",mapname))
+            os.mkdir(os.path.join("maps",mapname))
 
             newmaproot.destroy()
             warnroot.destroy()
             
             if self.file == "mapselect":
                 self.mapall.place_forget()
-                self.pl = play.PlayMap(self.parent, [])
+                self.pl = play.PlayMap(self.parent,[],mapname)
             elif self.file == "mapeditor":
                 self.mapall.place_forget()
-                self.mp = mapet.Mapedit(self.parent, 20, [])
+                self.mp = mapet.Mapedit(self.parent, 20,[],mapname)
         
         # private function for button when creating map
         def makenewmap():
-            name = entry.get()      # get the map name
+            mapname = entry.get()      # get the map name
 
             #create a directory for the map, if it already exists, ask if replace
             try:
-                os.mkdir(os.path.join("maps",name))
+                os.mkdir(os.path.join("maps",mapname))
                 
                 newmaproot.destroy()            # Destroy the popup
 
                 if self.file == "mapselect":
                     self.mapall.place_forget()
-                    self.pl = play.PlayMap(self.parent, [])
+                    self.pl = play.PlayMap(self.parent,[],mapname)
                 elif self.file == "mapeditor":
                     self.mapall.place_forget()
-                    self.mp = mapet.Mapedit(self.parent, 20, [])
+                    self.mp = mapet.Mapedit(self.parent, 20,[],mapname)
                 
             except FileExistsError:                                             # popup root when file already exists
                 warnroot = tk.Tk()
                 warning = tk.Label(warnroot, text="File already exists, do you want to replace it?")
                 warning.grid(row=0,columnspan=2)
-                yesbtn = tk.Button(warnroot, text="Replace", command=lambda name=name:replace(warnroot,name))
+                yesbtn = tk.Button(warnroot, text="Replace", command=lambda name=mapname:replace(warnroot,name))
                 yesbtn.grid(row=1,column=0)
                 cancelbtn = tk.Button(warnroot, text="Cancel", command=lambda:warnroot.destroy())
                 cancelbtn.grid(row=1,column=1)

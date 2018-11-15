@@ -6,21 +6,23 @@ import input
 import play
 
 class Mapedit:    
-    def __init__(self,parent,gridsize,wallcoord):
+    def __init__(self,parent,gridsize,wallcoord,mapname):
         self.parent = parent
         self.gridsize = gridsize
         self.wallcoord = wallcoord
+        self.mapname = mapname
         
         # Stores the last two coords selected
         self.end1 = [0,0]
         self.end2 = [0,0]
 
-        self.mapname = tk.Entry(self.parent,width=20,text="EnterName")
-        self.mapname.place(relx=.3,rely=.1)
+        self.mapnameentry = tk.Entry(self.parent,width=20,font=("Calibri",20))
+        self.mapnameentry.insert(tk.END,self.mapname)
+        self.mapnameentry.place(relx=.15,rely=.02)
 
         # Label for displaying list of coords (should be removed before finalizing)
         self.showcoord = tk.Label(self.parent,text=self.wallcoord)
-        self.showcoord.place(relx=.1,y=.9)
+        self.showcoord.place(relx=0,rely=.9,anchor="sw")
 
         # Frame for grid
         self.frame = tk.Frame(self.parent)

@@ -5,8 +5,9 @@ import choosemap
 import pickle
 
 class PlayMap:
-    def __init__(self, parent, wallcoord):
+    def __init__(self, parent, wallcoord, mapname):
         self.parent = parent
+        self.mapname = mapname
         self.playercoord = [2,2]
         self.speedmult = 1
         self.bordersize = 50
@@ -16,7 +17,7 @@ class PlayMap:
         self.wallcoord = wallcoord
         self.screenwallcoord = []
         self.follow = 0
-
+    
         #Playground Screen
         self.screen = tk.Canvas(self.parent, bg="Black", width=self.bordersize*10, height=self.bordersize*10, highlightthickness=0,bd=0)
         self.screen.place(relx=.1,rely=.1)
