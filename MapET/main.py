@@ -53,7 +53,7 @@ class MainApplication(tk.Frame):
 
         # creates buttons and their frame, then place with function
         self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)
-        self.mapselectbtn = tk.Button(self.buttonframe,text="Map Selection",
+        self.mapselectbtn = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
         self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",
@@ -145,7 +145,11 @@ class MainApplication(tk.Frame):
                 self.cm.mp.btnframe.destroy()
             except:
                 pass
-
+            try:
+                self.cm.mp.pl.screen.destroy()
+                self.cm.mp.pl.switch.destroy()
+            except:
+                pass
             self.backbtn.destroy()
             self.placegui()
 

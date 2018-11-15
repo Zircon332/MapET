@@ -43,7 +43,7 @@ class ChooseMap():
                 self.mapbox.append(tk.Frame(self.mapall,width=200,height=200,bd=1,padx=50,pady=50))
                 self.mapimg.append(tk.Label(self.mapbox[i],width=20,height=10,bg="grey"))
                 self.maptext.append(tk.Label(self.mapbox[i],text="Create New",width=10,height=1,font=("arial",20)))
-                self.mapbtn.append(tk.Button(self.mapbox[i],text="Choose map",width=10,height=1,command=None,font=("arial",15)))
+                self.mapbtn.append(tk.Button(self.mapbox[i],text="Choose map",width=10,height=1,command=self.createmap,font=("arial",15)))
             # grid them
             self.mapbox[i].grid(column=self.coli,row=self.rowi)
             self.mapimg[i].grid(row=1)
@@ -65,3 +65,59 @@ class ChooseMap():
         elif self.file == "mapeditor":
             self.mapall.place_forget()
             self.mp = mapet.Mapedit(self.parent, 20, file)
+
+    # Function to create new map
+    def createmap(self):
+
+        def replace(warnroot,name):
+            os.rmdir(os.path.join("maps",name))
+            os.mkdir(os.path.join("maps",name))
+
+            newmaproot.destroy()
+            warnroot.destroy()
+            
+            if self.file == "mapselect":
+                self.mapall.place_forget()
+                self.pl = play.PlayMap(self.parent, [])
+            elif self.file == "mapeditor":
+                self.mapall.place_forget()
+                self.mp = mapet.Mapedit(self.parent, 20, [])
+        
+        # private function for button when creating map
+        def makenewmap():
+            name = entry.get()      # get the map name
+
+            #create a directory for the map, if it already exists, ask if replace
+            try:
+                os.mkdir(os.path.join("maps",name))
+                
+                newmaproot.destroy()            # Destroy the popup
+
+                if self.file == "mapselect":
+                    self.mapall.place_forget()
+                    self.pl = play.PlayMap(self.parent, [])
+                elif self.file == "mapeditor":
+                    self.mapall.place_forget()
+                    self.mp = mapet.Mapedit(self.parent, 20, [])
+                
+            except FileExistsError:                                             # popup root when file already exists
+                warnroot = tk.Tk()
+                warning = tk.Label(warnroot, text="File already exists, do you want to replace it?")
+                warning.grid(row=0,columnspan=2)
+                yesbtn = tk.Button(warnroot, text="Replace", command=lambda name=name:replace(warnroot,name))
+                yesbtn.grid(row=1,column=0)
+                cancelbtn = tk.Button(warnroot, text="Cancel", command=lambda:warnroot.destroy())
+                cancelbtn.grid(row=1,column=1)
+                warnroot.mainloop()
+
+
+        # create tk for inputting name
+        newmaproot = tk.Tk()
+        newmaproot.geometry("400x100+50+50")
+        text = tk.Label(newmaproot,text="Enter the name of the map")
+        text.grid(row=0,pady=5)
+        entry = tk.Entry(newmaproot, text="hmm", width=15)
+        entry.grid(row=1,pady=5)
+        button = tk.Button(newmaproot, text="Done", command=makenewmap)
+        button.grid(row=2,pady=5)
+ 

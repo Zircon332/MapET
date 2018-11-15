@@ -15,9 +15,12 @@ class Mapedit:
         self.end1 = [0,0]
         self.end2 = [0,0]
 
+        self.mapname = tk.Entry(self.parent,width=20,text="EnterName")
+        self.mapname.place(relx=.3,rely=.1)
+
         # Label for displaying list of coords (should be removed before finalizing)
         self.showcoord = tk.Label(self.parent,text=self.wallcoord)
-        self.showcoord.place(relx=.01,y=.9)
+        self.showcoord.place(relx=.1,y=.9)
 
         # Frame for grid
         self.frame = tk.Frame(self.parent)
@@ -107,8 +110,11 @@ class Mapedit:
 
     # does nothing for now, but it should go to play
     def switchplay(self):
-        self.parent.withdraw()
-##        self.parent.deiconify()
+        self.frame.destroy()
+        self.showcoord.destroy()
+        self.typeframe.destroy()
+        self.btnframe.destroy()
+        self.pl = play.PlayMap(self.parent, self.wallcoord)
 
     # erase all coord in keyinput (cause everything is transfered there)
     def cleargrid(self):
