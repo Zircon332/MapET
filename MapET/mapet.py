@@ -6,29 +6,29 @@ import input
 import play
 
 class Mapedit:    
-    def __init__(self,parent,gridsize,objectcoord,objecttypes,mapname):
+    def __init__(self,parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor):
         self.parent    =  parent
         self.gridsize  =  gridsize              # Number that represents the square size
-        self.objectcoord =  objectcoord         # Objects are stored ad [xcoord, ycoord, objecttypesIndex]
+        self.objectcoord = objectcoord          # Objects are stored as [xcoord, ycoord] (list)
+        self.objectcolor = objectcolor          # Objects' color for each object (set)
         self.objecttypes = objecttypes          # List of object in the map
-        self.objectypecolor = objecttypecolor   # List of color of each object
+        self.objecttypecolor = objecttypecolor   # List of color of each object
         self.mapname   =  mapname               # Name of opened map
         
         # Stores the last two coords selected
-        self.end1 = [0,0,0]
-        self.end2 = [0,0,0]
+        self.end1 = [0,0]
+        self.end2 = [0,0]
 
         # Frame for this page
         self.mapeditframe = tk.Frame(self.parent,height=800,width=1200)
         self.mapeditframe.place(relx=.5,rely=.5,anchor='c')
 
         # Title of the map, that can be changed and saved
-        self.mapnamelabel = tk.Label(self.mapeditframe,width=20,font=("Calibri",20))
-        self.mapnamelabel.insert(tk.END,self.mapname)
+        self.mapnamelabel = tk.Label(self.mapeditframe,text=self.mapname,width=20,font=("Calibri",20))
         self.mapnamelabel.place(relx=.15,rely=.02)
         
         # Label for displaying list of coords (should be removed before finalizing)
-        self.showcoord = tk.Label(self.mapeditframe,text=self.wallcoord)
+        self.showcoord = tk.Label(self.mapeditframe,text=self.objectcoord)
         self.showcoord.place(relx=0,rely=.9,anchor="sw")
 
         # Frame for grid
@@ -37,7 +37,7 @@ class Mapedit:
         self.createmapgrid()  # map the grid
 
         # Set input
-        self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.wallcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
+        self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
         
         # Buttons
         self.btnframe = tk.Frame(self.mapeditframe)
@@ -91,7 +91,7 @@ class Mapedit:
         self.clearbutton = tk.Button(self.btnframe,text="Clear walls",command=self.cleargrid)
         self.clearbutton.grid(row=3,pady=20,sticky="w")
 
-        # Button for saving wallcoords
+        # Button for saving objects in the grid
         self.savebutton = tk.Button(self.btnframe,text="Save file",command=self.save)
         self.savebutton.grid(row=4,pady=20,sticky="w")
 
@@ -102,36 +102,37 @@ class Mapedit:
         self.typebtn  = []
         for i in range(len(self.objecttypes)):
             self.typename.append(tk.Label(self.typeframe,height=2,width=9,pady=1,text=self.objecttypes[i],font=("Calibri",15)))
-            self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,pady=2,bg=self.typecolor[i]))
-            self.typebtn append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
+            self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,pady=2,bg=self.objecttypecolor[i]))
+            self.typebtn.append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
             self.typename[i].grid(row=i,column=0)
             self.typeimg[i].grid(row=i,column=1)
             self.typebtn[i].grid(row=i,column=2)
-            
+
     # display existing walls in the grid
     def setwall(self):
         for objects in self.objectcoord:
             x = objects[0]
             y = objects[1]
-            color = objecttypes[objects[2]]
+            color = objectcolor([x,y])
             self.pix[x,y].config(bg=color)
 
-    # Update the new map coords into the list config.wallcoord
+    # Update the new map coords into the list config.objectcoord
     def savemapcoord(self):
         # Display the list of coords
-        self.showcoord.config(text=self.keyinput.wallcoord)
+        self.showcoord.config(text=self.keyinput.objectcoord)
 
     # does nothing for now, but it should go to play
     def switchplay(self):
         self.mapeditframe.destroy()
-        self.pl = play.PlayMap(self.parent,self.wallcoord)
+        self.pl = play.PlayMap(self.parent,self.objectcoord)
 
     # erase all coord in keyinput (cause everything is transfered there)
     def cleargrid(self):
         for x in range(self.keyinput.gridsize):
             for y in range(self.keyinput.gridsize):
                 self.keyinput.pix[x,y].config(bg=objecttypecolor[0])
-        del self.keyinput.wallcoord[:]
+        del self.keyinput.objectcoord[:]
+        del self.keyinput.objectcolor[:]
 
     def selecttype(self,index):
         self.keyinput.object = index

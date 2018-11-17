@@ -103,10 +103,10 @@ class ChooseMap():
 
                 if self.file == "mapselect":
                     self.mapall.place_forget()
-                    self.pl = play.PlayMap(self.parent,[],mapname,playercoord,objecttypes,objecttypecolor)
+                    self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor)
                 elif self.file == "mapeditor":
                     self.mapall.place_forget()
-                    self.mp = mapet.Mapedit(self.parent,20,[],mapname,objecttypes,objecttypecolor)
+                    self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor)
 
             # popup root when file already exists
             except FileExistsError:

@@ -71,12 +71,12 @@ class SetPlayControls():
 
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent,gridsize,wallcoord,objecttypes,objecttypecolor,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
+    def __init__(self,parent,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
         # Carry over data
         self.parent = parent
         self.gridsize = gridsize
         self.objectcoord = objectcoord
-        self.object
+        self.objectcolor = objectcolor
         self.objecttypes = objecttypes
         self.objecttypecolor = objecttypecolor
         self.gridaxisx = gridaxisx
@@ -88,7 +88,7 @@ class SetEditControls:
         self.end1 = end1
         self.end2 = end2
         self.cameracoord = [0,0]
-        self.object = 0             # Index of currently chosen object
+        self.color = "white"             # Default chosen color
 
         self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
@@ -105,6 +105,7 @@ class SetEditControls:
         for x in range(self.gridsize):
             for y in range(self.gridsize):
                 self.pix[x,y].bind("<1>",lambda event, x=x,y=y: self.togglewall(x,y))
+
 
     def backmenu(self,key):
         print()
@@ -146,7 +147,7 @@ class SetEditControls:
         self.clearscreen()   
 
         # display new walls
-        for walls in self.wallcoord:
+        for walls in self.objectcoord:
             if walls[0]-self.cameracoord[0] >= 0 and walls[0]-self.cameracoord[0] < 20 and walls[1]-self.cameracoord[1] >= 0 and walls[1]-self.cameracoord[1] < 20:
                 self.pix[walls[0]-self.cameracoord[0],walls[1]-self.cameracoord[1]].config(bg=self.color)
 
@@ -166,7 +167,7 @@ class SetEditControls:
                 self.wallcoord.remove([x+self.xshift,y+self.yshift])
                 self.pix[x,y].config(bg="white")
             elif self.pix[x,y].cget("bg") == "white":
-                self.wallcoord.append([x+self.xshift,y+self.yshift,self.color])
+                self.wallcoord.append([x+self.xshift,y+self.yshift])
                 self.pix[x,y].config(bg=self.color)
             elif self.pix[x,y].cget("bg") != "white":
                 self.pix[x,y].config(bg=self.color)
