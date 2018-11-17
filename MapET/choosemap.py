@@ -59,9 +59,10 @@ class ChooseMap():
     def openmap(self,mapname):
         print("Opening",mapname)
         file = pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
+        playercoord = [2,2]
         if self.file == "mapselect":
             self.mapall.place_forget()
-            self.pl = play.PlayMap(self.parent, file, mapname)
+            self.pl = play.PlayMap(self.parent, file, mapname, playercoord)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
             self.mp = mapet.Mapedit(self.parent, 20, file, mapname)
@@ -70,43 +71,47 @@ class ChooseMap():
     def createmap(self):
 
         def replace(warnroot,mapname):
-            os.rmdir(os.path.join("maps",mapname))
-            os.mkdir(os.path.join("maps",mapname))
+            os.rmdir(os.path.join("maps",mapname))      # remove old folder
+            os.mkdir(os.path.join("maps",mapname))      # create new folder
 
             newmaproot.destroy()
             warnroot.destroy()
+
+            playercoord = [2,2]
             
             if self.file == "mapselect":
                 self.mapall.place_forget()
-                self.pl = play.PlayMap(self.parent,[],mapname)
+                self.pl = play.PlayMap(self.parent,[],mapname,playercoord)
             elif self.file == "mapeditor":
                 self.mapall.place_forget()
-                self.mp = mapet.Mapedit(self.parent, 20,[],mapname)
+                self.mp = mapet.Mapedit(self.parent,20,[],mapname)
         
         # private function for button when creating map
         def makenewmap():
             mapname = entry.get()      # get the map name
-
-            #create a directory for the map, if it already exists, ask if replace
+            playercoord = [2,2]
+            # create a directory for the map, if it already exists, ask if replace
             try:
                 os.mkdir(os.path.join("maps",mapname))
-                
-                newmaproot.destroy()            # Destroy the popup
+
+                # Destroy the popup
+                newmaproot.destroy()
 
                 if self.file == "mapselect":
                     self.mapall.place_forget()
-                    self.pl = play.PlayMap(self.parent,[],mapname)
+                    self.pl = play.PlayMap(self.parent,[],mapname,playercoord)
                 elif self.file == "mapeditor":
                     self.mapall.place_forget()
-                    self.mp = mapet.Mapedit(self.parent, 20,[],mapname)
-                
-            except FileExistsError:                                             # popup root when file already exists
+                    self.mp = mapet.Mapedit(self.parent,20,[],mapname)
+
+            # popup root when file already exists
+            except FileExistsError:
                 warnroot = tk.Tk()
                 warning = tk.Label(warnroot, text="File already exists, do you want to replace it?")
                 warning.grid(row=0,columnspan=2)
-                yesbtn = tk.Button(warnroot, text="Replace", command=lambda name=mapname:replace(warnroot,name))
+                yesbtn = tk.Button(warnroot, text="Replace",command=lambda name=mapname:replace(warnroot,name))
                 yesbtn.grid(row=1,column=0)
-                cancelbtn = tk.Button(warnroot, text="Cancel", command=lambda:warnroot.destroy())
+                cancelbtn = tk.Button(warnroot, text="Cancel",command=lambda:warnroot.destroy())
                 cancelbtn.grid(row=1,column=1)
                 warnroot.mainloop()
 
@@ -116,8 +121,8 @@ class ChooseMap():
         newmaproot.geometry("400x100+50+50")
         text = tk.Label(newmaproot,text="Enter the name of the map")
         text.grid(row=0,pady=5)
-        entry = tk.Entry(newmaproot, text="hmm", width=15)
+        entry = tk.Entry(newmaproot,width=15)
         entry.grid(row=1,pady=5)
-        button = tk.Button(newmaproot, text="Done", command=makenewmap)
+        button = tk.Button(newmaproot,text="Done",command=makenewmap)
         button.grid(row=2,pady=5)
- 
+        

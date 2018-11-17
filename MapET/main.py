@@ -139,10 +139,7 @@ class MainApplication(tk.Frame):
                 pass
 
             try:
-                self.cm.mp.frame.destroy()
-                self.cm.mp.showcoord.destroy()
-                self.cm.mp.typeframe.destroy()
-                self.cm.mp.btnframe.destroy()
+                self.cm.mp.mapeditframe.destroy()
             except:
                 pass
             try:

@@ -5,10 +5,10 @@ import choosemap
 import pickle
 
 class PlayMap:
-    def __init__(self, parent, wallcoord, mapname):
+    def __init__(self, parent, wallcoord, mapname, playercoord):
         self.parent = parent
         self.mapname = mapname
-        self.playercoord = [2,2]
+        self.playercoord = playercoord
         self.speedmult = 1
         self.bordersize = 50
         self.zoomsize = 10
@@ -66,3 +66,13 @@ class PlayMap:
             self.keyinput.player = self.player
         #Update follow value in keyinput
         self.keyinput.follow = self.follow
+
+
+    def save(self):
+        with open(os.path.join("maps",self.mapname,"data.txt"),"w") as self.datamap:
+            self.datamap.write(self.mapname)
+            self.datamap.write(self.bgcolor)
+
+        # Saves the location where the character is before quitting
+        with open(os.path.join("maps",self.mapname,"playerdata.txt"),"w") as self.playerdata:
+            self.playerdata.write(self.playercoord)
