@@ -88,8 +88,12 @@ class ChooseMap():
         
         # private function for button when creating map
         def makenewmap():
-            mapname = entry.get()      # get the map name
-            playercoord = [2,2]
+            # Iniaializing variables 
+            mapname = entry.get()                                                                   # Get the entered map name
+            playercoord = [2,2]                                                                     # Default coord at 2,2
+            objecttypes = ("land", "water", "walls", "lava", "home", "goal", "spikes", "door")      # Default object list
+            objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects
+        
             # create a directory for the map, if it already exists, ask if replace
             try:
                 os.mkdir(os.path.join("maps",mapname))
@@ -99,10 +103,10 @@ class ChooseMap():
 
                 if self.file == "mapselect":
                     self.mapall.place_forget()
-                    self.pl = play.PlayMap(self.parent,[],mapname,playercoord)
+                    self.pl = play.PlayMap(self.parent,[],mapname,playercoord,objecttypes,objecttypecolor)
                 elif self.file == "mapeditor":
                     self.mapall.place_forget()
-                    self.mp = mapet.Mapedit(self.parent,20,[],mapname)
+                    self.mp = mapet.Mapedit(self.parent,20,[],mapname,objecttypes,objecttypecolor)
 
             # popup root when file already exists
             except FileExistsError:

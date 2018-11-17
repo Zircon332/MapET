@@ -71,11 +71,14 @@ class SetPlayControls():
 
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent,gridsize,wallcoord,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
+    def __init__(self,parent,gridsize,wallcoord,objecttypes,objecttypecolor,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
         # Carry over data
         self.parent = parent
         self.gridsize = gridsize
-        self.wallcoord = wallcoord
+        self.objectcoord = objectcoord
+        self.object
+        self.objecttypes = objecttypes
+        self.objecttypecolor = objecttypecolor
         self.gridaxisx = gridaxisx
         self.gridaxisy = gridaxisy
         self.xshift = xshift
@@ -85,7 +88,7 @@ class SetEditControls:
         self.end1 = end1
         self.end2 = end2
         self.cameracoord = [0,0]
-        self.color = "white"
+        self.object = 0             # Index of currently chosen object
 
         self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
@@ -111,9 +114,6 @@ class SetEditControls:
 ##        self.btnframe.destroy()
 
 
-    def paa(self):
-        print("as")
-        
     # shift the coords of the grid
     def shiftmap(self,x,y):
         if self.xshift+x >= 0 and self.yshift+y >= 0:
@@ -123,6 +123,7 @@ class SetEditControls:
             for i in range(len(self.gridaxisx)):
                 self.gridaxisx[i].config(text=i+self.xshift)
                 self.gridaxisy[i].config(text=i+self.yshift)
+            # Changing size of the axes
             if self.xshift + self.gridsize == 100:
                 for i in self.gridaxisx:
                     i.config(font=("arial",6))
@@ -136,7 +137,7 @@ class SetEditControls:
             self.end2[1] -= y
             # update map on screen
             self.updatescreenmap(x,y)
-        
+
     def updatescreenmap(self,x,y):
         self.cameracoord[0] += x
         self.cameracoord[1] += y
@@ -165,7 +166,7 @@ class SetEditControls:
                 self.wallcoord.remove([x+self.xshift,y+self.yshift])
                 self.pix[x,y].config(bg="white")
             elif self.pix[x,y].cget("bg") == "white":
-                self.wallcoord.append([x+self.xshift,y+self.yshift])
+                self.wallcoord.append([x+self.xshift,y+self.yshift,self.color])
                 self.pix[x,y].config(bg=self.color)
             elif self.pix[x,y].cget("bg") != "white":
                 self.pix[x,y].config(bg=self.color)
@@ -220,4 +221,3 @@ class SetEditControls:
                     if self.end2[0] >= 0 and self.end2[0] < 20:
                         self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
 
-        

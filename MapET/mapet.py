@@ -6,12 +6,13 @@ import input
 import play
 
 class Mapedit:    
-    def __init__(self,parent,gridsize,objectcoord,objectitem,mapname):
+    def __init__(self,parent,gridsize,objectcoord,objecttypes,mapname):
         self.parent    =  parent
-        self.gridsize  =  gridsize          # Number that represents the square size
-        self.objectcoord =  objectcoord     # Objects are stored ad [xcoord, ycoord, objectitemNo.]
-        self.objectitem = objectitem        # List of items in the map
-        self.mapname   =  mapname           # Name of opened map
+        self.gridsize  =  gridsize              # Number that represents the square size
+        self.objectcoord =  objectcoord         # Objects are stored ad [xcoord, ycoord, objecttypesIndex]
+        self.objecttypes = objecttypes          # List of object in the map
+        self.objectypecolor = objecttypecolor   # List of color of each object
+        self.mapname   =  mapname               # Name of opened map
         
         # Stores the last two coords selected
         self.end1 = [0,0,0]
@@ -44,8 +45,6 @@ class Mapedit:
         self.createbuttons()
 
         # Cell types select box
-        self.types = ["land","water","walls","lava","home","goal","spikes","door"]
-        self.typecolor = ["white","cyan","grey","red","green","blue","black","brown"]
         self.typeframe = tk.Frame(self.mapeditframe)
         self.typeframe.place(relx=.15,rely=.2,anchor="n")
         self.createtypes()
@@ -101,20 +100,21 @@ class Mapedit:
         self.typename = []
         self.typeimg  = []
         self.typebtn  = []
-        for i in range(len(self.types)):
-            self.typename.append(tk.Label(self.typeframe,height=2,width=9,pady=1,text=self.types[i],font=("Calibri",15)))
-            self.typeimg .append(tk.Label(self.typeframe,height=2,width=10,pady=2,bg=self.typecolor[i]))
-            self.typebtn .append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
+        for i in range(len(self.objecttypes)):
+            self.typename.append(tk.Label(self.typeframe,height=2,width=9,pady=1,text=self.objecttypes[i],font=("Calibri",15)))
+            self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,pady=2,bg=self.typecolor[i]))
+            self.typebtn append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
             self.typename[i].grid(row=i,column=0)
             self.typeimg[i].grid(row=i,column=1)
             self.typebtn[i].grid(row=i,column=2)
             
     # display existing walls in the grid
     def setwall(self):
-        for walls in self.wallcoord:
-            x = walls[0]
-            y = walls[1]
-            self.pix[x,y].config(bg="grey")
+        for objects in self.objectcoord:
+            x = objects[0]
+            y = objects[1]
+            color = objecttypes[objects[2]]
+            self.pix[x,y].config(bg=color)
 
     # Update the new map coords into the list config.wallcoord
     def savemapcoord(self):
@@ -124,17 +124,17 @@ class Mapedit:
     # does nothing for now, but it should go to play
     def switchplay(self):
         self.mapeditframe.destroy()
-        self.pl = play.PlayMap(self.parent, self.wallcoord)
+        self.pl = play.PlayMap(self.parent,self.wallcoord)
 
     # erase all coord in keyinput (cause everything is transfered there)
     def cleargrid(self):
         for x in range(self.keyinput.gridsize):
             for y in range(self.keyinput.gridsize):
-                self.keyinput.pix[x,y].config(bg="white")
+                self.keyinput.pix[x,y].config(bg=objecttypecolor[0])
         del self.keyinput.wallcoord[:]
 
     def selecttype(self,index):
-        self.keyinput.color = self.typecolor[index]
+        self.keyinput.object = index
 
 
     def save(self):
