@@ -88,7 +88,7 @@ class SetEditControls:
         self.end1 = end1
         self.end2 = end2
         self.cameracoord = [0,0]
-        self.color = "white"             # Default chosen color
+        self.color = "grey"             # Default chosen color
 
         self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
         self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
@@ -144,12 +144,13 @@ class SetEditControls:
         self.cameracoord[1] += y
             
         # clear the screen
-        self.clearscreen()   
+        self.clearscreen()  
 
         # display new walls
         for walls in self.objectcoord:
             if walls[0]-self.cameracoord[0] >= 0 and walls[0]-self.cameracoord[0] < 20 and walls[1]-self.cameracoord[1] >= 0 and walls[1]-self.cameracoord[1] < 20:
-                self.pix[walls[0]-self.cameracoord[0],walls[1]-self.cameracoord[1]].config(bg=self.color)
+                print(self.objectcolor,x,y)
+                self.pix[walls[0]-self.cameracoord[0],walls[1]-self.cameracoord[1]].config(bg=self.objectcolor[walls[0],walls[1]])
 
     # makes every grid white (doesn't delete coords)
     def clearscreen(self):
@@ -164,17 +165,21 @@ class SetEditControls:
         self.end1 = [x,y]
         if self.color != "white":
             if self.pix[x,y].cget("bg") == self.color:
-                self.wallcoord.remove([x+self.xshift,y+self.yshift])
-                self.pix[x,y].config(bg="white")
+                self.objectcoord.remove([x+self.xshift,y+self.yshift])      # remove coord
+                self.objectcolor.remove([x+self.xshift,y+self.yshift])      # remove object color at that coord
+                self.pix[x,y].config(bg="white")                            # remove display on that grid
             elif self.pix[x,y].cget("bg") == "white":
-                self.wallcoord.append([x+self.xshift,y+self.yshift])
-                self.pix[x,y].config(bg=self.color)
+                self.objectcoord.append([x+self.xshift,y+self.yshift])      # add coord
+                self.objectcolor[x+self.xshift,y+self.yshift] = self.color  # add object color at that coord
+                self.pix[x,y].config(bg=self.color)                         # Display color at that grid
             elif self.pix[x,y].cget("bg") != "white":
-                self.pix[x,y].config(bg=self.color)
+                self.objectcolor[x+self.xshift,y+self.yshift] = self.color  # changed object color at that coord
+                self.pix[x,y].config(bg=self.color)                         # Display color at that grid
         else:
             if self.pix[x,y].cget("bg") != "white":
-                self.wallcoord.remove([x+self.xshift,y+self.yshift])
-                self.pix[x,y].config(bg=self.color)
+                self.wallcoord.remove([x+self.xshift,y+self.yshift])        # remove coord
+                self.objectcolor.remove([x+self.xshift,y+self.yshift])      # remove object color at that coord
+                self.pix[x,y].config(bg=self.color)                         # Display color at that grid
             
     # Create a line between last two points if they are on the same line
     def createline(self):

@@ -12,7 +12,7 @@ class Mapedit:
         self.objectcoord = objectcoord          # Objects are stored as [xcoord, ycoord] (list)
         self.objectcolor = objectcolor          # Objects' color for each object (set)
         self.objecttypes = objecttypes          # List of object in the map
-        self.objecttypecolor = objecttypecolor   # List of color of each object
+        self.objecttypecolor = objecttypecolor  # List of color of each object
         self.mapname   =  mapname               # Name of opened map
         
         # Stores the last two coords selected
@@ -25,11 +25,12 @@ class Mapedit:
 
         # Title of the map, that can be changed and saved
         self.mapnamelabel = tk.Label(self.mapeditframe,text=self.mapname,width=20,font=("Calibri",20))
-        self.mapnamelabel.place(relx=.15,rely=.02)
+        self.mapnamelabel.place(relx=.1,rely=.02)
         
         # Label for displaying list of coords (should be removed before finalizing)
         self.showcoord = tk.Label(self.mapeditframe,text=self.objectcoord)
-        self.showcoord.place(relx=0,rely=.9,anchor="sw")
+        self.showcoord.place(relx=0.5,rely=.7,anchor="sw")
+        print(self.objectcoord)
 
         # Frame for grid
         self.gridframe = tk.Frame(self.mapeditframe)
@@ -120,7 +121,9 @@ class Mapedit:
     def savemapcoord(self):
         # Display the list of coords
         self.showcoord.config(text=self.keyinput.objectcoord)
-
+        print(self.keyinput.objectcoord) 
+        print(self.keyinput.objectcolor)
+        
     # does nothing for now, but it should go to play
     def switchplay(self):
         self.mapeditframe.destroy()
@@ -135,7 +138,7 @@ class Mapedit:
         del self.keyinput.objectcolor[:]
 
     def selecttype(self,index):
-        self.keyinput.object = index
+        self.keyinput.color = self.objecttypecolor[index]
 
 
     def save(self):
