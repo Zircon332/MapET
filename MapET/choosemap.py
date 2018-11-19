@@ -1,4 +1,5 @@
 import os
+import ast
 import tkinter as tk
 import play
 import mapet
@@ -57,34 +58,45 @@ class ChooseMap():
                 
     # Opens selected file, hide map select container, display play/mapet
     def openmap(self,mapname):
-        print("Opening",mapname)
-        file = pickle.load(open(os.path.join("maps",mapname,"map.p"),"rb"))
-        playercoord = [2,2]
+        print("Loading file information...")
+        with open(os.path.join("maps",mapname,"data.txt"),"r") as self.datamap:
+            data = self.datamap.read().split(";")
+        for i in data:
+            print(i,end="")
+        playercoord = ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists
+        gridsize = ast.literal_eval(data[1].split("=")[1])
+        objectcoord = ast.literal_eval(data[2].split("=")[1])
+        objectcolor = ast.literal_eval(data[3].split("=")[1])
+        objecttypes = ast.literal_eval(data[4].split("=")[1])
+        objecttypecolor = ast.literal_eval(data[5].split("=")[1])
+        
+        print("\n\nOpening",mapname)
         if self.file == "mapselect":
             self.mapall.place_forget()
-            self.pl = play.PlayMap(self.parent, file, mapname, playercoord)
+            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
-            self.mp = mapet.Mapedit(self.parent, 20, file, mapname)
+            self.mp = mapet.Mapedit(self.parent,mapname,20,objectcoord,objectcolor,objecttypes,objecttypecolor)
 
     # Function to create new map
     def createmap(self):
-
         def replace(warnroot,mapname):
+            playercoord = [2,2]                                                                     # Default coord at 2,2
+            objecttypes = ("land", "water", "walls", "lava", "home", "goal", "spikes", "door")      # Default object list
+            objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects 
+
             os.rmdir(os.path.join("maps",mapname))      # remove old folder
             os.mkdir(os.path.join("maps",mapname))      # create new folder
 
             newmaproot.destroy()
             warnroot.destroy()
-
-            playercoord = [2,2]
             
             if self.file == "mapselect":
                 self.mapall.place_forget()
-                self.pl = play.PlayMap(self.parent,[],mapname,playercoord)
+                self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor)
             elif self.file == "mapeditor":
                 self.mapall.place_forget()
-                self.mp = mapet.Mapedit(self.parent,20,[],mapname)
+                self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor)
         
         # private function for button when creating map
         def makenewmap():
@@ -92,7 +104,7 @@ class ChooseMap():
             mapname = entry.get()                                                                   # Get the entered map name
             playercoord = [2,2]                                                                     # Default coord at 2,2
             objecttypes = ("land", "water", "walls", "lava", "home", "goal", "spikes", "door")      # Default object list
-            objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects
+            objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects 
         
             # create a directory for the map, if it already exists, ask if replace
             try:
@@ -127,6 +139,7 @@ class ChooseMap():
         text.grid(row=0,pady=5)
         entry = tk.Entry(newmaproot,width=15)
         entry.grid(row=1,pady=5)
+        entry.focus_set()
         button = tk.Button(newmaproot,text="Done",command=makenewmap)
         button.grid(row=2,pady=5)
         

@@ -4,6 +4,7 @@ import tkinter as tk
 import choosemap
 import input
 import play
+import os
 
 class Mapedit:    
     def __init__(self,parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor):
@@ -29,8 +30,7 @@ class Mapedit:
         
         # Label for displaying list of coords (should be removed before finalizing)
         self.showcoord = tk.Label(self.mapeditframe,text=self.objectcoord)
-        self.showcoord.place(relx=0.5,rely=.7,anchor="sw")
-        print(self.objectcoord)
+        self.showcoord.place(relx=0.5,rely=.9,anchor="c")
 
         # Frame for grid
         self.gridframe = tk.Frame(self.mapeditframe)
@@ -114,15 +114,13 @@ class Mapedit:
         for objects in self.objectcoord:
             x = objects[0]
             y = objects[1]
-            color = objectcolor([x,y])
+            color = self.objectcolor[(x,y)]
             self.pix[x,y].config(bg=color)
 
     # Update the new map coords into the list config.objectcoord
     def savemapcoord(self):
         # Display the list of coords
         self.showcoord.config(text=self.keyinput.objectcoord)
-        print(self.keyinput.objectcoord) 
-        print(self.keyinput.objectcolor)
         
     # does nothing for now, but it should go to play
     def switchplay(self):
@@ -133,9 +131,9 @@ class Mapedit:
     def cleargrid(self):
         for x in range(self.keyinput.gridsize):
             for y in range(self.keyinput.gridsize):
-                self.keyinput.pix[x,y].config(bg=objecttypecolor[0])
+                self.keyinput.pix[x,y].config(bg=self.objecttypecolor[0])
         del self.keyinput.objectcoord[:]
-        del self.keyinput.objectcolor[:]
+        self.keyinput.objectcolor.clear()
 
     def selecttype(self,index):
         self.keyinput.color = self.objecttypecolor[index]
@@ -143,12 +141,10 @@ class Mapedit:
 
     def save(self):
         with open(os.path.join("maps",self.mapname,"data.txt"),"w") as self.datamap:
-            self.datamap.write(self.mapname)
-            print(self.mapname)
-            self.datamap.write(self.bgcolor)
-            print(self.bgcolor)
-
-
-        with open(os.path.join("maps",self.mapname,"objects.txt","w")) as self.objects:
-            self.objects.write(objectcoord)
-            print(objectcoord)
+            data = "PlayerCoord=" + "[2,2]" + \
+                   ";\nGridsize=" + str(self.gridsize) + \
+                   ";\nObjectCoord=" + str(self.keyinput.objectcoord) + \
+                   ";\nObjectColor=" + str(self.keyinput.objectcolor) + \
+                   ";\nObjecttypes=" + str(self.objecttypes) + \
+                   ";\nObjectTypeColor=" + str(self.objecttypecolor)
+            self.datamap.write(data)
