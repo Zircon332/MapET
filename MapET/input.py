@@ -4,7 +4,7 @@ import os
 
 # Controls for Map Play
 class SetPlayControls():
-    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,wallcoord,screenwallcoord,follow):
+    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,screenobjectcoord,follow):
         # Carry over data
         self.parent = parent
         self.playercoord = playercoord
@@ -12,8 +12,11 @@ class SetPlayControls():
         self.bordersize = bordersize
         self.zoomsize = zoomsize
         self.camcoord = camcoord
-        self.wallcoord = wallcoord
-        self.screenwallcoord = screenwallcoord
+        self.objectcoord = objectcoord
+        self.objectcolor = objectcolor
+        self.objecttypes = objecttypes
+        self.objecttypecolor = objecttypecolor
+        self.screenobjectcoord = screenobjectcoord
         self.follow = follow
         self.screen = screen
         self.player = player
@@ -31,10 +34,10 @@ class SetPlayControls():
         # Increase speed with multiplier, if any
         self.x *= self.speedmult
         self.y *= self.speedmult
-        # test if where ur going is a wall
+        # test if where ur going is a object
         self.test_x = self.playercoord[0] + self.x
         self.test_y = self.playercoord[1] + self.y
-        if [self.test_x,self.test_y] not in self.wallcoord:            
+        if [self.test_x,self.test_y] not in self.objectcoord:            
             if self.test_x > 0 and self.test_x < (self.bordersize-1):
                 self.playercoord[0] += self.x
                 self.camcoord[0] += self.x
@@ -53,20 +56,21 @@ class SetPlayControls():
 
     # append everything that will be shown in screen into a list
     def cammove(self):
-        for i in self.wallcoord:
+        for i in self.objectcoord:
             self.screenx = i[0] - self.camcoord[0] 
             self.screeny = i[1] - self.camcoord[1]
             if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
-                self.screenwallcoord.append([self.screenx,self.screeny])
+                self.screenobjectcoord.append([self.screenx,self.screeny])
         # update screen in camfollow mode
         self.zoomratio = 10 * self.bordersize / self.zoomsize
         self.screen.delete(tk.ALL)      #Delete previous things in screen
         #Create player at center
         self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,fill="red")
-        #Set then clear the wall coordinates on the screen
-        for i in self.screenwallcoord:
-            self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill="grey",outline="grey")
-        del self.screenwallcoord[:]
+        #Set then clear the object coordinates on the screen
+        for i in self.screenobjectcoord:
+            color = self.objectcolor[i[0]+self.camcoord[0],i[1]+self.camcoord[1]]
+            self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill=color,outline=color)
+        del self.screenobjectcoord[:]
 
 
 # Controls for MapEdit
@@ -146,10 +150,9 @@ class SetEditControls:
         # clear the screen
         self.clearscreen()  
 
-        # display new walls
+        # display new objects
         for objects in self.objectcoord:
             if objects[0]-self.cameracoord[0] >= 0 and objects[0]-self.cameracoord[0] < 20 and objects[1]-self.cameracoord[1] >= 0 and objects[1]-self.cameracoord[1] < 20:
-                print(self.objectcolor,x,y)
                 self.pix[objects[0]-self.cameracoord[0],objects[1]-self.cameracoord[1]].config(bg=self.objectcolor[objects[0],objects[1]])
 
     # makes every grid white (doesn't delete coords)

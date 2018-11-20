@@ -112,10 +112,11 @@ class Mapedit:
     # display existing walls in the grid
     def setwall(self):
         for objects in self.objectcoord:
-            x = objects[0]
-            y = objects[1]
-            color = self.objectcolor[(x,y)]
-            self.pix[x,y].config(bg=color)
+            if objects[0] >= 0 and objects[0] < 20 and objects[1] >= 0 and objects[1] < 20:
+                x = objects[0]
+                y = objects[1]
+                color = self.objectcolor[(x,y)]
+                self.pix[x,y].config(bg=color)
 
     # Update the new map coords into the list config.objectcoord
     def savemapcoord(self):
