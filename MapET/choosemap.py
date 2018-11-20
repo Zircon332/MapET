@@ -59,24 +59,28 @@ class ChooseMap():
     # Opens selected file, hide map select container, display play/mapet
     def openmap(self,mapname):
         print("Loading file information...")
-        with open(os.path.join("maps",mapname,"data.txt"),"r") as self.datamap:
-            data = self.datamap.read().split(";")
-        for i in data:
-            print(i,end="")
-        playercoord = ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists
-        gridsize = ast.literal_eval(data[1].split("=")[1])
-        objectcoord = ast.literal_eval(data[2].split("=")[1])
-        objectcolor = ast.literal_eval(data[3].split("=")[1])
-        objecttypes = ast.literal_eval(data[4].split("=")[1])
-        objecttypecolor = ast.literal_eval(data[5].split("=")[1])
+        try:
+            with open(os.path.join("maps",mapname,"data.txt"),"r") as self.datamap:
+                data = self.datamap.read().split(";")
+            for i in data:
+                print(i,end="")
+            playercoord = ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists
+            gridsize = ast.literal_eval(data[1].split("=")[1])
+            objectcoord = ast.literal_eval(data[2].split("=")[1])
+            objectcolor = ast.literal_eval(data[3].split("=")[1])
+            objecttypes = ast.literal_eval(data[4].split("=")[1])
+            objecttypecolor = ast.literal_eval(data[5].split("=")[1])
         
-        print("\n\nOpening",mapname)
-        if self.file == "mapselect":
-            self.mapall.place_forget()
-            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor)
-        elif self.file == "mapeditor":
-            self.mapall.place_forget()
-            self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor)
+            print("\n\nOpening",mapname)
+            if self.file == "mapselect":
+                self.mapall.place_forget()
+                self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor)
+            elif self.file == "mapeditor":
+                self.mapall.place_forget()
+                self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor)
+
+        except:
+            print("Save file doesn't exist")
 
     # Function to create new map
     def createmap(self):
@@ -85,6 +89,8 @@ class ChooseMap():
             objecttypes = ("land", "water", "walls", "lava", "home", "goal", "spikes", "door")      # Default object list
             objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects 
 
+            for i in os.listdir(os.path.join("maps",mapname)):
+                os.remove(os.path.join("maps",mapname,i))
             os.rmdir(os.path.join("maps",mapname))      # remove old folder
             os.mkdir(os.path.join("maps",mapname))      # create new folder
 
