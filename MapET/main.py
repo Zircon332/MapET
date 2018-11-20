@@ -5,11 +5,6 @@ import play
 import mapet
 import pickle
 
-#Unfinished Things
-##Center buttons
-##menu bar functions
-##Minimap
-##undo button
 class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -21,8 +16,7 @@ class MainApplication(tk.Frame):
         self.parent.attributes("-fullscreen", False)
         self.creategui()
 
-    # Creates logo, menubar and buttons
-    def creategui(self):
+    def creategui(self):    # Creates logo, menubar and buttons
         # MapET Logo Banner
         self.logoimg = tk.PhotoImage(file="images/logo.gif")
         self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
@@ -38,21 +32,7 @@ class MainApplication(tk.Frame):
         self.filemenu.add_command(label="Exit", command=root.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
-        # 'Edit' Menu Bar
-        self.editmenu = tk.Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Cut", command=lambda:print("test"))
-        self.editmenu.add_command(label="Copy", command=lambda:print("test"))
-        self.editmenu.add_command(label="Paste", command=lambda:print("test"))
-        self.menubar.add_cascade(label="Edit", menu=self.editmenu)
-
-        # 'Help' Menu Bar
-        self.helpmenu = tk.Menu(self.menubar, tearoff=0)
-        self.helpmenu.add_command(label="About", command=lambda:print("test"))
-        self.menubar.add_cascade(label="Help", menu=self.helpmenu)
-        self.parent.config(menu=self.menubar)
-
-        # creates buttons and their frame, then place with function
-        self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)
+        self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)    # creates buttons and their frame, then place with function
         self.mapselectbtn = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
@@ -66,10 +46,8 @@ class MainApplication(tk.Frame):
                                      command=root.destroy,
                                      width=12,padx=10,pady=20, font=("calibri",20))
         self.placegui()
-    # display main buttons
-    # Maybe use this instead
-    # use winfo_rootx and winfo_rooty to get the coordinates relative to the screen. And yes, wm_geometry is the way to place a toplevel window precisely.
-    def placegui(self):
+
+    def placegui(self):    # display main buttons
         self.mapetlogo.place(relx=.5, rely=.15, anchor="c")
         self.buttonframe.place(x=10,y=10, anchor="c", relx=0.48, rely=0.5)
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
@@ -77,8 +55,8 @@ class MainApplication(tk.Frame):
         self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
         self.programexitbtn.grid(row=3,ipadx=10,ipady=10)
 
-    # #1-Hides Main buttons, #2-then display Settings buttons / #3-display Map Selection
-    def fileopening(self,file):
+    
+    def fileopening(self,file):    # #1-Hides Main buttons, #2-then display Settings buttons / #3-display Map Selection
         for child in self.buttonframe.winfo_children(): #1
             child.grid_forget()
         self.settingsbtn = tk.Button(self.buttonframe,

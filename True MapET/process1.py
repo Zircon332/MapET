@@ -1,8 +1,8 @@
 import os
 import tkinter as tk
-import input
-import choosemap
-import pickle
+import input_handling
+import menu
+import process2
 
 class PlayMap:
     def __init__(self, parent , mapname , objectcoord , objectcolor , playercoord , objecttypes , objecttypecolor):
@@ -24,7 +24,7 @@ class PlayMap:
         self.set_map()
 
         #set key controls
-        self.keyinput = input.SetPlayControls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
+        self.keyinput = input_handling.SetPlayControls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.wallcoord,self.screenwallcoord,self.follow)
 
         #Switch cam to follow
         self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
@@ -76,3 +76,4 @@ class PlayMap:
         # Saves the location where the character is before quitting
         with open(os.path.join("maps",self.mapname,"playerdata.txt"),"w") as self.playerdata:
             self.playerdata.write(self.playercoord)
+
