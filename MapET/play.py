@@ -113,18 +113,7 @@ class PlayMap:
         if self.follow == 0:
             self.follow = 1
             # does the function in input, updating the screen before needing to move
-            for i in self.objectcoord:
-                self.screenx = i[0] - self.camcoord[0]
-                self.screeny = i[1] - self.camcoord[1]
-                if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
-                    self.screenobjectcoord.append([self.screenx,self.screeny])
-            self.zoomratio = self.pix * self.bordersize / self.zoomsize
-            self.screen.delete(tk.ALL)
-            self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,fill="red")
-            for i in self.screenobjectcoord:
-                color = self.objectcolor[i[0]+self.camcoord[0],i[1]+self.camcoord[1]]
-                self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill=color,outline=color)
-            del self.screenobjectcoord[:]
+            self.keyinput.cammove()
         else:
             self.set_player()
             self.follow = 0

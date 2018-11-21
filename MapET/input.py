@@ -37,33 +37,32 @@ class SetPlayControls():
         self.parent.bind_all("s", lambda event, x=0,y=1: self.move(x,y))
         self.parent.bind_all("a", lambda event, x=-1,y=0: self.move(x,y))
         self.parent.bind_all("d", lambda event, x=1,y=0: self.move(x,y))
-        self.parent.bind_all("<Return>", lambda event, key="Stuff": self.setconfig(key))
+        self.parent.bind_all("<Return>", lambda event, key=None: self.setconfig(key))    # Also restarts the map
 
     
     # move the player according to input
     def move(self, x, y):
         self.x, self.y = x, y
         # Increase speed with multiplier, if any
-        self.x *= self.speedmult
-        self.y *= self.speedmult
-        # test if where ur going is a object
-        self.test_x = self.playercoord[0] + self.x
-        self.test_y = self.playercoord[1] + self.y
-        if [self.test_x,self.test_y] not in self.objectcoord:            
-            if self.test_x > 0:
-                self.playercoord[0] += self.x
-                self.camcoord[0] += self.x
-                if self.follow == 0:                            # normal moving
-                    self.screen.move(self.player, self.x*self.pix, 0)
-                else:                                           # cam follow move
-                    self.cammove()
-            if self.test_y > 0:
-                self.playercoord[1] += self.y
-                self.camcoord[1] += y
-                if self.follow == 0:                            # normal moving
-                    self.screen.move(self.player, 0, self.y*self.pix)
-                else:                                           # cam follow move
-                    self.cammove()
+        for times in range(self.speedmult):
+            # test if where ur going is a object
+            self.test_x = self.playercoord[0] + self.x
+            self.test_y = self.playercoord[1] + self.y
+            if [self.test_x,self.test_y] not in self.objectcoord:            
+                if self.test_x > 0:
+                    self.playercoord[0] += self.x
+                    self.camcoord[0] += self.x
+                    if self.follow == 0:                            # normal moving
+                        self.screen.move(self.player, self.x*self.pix, 0)
+                    else:                                           # cam follow move
+                        self.cammove()
+                if self.test_y > 0:
+                    self.playercoord[1] += self.y
+                    self.camcoord[1] += y
+                    if self.follow == 0:                            # normal moving
+                        self.screen.move(self.player, 0, self.y*self.pix)
+                    else:                                           # cam follow move
+                        self.cammove()
         self.screen.update_idletasks()
 
     # append everything that will be shown in screen into a list
@@ -84,25 +83,25 @@ class SetPlayControls():
             self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill=color,outline=color)
         del self.screenobjectcoord[:]
 
+    # Changes the settings, restarts the map
     def setconfig(self,key):
-        print(key)
         self.playercoord[0] = int(self.playercoordxent.get())
         self.playercoord[1] = int(self.playercoordyent.get())
         self.speedmult      = int(self.speedmultent.get())
         self.bordersize     = int(self.bordersizeent.get())
         self.zoomsize       = int(self.zoomsizeent.get())
         self.pix            = int(self.pixent.get())
-        print(self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.pix)
-        self.screen.focus_set()
-        self.screen.config(width=self.bordersize*self.pix, height=self.bordersize*self.pix)
-        #self.screen.config(height=self.bordersize*self.pix)
-        self.screen.delete(tk.ALL)
+        self.screen.focus_set()                                                             # Set focus out of entry, focus to screen
+        self.screen.config(width=self.bordersize*self.pix, height=self.bordersize*self.pix) # Change screen size
+        self.screen.delete(tk.ALL)                                                          # Clear the screen
+        # create a new player
         self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="red")
+        # create new walls
         for i in self.objectcoord:
             color = self.objectcolor[i[0],i[1]]
-            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color)
-        
-        self.move(0,0)
+            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color) 
+        self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]  # Reset camcoord
+        #self.move(0,0)
         
 # Controls for MapEdit
 class SetEditControls:
