@@ -43,7 +43,6 @@ class PlayMap:
     # sets objects and player
     def set_object(self):
         self.bds = self.bordersize * 10
-        self.border = self.screen.create_polygon([0,0,self.bds,0,self.bds,self.bds,0,self.bds,0,0,10,0,10,self.bds-10,self.bds-10,self.bds-10,self.bds-10,10,0,10],fill="grey",outline="grey")
         self.player = self.screen.create_rectangle(self.playercoord[0]*10,self.playercoord[1]*10,self.playercoord[0]*10+10,self.playercoord[1]*10+10,fill="red")
 
     # toggle to switch

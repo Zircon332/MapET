@@ -9,6 +9,7 @@ class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        print(self.parent)
         self.parent.title("MapET")
         self.screen_width = self.parent.winfo_screenwidth()
         self.screen_height = self.parent.winfo_screenheight()

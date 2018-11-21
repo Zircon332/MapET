@@ -8,16 +8,14 @@ import process2
 root = tk.Tk()
 self = root
 # Main Menu
-mainmenu = menu.MainApplication(root).pack(side="top", fill="both", expand=True)
-
-print(menu.ChooseMap.getlist(self))
-
-createopen = mainmenu[0]
-parent = mainmenu[1]
-mode = mainmenu[2]
+mainmenu = menu.MainApplication(root)
+mainmenu.pack(side="top", fill="both", expand=True)
+print(mainmenu.buttonframe.winfo_children())
 
 # Menu for choosing map
-cm = menu.ChooseMap(parent, mode)
+cm = menu.ChooseMap(mainmenu.parent, mode)
+
+
 
 # Process
 
