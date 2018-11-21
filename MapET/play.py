@@ -44,7 +44,8 @@ class PlayMap:
         self.keyinput = input.SetPlayControls(self.playframe,self.screen,self.player,self.playercoord,self.speedmult,
                                               self.bordersize,self.zoomsize,self.camcoord,self.objectcoord,self.objectcolor,
                                               self.objecttypes,self.objecttypecolor,self.screenobjectcoord,self.follow,self.pix,
-                                              self.playercoordxent,self.playercoordyent,self.speedmultent,self.bordersizeent,self.zoomsizeent,self.pixent)
+                                              self.playercoordxent,self.playercoordyent,self.speedmultent,
+                                              self.bordersizexent,self.bordersizeyent,self.zoomsizeent,self.pixent)
 
         # Command buttons frame
         self.commandframe = tk.Frame(self.parent)
@@ -90,9 +91,12 @@ class PlayMap:
         # Change size of still screen
         self.bordersizelbl = tk.Label(self.configframe,text="Border Size")
         self.bordersizelbl.grid(row=2,pady=20,sticky="w")
-        self.bordersizeent = tk.Entry(self.configframe,width=5)
-        self.bordersizeent.grid(column=1,row=2,pady=20,sticky="w")
-        self.bordersizeent.insert(tk.END, self.bordersize)
+        self.bordersizexent = tk.Entry(self.configframe,width=5)
+        self.bordersizexent.grid(column=1,row=2,pady=20,sticky="w")
+        self.bordersizexent.insert(tk.END, self.bordersize)
+        self.bordersizeyent = tk.Entry(self.configframe,width=5)
+        self.bordersizeyent.grid(column=2,row=2,pady=20,sticky="w")
+        self.bordersizeyent.insert(tk.END, self.bordersize)
         
         # Change size of how much is shown during follow
         self.zoomsizelbl = tk.Label(self.configframe,text="Zoom Size")

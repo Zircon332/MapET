@@ -4,12 +4,13 @@ import os
 
 # Controls for Map Play
 class SetPlayControls():
-    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,screenobjectcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizeent,zoomsizeent,pixent):
+    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,screenobjectcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizexent,bordersizeyent,zoomsizeent,pixent):
         # Carry over data
         self.parent = parent
         self.playercoord = playercoord
         self.speedmult = speedmult
-        self.bordersize = bordersize
+        self.bordersizex = bordersize
+        self.bordersizey = bordersize
         self.zoomsize = zoomsize
         self.camcoord = camcoord
         self.objectcoord = objectcoord
@@ -24,7 +25,8 @@ class SetPlayControls():
         self.playercoordxent = playercoordxent
         self.playercoordyent = playercoordyent
         self.speedmultent = speedmultent
-        self.bordersizeent = bordersizeent
+        self.bordersizexent = bordersizexent
+        self.bordersizeyent = bordersizeyent
         self.zoomsizeent = zoomsizeent
         self.pixent = pixent
         
@@ -88,11 +90,13 @@ class SetPlayControls():
         self.playercoord[0] = int(self.playercoordxent.get())
         self.playercoord[1] = int(self.playercoordyent.get())
         self.speedmult      = int(self.speedmultent.get())
-        self.bordersize     = int(self.bordersizeent.get())
+        self.bordersizex    = int(self.bordersizexent.get())
+        self.bordersizey    = int(self.bordersizeyent.get())
         self.zoomsize       = int(self.zoomsizeent.get())
         self.pix            = int(self.pixent.get())
+        
         self.screen.focus_set()                                                             # Set focus out of entry, focus to screen
-        self.screen.config(width=self.bordersize*self.pix, height=self.bordersize*self.pix) # Change screen size
+        self.screen.config(width=self.bordersizex*self.pix, height=self.bordersizey*self.pix) # Change screen size
         self.screen.delete(tk.ALL)                                                          # Clear the screen
         # create a new player
         self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="red")
