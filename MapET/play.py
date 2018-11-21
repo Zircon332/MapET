@@ -7,11 +7,12 @@ import pickle
 class PlayMap:
     def __init__(self, parent, mapname, objectcoord, objectcolor, playercoord, objecttypes, objecttypecolor):
         self.parent = parent
-        self.mapname = mapname
-        self.playercoord = playercoord
-        self.speedmult = 1
-        self.bordersize = 60
-        self.zoomsize = 20
+        self.mapname = mapname  
+        self.playercoord = playercoord  # Spawn point for player
+        self.speedmult = 1              # How far the player moves each press
+        self.bordersize = 60            # Size of still screen (in terms of how many pixels is shown in each axis)
+        self.zoomsize = 20              # Size of how much is shown when followig player
+        self.pix = 10                   # Size of each pixel in screen
         #Camera position, top left from position of player
         self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
         self.objectcoord = objectcoord
@@ -21,30 +22,92 @@ class PlayMap:
         self.screenobjectcoord = []
         self.follow = 0
 
-        #Playground Screen
-        self.screen = tk.Canvas(self.parent, bg="Black", width=self.bordersize*10, height=self.bordersize*10, highlightthickness=0,bd=0)
+        # Frame for this page
+        self.playframe = tk.Frame(self.parent,height=800,width=1200)
+        self.playframe.place(relx=.5,rely=.5,anchor='c')
+
+        # Title of the map, that can be changed and saved
+        self.mapnamelabel = tk.Label(self.playframe,text=self.mapname,width=20,font=("Calibri",20))
+        self.mapnamelabel.place(relx=.1,rely=.02)
+
+        # Playground Screen
+        self.screen = tk.Canvas(self.playframe, bg="Black", width=self.bordersize*self.pix, height=self.bordersize*self.pix, highlightthickness=0,bd=0)
         self.screen.place(relx=.5,rely=.5, anchor="c")
         self.set_map()
 
-        #set key controls
-        self.keyinput = input.SetPlayControls(self.parent,self.screen,self.player,self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.camcoord,self.objectcoord,self.objectcolor,self.objecttypes,self.objecttypecolor,self.screenobjectcoord,self.follow)
+        # Frame for settings
+        self.configframe = tk.Frame(self.playframe)
+        self.configframe.place(relx=.1,rely=.2,anchor="nw")
+        self.createconfig()
 
-        #Switch cam to follow
-        self.switch = tk.Button(self.parent,text="Switch to Follow", command=self.followswitch)
-        self.switch.place(relx=.9,rely=.1)
+        # set key controls
+        self.keyinput = input.SetPlayControls(self.playframe,self.screen,self.player,self.playercoord,self.speedmult,
+                                              self.bordersize,self.zoomsize,self.camcoord,self.objectcoord,self.objectcolor,
+                                              self.objecttypes,self.objecttypecolor,self.screenobjectcoord,self.follow,self.pix,
+                                              self.playercoordxent,self.playercoordyent,self.speedmultent,self.bordersizeent,self.zoomsizeent,self.pixent)
 
+        # Command buttons frame
+        self.commandframe = tk.Frame(self.parent)
+        self.commandframe.place(relx=.9,rely=.2,anchor="ne")
+
+        # Button to switch camera to follow
+        self.switch = tk.Button(self.commandframe,text="Switch to Follow", command=self.followswitch)
+        self.switch.grid(row=0,pady=20)
+
+#____________________________Functions__________________________________________________________________________________________________________________________________________________________    
+
+    # Sets player at his coordinates
+    def set_player(self):
+        self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="red")
+
+    # Sets objects with coordinates and colour
     def set_map(self):
         self.screen.delete(tk.ALL)
-        self.set_object()
+        self.set_player()
         for i in self.objectcoord:
             color = self.objectcolor[i[0],i[1]]
-            self.screen.create_rectangle(i[0]*10,i[1]*10,i[0]*10+10,i[1]*10+10,fill=color,outline=color)
+            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color)
 
-    # sets objects and player
-    def set_object(self):
-        self.bds = self.bordersize * 10
-        self.player = self.screen.create_rectangle(self.playercoord[0]*10,self.playercoord[1]*10,self.playercoord[0]*10+10,self.playercoord[1]*10+10,fill="red")
-
+    # Allows users to change settings/configurations
+    def createconfig(self):
+        # Change position of player
+        self.playercoordlbl = tk.Label(self.configframe,text="Player Coord")
+        self.playercoordlbl.grid(row=0,pady=20,sticky="w")
+        self.playercoordxent = tk.Entry(self.configframe,width=5)
+        self.playercoordxent.grid(column=1,row=0,pady=20,sticky="w")
+        self.playercoordxent.insert(tk.END, self.playercoord[0])
+        self.playercoordyent = tk.Entry(self.configframe,width=5)
+        self.playercoordyent.grid(column=2,row=0,pady=20,sticky="w")
+        self.playercoordyent.insert(tk.END, self.playercoord[1])
+        
+        # Change how far the player moves each press
+        self.speedmultlbl = tk.Label(self.configframe,text="Speed Multiplier")
+        self.speedmultlbl.grid(row=1,pady=20,sticky="w")
+        self.speedmultent = tk.Entry(self.configframe,width=5)
+        self.speedmultent.grid(column=1,row=1,pady=20,sticky="w")
+        self.speedmultent.insert(tk.END, self.speedmult)
+        
+        # Change size of still screen
+        self.bordersizelbl = tk.Label(self.configframe,text="Border Size")
+        self.bordersizelbl.grid(row=2,pady=20,sticky="w")
+        self.bordersizeent = tk.Entry(self.configframe,width=5)
+        self.bordersizeent.grid(column=1,row=2,pady=20,sticky="w")
+        self.bordersizeent.insert(tk.END, self.bordersize)
+        
+        # Change size of how much is shown during follow
+        self.zoomsizelbl = tk.Label(self.configframe,text="Zoom Size")
+        self.zoomsizelbl.grid(row=3,pady=20,sticky="w")
+        self.zoomsizeent = tk.Entry(self.configframe,width=5)
+        self.zoomsizeent.grid(column=1,row=3,pady=20,sticky="w")
+        self.zoomsizeent.insert(tk.END, self.zoomsize)
+        
+        # Change size of each pixel
+        self.pixlbl = tk.Label(self.configframe,text="Pixel Size")
+        self.pixlbl.grid(row=4,pady=20,sticky="w")
+        self.pixent = tk.Entry(self.configframe,width=5)
+        self.pixent.grid(column=1,row=4,pady=20,sticky="w")
+        self.pixent.insert(tk.END, self.pix)
+        
     # toggle to switch
     def followswitch(self):
         if self.follow == 0:
@@ -55,7 +118,7 @@ class PlayMap:
                 self.screeny = i[1] - self.camcoord[1]
                 if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
                     self.screenobjectcoord.append([self.screenx,self.screeny])
-            self.zoomratio = 10 * self.bordersize / self.zoomsize
+            self.zoomratio = self.pix * self.bordersize / self.zoomsize
             self.screen.delete(tk.ALL)
             self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,fill="red")
             for i in self.screenobjectcoord:
@@ -63,7 +126,7 @@ class PlayMap:
                 self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill=color,outline=color)
             del self.screenobjectcoord[:]
         else:
-            self.set_object()
+            self.set_player()
             self.follow = 0
             # recreate and update player and objects
             self.set_map()

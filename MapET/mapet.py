@@ -27,29 +27,29 @@ class Mapedit:
         # Title of the map, that can be changed and saved
         self.mapnamelabel = tk.Label(self.mapeditframe,text=self.mapname,width=20,font=("Calibri",20))
         self.mapnamelabel.place(relx=.1,rely=.02)
-        
-        # Label for displaying list of coords (should be removed before finalizing)
-        self.showcoord = tk.Label(self.mapeditframe,text=self.objectcoord)
-        self.showcoord.place(relx=0.5,rely=.9,anchor="c")
 
         # Frame for grid
         self.gridframe = tk.Frame(self.mapeditframe)
         self.gridframe.place(relx=.5,rely=.5, anchor="c")
         self.createmapgrid()  # map the grid
+        
+        # Label for displaying list of coords (should be removed before finalizing)
+        self.showcoord = tk.Label(self.mapeditframe,text=self.objectcoord)
+        self.showcoord.place(relx=0.5,rely=.9,anchor="c")
 
         # Set input
         self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
+
+        # Cell types select box
+        self.typeframe = tk.Frame(self.mapeditframe)
+        self.typeframe.place(relx=.1,rely=.2,anchor="nw")
+        self.createtypes()
         
         # Buttons
         self.btnframe = tk.Frame(self.mapeditframe)
         self.btnframe.place(relx=.9,rely=.2,anchor="ne")
         self.createbuttons()
-
-        # Cell types select box
-        self.typeframe = tk.Frame(self.mapeditframe)
-        self.typeframe.place(relx=.15,rely=.2,anchor="n")
-        self.createtypes()
-
+        
 #____________________________Functions__________________________________________________________________________________________________________________________________________________________    
 
     # Creates the center grid for mapedit

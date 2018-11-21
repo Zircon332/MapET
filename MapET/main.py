@@ -112,8 +112,7 @@ class MainApplication(tk.Frame):
                 pass
 
             try:
-                self.cm.pl.screen.destroy()
-                self.cm.pl.switch.destroy()
+                self.cm.pl.playframe.destroy()
             except:
                 pass
 

@@ -4,7 +4,7 @@ import os
 
 # Controls for Map Play
 class SetPlayControls():
-    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,screenobjectcoord,follow):
+    def __init__(self,parent,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,screenobjectcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizeent,zoomsizeent,pixent):
         # Carry over data
         self.parent = parent
         self.playercoord = playercoord
@@ -20,14 +20,26 @@ class SetPlayControls():
         self.follow = follow
         self.screen = screen
         self.player = player
+        self.pix = pix
+        self.playercoordxent = playercoordxent
+        self.playercoordyent = playercoordyent
+        self.speedmultent = speedmultent
+        self.bordersizeent = bordersizeent
+        self.zoomsizeent = zoomsizeent
+        self.pixent = pixent
         
         #Bind movements
-        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.move(x,y))
-        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
-        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
-        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
-        self.parent.bind_all("<Shift_L>", lambda event, x=1,y=0: self.move(x,y))
+##        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.move(x,y))
+##        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
+##        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
+##        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
+        self.parent.bind_all("w", lambda event, x=0,y=-1: self.move(x,y))
+        self.parent.bind_all("s", lambda event, x=0,y=1: self.move(x,y))
+        self.parent.bind_all("a", lambda event, x=-1,y=0: self.move(x,y))
+        self.parent.bind_all("d", lambda event, x=1,y=0: self.move(x,y))
+        self.parent.bind_all("<Return>", lambda event, key="Stuff": self.setconfig(key))
 
+    
     # move the player according to input
     def move(self, x, y):
         self.x, self.y = x, y
@@ -38,18 +50,18 @@ class SetPlayControls():
         self.test_x = self.playercoord[0] + self.x
         self.test_y = self.playercoord[1] + self.y
         if [self.test_x,self.test_y] not in self.objectcoord:            
-            if self.test_x > 0 and self.test_x < (self.bordersize-1):
+            if self.test_x > 0:
                 self.playercoord[0] += self.x
                 self.camcoord[0] += self.x
                 if self.follow == 0:                            # normal moving
-                    self.screen.move(self.player, self.x*10, 0)
+                    self.screen.move(self.player, self.x*self.pix, 0)
                 else:                                           # cam follow move
                     self.cammove()
-            if self.test_y > 0 and self.test_y < (self.bordersize-1):
+            if self.test_y > 0:
                 self.playercoord[1] += self.y
                 self.camcoord[1] += y
                 if self.follow == 0:                            # normal moving
-                    self.screen.move(self.player, 0, self.y*10)
+                    self.screen.move(self.player, 0, self.y*self.pix)
                 else:                                           # cam follow move
                     self.cammove()
         self.screen.update_idletasks()
@@ -62,7 +74,7 @@ class SetPlayControls():
             if self.screenx >= 0 and self.screenx <= self.zoomsize and self.screeny >= 0 and self.screeny <= self.zoomsize:
                 self.screenobjectcoord.append([self.screenx,self.screeny])
         # update screen in camfollow mode
-        self.zoomratio = 10 * self.bordersize / self.zoomsize
+        self.zoomratio = self.pix * self.bordersize / self.zoomsize
         self.screen.delete(tk.ALL)      #Delete previous things in screen
         #Create player at center
         self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,self.zoomsize/2*self.zoomratio+self.zoomratio,fill="red")
@@ -72,7 +84,26 @@ class SetPlayControls():
             self.screen.create_rectangle(i[0]*self.zoomratio,i[1]*self.zoomratio,i[0]*self.zoomratio+self.zoomratio,i[1]*self.zoomratio+self.zoomratio,fill=color,outline=color)
         del self.screenobjectcoord[:]
 
-
+    def setconfig(self,key):
+        print(key)
+        self.playercoord[0] = int(self.playercoordxent.get())
+        self.playercoord[1] = int(self.playercoordyent.get())
+        self.speedmult      = int(self.speedmultent.get())
+        self.bordersize     = int(self.bordersizeent.get())
+        self.zoomsize       = int(self.zoomsizeent.get())
+        self.pix            = int(self.pixent.get())
+        print(self.playercoord,self.speedmult,self.bordersize,self.zoomsize,self.pix)
+        self.screen.focus_set()
+        self.screen.config(width=self.bordersize*self.pix, height=self.bordersize*self.pix)
+        #self.screen.config(height=self.bordersize*self.pix)
+        self.screen.delete(tk.ALL)
+        self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="red")
+        for i in self.objectcoord:
+            color = self.objectcolor[i[0],i[1]]
+            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color)
+        
+        self.move(0,0)
+        
 # Controls for MapEdit
 class SetEditControls:
     def __init__(self,parent,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
