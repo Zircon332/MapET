@@ -33,7 +33,7 @@ class MainApplication(tk.Frame):
         self.filemenu.add_command(label="Exit", command=root.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
-        self.buttonframe = tk.Frame(self, bg="#000", height=1920,width=100,)    # creates buttons and their frame, then place with function
+        self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100,)    # creates buttons and their frame, then place with function
         self.mapselectbtn = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
