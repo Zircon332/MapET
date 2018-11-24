@@ -23,32 +23,34 @@ class PlayMap:
         self.follow = 0
 
         # Frame for this page
-        self.playframe = tk.Frame(self.parent,height=800,width=1200)
-        self.playframe.place(relx=.5,rely=.5,anchor='c')
+        self.mainframe = tk.Frame(self.parent,height=800,width=1200)
+        self.mainframe.place(relx=.5,rely=.5,anchor='c')
+        parent.backbtn.destroy()
+        parent.backbuttonpage(self.mainframe)
 
         # Title of the map, that can be changed and saved
-        self.mapnamelabel = tk.Label(self.playframe,text=self.mapname,width=20,font=("Calibri",20))
+        self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri",20))
         self.mapnamelabel.place(relx=0,rely=.02)
 
         # Playground Screen
-        self.screen = tk.Canvas(self.playframe, bg="Black", width=self.bordersize*self.pix, height=self.bordersize*self.pix, highlightthickness=0,bd=0)
+        self.screen = tk.Canvas(self.mainframe, bg="Black", width=self.bordersize*self.pix, height=self.bordersize*self.pix, highlightthickness=0,bd=0)
         self.screen.place(relx=.5,rely=.5, anchor="c")
         self.set_map()
 
         # Frame for settings
-        self.configframe = tk.Frame(self.playframe)
+        self.configframe = tk.Frame(self.mainframe)
         self.configframe.place(relx=0.05,rely=.2,anchor="nw")
         self.createconfig()
 
         # set key controls
-        self.keyinput = input.SetPlayControls(self.parent,self.playframe,self.screen,self.player,self.playercoord,self.speedmult,
+        self.keyinput = input.SetPlayControls(self.parent,self.mainframe,self.screen,self.player,self.playercoord,self.speedmult,
                                               self.bordersize,self.zoomsize,self.camcoord,self.objectcoord,self.objectcolor,
                                               self.objecttypes,self.objecttypecolor,self.goalcoord,self.follow
                                               ,self.pix,self.playercoordxent,self.playercoordyent,self.speedmultent,
                                               self.bordersizexent,self.bordersizeyent,self.zoomsizeent,self.pixent)
 
         # Command buttons frame
-        self.commandframe = tk.Frame(self.playframe)
+        self.commandframe = tk.Frame(self.mainframe)
         self.commandframe.place(relx=.9,rely=.2,anchor="ne")
 
         # Button to switch camera to follow

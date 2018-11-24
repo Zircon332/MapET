@@ -14,6 +14,8 @@ class ChooseMap():
         self.mapall = tk.Frame(self.parent,width=1000,height=1000)
         self.mapall.place(relx=.48,rely=.48, anchor="c")
 
+        parent.backbuttonpage(self.mapall)
+
         ## Display files in folder
         # list of all files
         self.maps = os.listdir("maps")

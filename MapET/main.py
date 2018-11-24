@@ -44,8 +44,8 @@ class MainApplication(tk.Frame):
         self.placegui()
     
     # def tutorial(self):
-    #     self.buttonframe.destroy()
-    #     self.mapetlogo.destroy()
+    #     self.buttonframe.forget()
+    #     self.mapetlogo.forget()
     #     self.img = tk.PhotoImage(file="images/tutorial.gif")
     #     self.tutorialpanel = tk.Label(self.parent, image = self.img, anchor="c")
     #     self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
@@ -79,11 +79,7 @@ class MainApplication(tk.Frame):
         else: #3
             self.mapetlogo.place_forget() #fix this
             self.buttonframe.place_forget()
-            self.backbuttonpage()
-            if file == "mapselect":
-                self.cm = choosemap.ChooseMap(self.parent, file)
-            elif file == "mapeditor":
-                self.cm = choosemap.ChooseMap(self.parent, file)
+            self.cm = choosemap.ChooseMap(self, file) #calls choosemap
 
     # Hides Settings buttons and display Main buttons
     def settingback(self):
@@ -91,41 +87,12 @@ class MainApplication(tk.Frame):
         self.backbtn.grid_forget()
         self.placegui()
 
-    def backbuttonpage(self):
-        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
+    def backbuttonpage(self,frame):
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(frame),
                                 width=12,padx=3,pady=3, font=("calibri",15))
         self.backbtn.place(anchor="nw", relx=0.02, rely=0.02)
-        # childlist = self.winfo_children()
-
-        # print(childlist)
-
-        # def deleteall(childlist):
-        #     for i in childlist:
-        #         i.destroy()
-        def deleteall():
-            try:
-                self.cm.mapall.destroy()
-            except:
-                pass
-
-            try:
-                self.cm.pl.playframe.destroy()
-            except:
-                pass
-
-            try:
-                self.cm.mp.mapeditframe.destroy()
-            except:
-                pass
-            try:
-                self.cm.pl.keyinput.win.place_forget()
-            except:
-                pass
-            try:
-                self.cm.mp.pl.screen.destroy()
-                self.cm.mp.pl.switch.destroy()
-            except:
-                pass
+        def deleteall(frame):
+            frame.destroy()
             self.backbtn.destroy()
             self.placegui()
 

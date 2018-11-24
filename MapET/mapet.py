@@ -22,28 +22,32 @@ class Mapedit:
         self.end2 = [0,0]
 
         # Frame for this page
-        self.mapeditframe = tk.Frame(self.parent,height=800,width=1200)
-        self.mapeditframe.place(relx=.5,rely=.5,anchor='c')
+        # self.mapeditframe = tk.Frame(self.mainframe,height=800,width=1200)
+        # self.mapeditframe.place(relx=.5,rely=.5,anchor='c')
+        self.mainframe = tk.Frame(self.parent, width=1200, height= 800)
+        self.mainframe.place(relx=.5,rely=.5,anchor="c")
+        parent.backbtn.destroy()
+        parent.backbuttonpage(self.mainframe)
 
         # Title of the map, that can be changed and saved
-        self.mapnamelabel = tk.Label(self.mapeditframe,text=self.mapname,width=20,font=("Calibri",20))
+        self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri",20))
         self.mapnamelabel.place(relx=0,rely=.02)
 
         # Frame for grid
-        self.gridframe = tk.Frame(self.mapeditframe)
+        self.gridframe = tk.Frame(self.mainframe)
         self.gridframe.place(relx=.5,rely=.5, anchor="c")
         self.createmapgrid()  # map the grid
         
         # Set input
-        self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.goalcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
+        self.keyinput = input.SetEditControls(self.mainframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.goalcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
 
         # Cell types select box
-        self.typeframe = tk.Frame(self.mapeditframe)
-        self.typeframe.place(relx=.1,rely=.2,anchor="nw")
+        self.typeframe = tk.Frame(self.mainframe)
+        self.typeframe.place(relx=.05,rely=.2,anchor="nw")
         self.createtypes()
         
         # Buttons
-        self.btnframe = tk.Frame(self.mapeditframe)
+        self.btnframe = tk.Frame(self.mainframe)
         self.btnframe.place(relx=.9,rely=.2,anchor="ne")
         self.createbuttons()
         
@@ -128,7 +132,7 @@ class Mapedit:
     
     # does nothing for now, but it should go to play
     def switchplay(self):
-        self.mapeditframe.destroy()
+        self.mainframe.destroy()
         self.playercoord=[2,2]
         self.pl = play.PlayMap(self.parent, self.mapname, self.objectcoord, self.objectcolor, self.playercoord, self.objecttypes, self.objecttypecolor, self.goalcoord)
 
