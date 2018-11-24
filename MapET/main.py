@@ -92,7 +92,7 @@ class MainApplication(tk.Frame):
         self.placegui()
 
     def backbuttonpage(self):
-        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(childlist),
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
                                 width=12,padx=3,pady=3, font=("calibri",15))
         self.backbtn.place(anchor="nw", relx=0.02, rely=0.02)
         # childlist = self.winfo_children()
@@ -102,6 +102,7 @@ class MainApplication(tk.Frame):
         # def deleteall(childlist):
         #     for i in childlist:
         #         i.destroy()
+        def deleteall():
             try:
                 self.cm.mapall.destroy()
             except:
