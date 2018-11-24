@@ -5,6 +5,8 @@ import play
 import mapet
 import pickle
 
+universalfont = ("calibri",20)
+
 class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -20,46 +22,34 @@ class MainApplication(tk.Frame):
     def creategui(self):    # Creates logo, menubar and buttons
         # MapET Logo Banner
         self.logoimg = tk.PhotoImage(file="images/logo.gif")
-        self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
+        self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor = "c")
         self.mapetlogo.image = self.logoimg
-
-        # Menu bar
-        self.menubar = tk.Menu(self.parent)
-        # 'File' Menu Bar
-        self.filemenu = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Open", command=lambda:self.filedialog())
-        self.filemenu.add_command(label="Save",  command=lambda:print("test"))
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Exit", command=root.quit)
-        self.menubar.add_cascade(label="File", menu=self.filemenu)
 
         self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100,)    # creates buttons and their frame, then place with function
         self.mapselectbtn = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
         self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",
                                     command=lambda:self.fileopening("mapeditor"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
         self.settingsbtn = tk.Button(self.buttonframe,
                                     text="Settings",command=lambda:self.fileopening("settings"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
         self.tutorialbtn = tk.Button(self.buttonframe,
-                                    text="Tutorial",command=lambda:self.tutorial(),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    text="Tutorial",command=lambda:print("test"),
+                                    width=12,padx=10,pady=20,font=(universalfont))
         self.programexitbtn = tk.Button(self.buttonframe, text="Quit",
                                      command=root.destroy,
-                                     width=12,padx=10,pady=20, font=("calibri",20))
+                                     width=12,padx=10,pady=20, font=(universalfont))
         self.placegui()
     
-    def tutorial(self):
-        self.buttonframe.destroy()
-        self.mapetlogo.forget()
-        img = tk.PhotoImage(file="images/tutorial.gif")
-        self.tutorialpanel = tk.Label(self, image = img)
-        self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
-        self.tutorialpanel.pack(expand = "yes")
-        self.backbuttonpage()
-
+    # def tutorial(self):
+    #     self.buttonframe.destroy()
+    #     self.mapetlogo.destroy()
+    #     self.img = tk.PhotoImage(file="images/tutorial.gif")
+    #     self.tutorialpanel = tk.Label(self.parent, image = self.img, anchor="c")
+    #     self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
+    #     self.backbuttonpage()
 
     def placegui(self):    # display main buttons
         self.mapetlogo.place(relx=.5, rely=.15, anchor="c")
@@ -70,18 +60,24 @@ class MainApplication(tk.Frame):
         self.tutorialbtn.grid(row=3,ipadx=10,ipady=10)
         self.programexitbtn.grid(row=4,ipadx=10,ipady=10)
 
-    
     def fileopening(self,file):    # #1-Hides Main buttons, #2-then display Settings buttons / #3-display Map Selection
         for child in self.buttonframe.winfo_children(): #1
             child.grid_forget()
-        self.settingsbtn = tk.Button(self.buttonframe,
-                                    text="Settings",    #2
+        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",    #2
                                     command=lambda:self.fileopening("settings"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
         if file == "settings":
-            self.settings()
+            self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
+                                    command=lambda:self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen')), #Toggles Fullscreen
+                                    width=12,padx=10,pady=10, font=(universalfont))
+            self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10)
+            self.backbtn = tk.Button(self.buttonframe, text="Back",
+                                    command=lambda:self.settingback(),
+                                    width=12,padx=10,pady=10, font=(universalfont))
+            self.backbtn.grid(row=3,ipadx=10,ipady=10)
+
         else: #3
-            self.mapetlogo.place_forget()
+            self.mapetlogo.place_forget() #fix this
             self.buttonframe.place_forget()
             self.backbuttonpage()
             if file == "mapselect":
@@ -95,30 +91,17 @@ class MainApplication(tk.Frame):
         self.backbtn.grid_forget()
         self.placegui()
 
-    # display Settings button
-    def settings(self):
-        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
-                                    command=lambda:self.fullscreen(),
-                                    width=12,padx=10,pady=10, font=("calibri",20))
-        self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10)
-        self.backbtn = tk.Button(self.buttonframe, text="Back",
-                                    command=lambda:self.settingback(),
-                                    width=12,padx=10,pady=10, font=("calibri",20))
-        self.backbtn.grid(row=3,ipadx=10,ipady=10)
-    # Toggle Fullscreen
-    def fullscreen(self):
-        self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen'))
-
-    # Opens file dialog to choose a file
-    def filedialog(self):
-        self.filedialogpath = filedialog.askopenfilename()
-
     def backbuttonpage(self):
-        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(),
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(childlist),
                                 width=12,padx=3,pady=3, font=("calibri",15))
         self.backbtn.place(anchor="nw", relx=0.02, rely=0.02)
+        # childlist = self.winfo_children()
 
-        def deleteall():
+        # print(childlist)
+
+        # def deleteall(childlist):
+        #     for i in childlist:
+        #         i.destroy()
             try:
                 self.cm.mapall.destroy()
             except:
