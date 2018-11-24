@@ -1,0 +1,7 @@
+PlayerCoord=[2,2];
+Gridsize=20;
+ObjectCoord=[];
+ObjectColor={};
+Objecttypes=('land', 'water', 'walls', 'lava', 'tree', 'deep water', 'space', 'log');
+ObjectTypeColor=('white', 'cyan', 'grey', 'red', 'green', 'blue', 'black', 'brown');
+GoalCoord=[[7, 16], [7, 7]]

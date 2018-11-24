@@ -70,14 +70,15 @@ class ChooseMap():
         objectcolor = ast.literal_eval(data[3].split("=")[1])
         objecttypes = ast.literal_eval(data[4].split("=")[1])
         objecttypecolor = ast.literal_eval(data[5].split("=")[1])
+        goalcoord = ast.literal_eval(data[6].split("=")[1])
     
         print("\n\nOpening",mapname)
         if self.file == "mapselect":
             self.mapall.place_forget()
-            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor)
+            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor,goalcoord)
         elif self.file == "mapeditor":
             self.mapall.place_forget()
-            self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor)
+            self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord)
 
 ##        except:
 ##            print("Save file doesn't exist")
@@ -86,8 +87,9 @@ class ChooseMap():
     def createmap(self):
         def replace(warnroot,mapname):
             playercoord = [2,2]                                                                     # Default coord at 2,2
-            objecttypes = ("land", "water", "walls", "lava", "home", "goal", "spikes", "door")      # Default object list
+            objecttypes = ("land", "water", "walls", "lava", "tree", "deep water", "space", "log")  # Default object list
             objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects 
+            goalcoord = []
 
             for i in os.listdir(os.path.join("maps",mapname)):
                 os.remove(os.path.join("maps",mapname,i))
@@ -99,18 +101,19 @@ class ChooseMap():
             
             if self.file == "mapselect":
                 self.mapall.place_forget()
-                self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor)
+                self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord)
             elif self.file == "mapeditor":
                 self.mapall.place_forget()
-                self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor)
+                self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor,goalcoord)
         
         # private function for button when creating map
         def makenewmap():
             # Iniaializing variables 
             mapname = entry.get()                                                                   # Get the entered map name
             playercoord = [2,2]                                                                     # Default coord at 2,2
-            objecttypes = ("land", "water", "walls", "lava", "home", "goal", "spikes", "door")      # Default object list
-            objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects 
+            objecttypes = ("land", "water", "walls", "lava", "tree", "deep water", "space", "log")  # Default object list
+            objecttypecolor = ("white", "cyan", "grey", "red", "green", "blue", "black", "brown")   # Default colors for objects
+            goalcoord = []
         
             # create a directory for the map, if it already exists, ask if replace
             try:
@@ -121,14 +124,15 @@ class ChooseMap():
 
                 if self.file == "mapselect":
                     self.mapall.place_forget()
-                    self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor)
+                    self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord)
                 elif self.file == "mapeditor":
                     self.mapall.place_forget()
-                    self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor)
+                    self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor,goalcoord)
 
             # popup root when file already exists
             except FileExistsError:
                 warnroot = tk.Tk()
+                warnroot.geometry("200x100+250+250")
                 warning = tk.Label(warnroot, text="File already exists, do you want to replace it?")
                 warning.grid(row=0,columnspan=2)
                 yesbtn = tk.Button(warnroot, text="Replace",command=lambda name=mapname:replace(warnroot,name))
@@ -140,7 +144,7 @@ class ChooseMap():
 
         # create tk for inputting name
         newmaproot = tk.Tk()
-        newmaproot.geometry("400x100+50+50")
+        newmaproot.geometry("200x100+250+250")
         text = tk.Label(newmaproot,text="Enter the name of the map")
         text.grid(row=0,pady=5)
         entry = tk.Entry(newmaproot,width=15)

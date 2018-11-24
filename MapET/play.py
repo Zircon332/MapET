@@ -5,7 +5,7 @@ import choosemap
 import pickle
 
 class PlayMap:
-    def __init__(self, parent, mapname, objectcoord, objectcolor, playercoord, objecttypes, objecttypecolor):
+    def __init__(self, parent, mapname, objectcoord, objectcolor, playercoord, objecttypes, objecttypecolor, goalcoord):
         self.parent = parent
         self.mapname = mapname  
         self.playercoord = playercoord  # Spawn point for player
@@ -19,7 +19,7 @@ class PlayMap:
         self.objectcolor = objectcolor
         self.objecttypes = objecttypes
         self.objecttypecolor = objecttypecolor
-        self.screenobjectcoord = []
+        self.goalcoord = goalcoord
         self.follow = 0
 
         # Frame for this page
@@ -28,7 +28,7 @@ class PlayMap:
 
         # Title of the map, that can be changed and saved
         self.mapnamelabel = tk.Label(self.playframe,text=self.mapname,width=20,font=("Calibri",20))
-        self.mapnamelabel.place(relx=.1,rely=.02)
+        self.mapnamelabel.place(relx=0,rely=.02)
 
         # Playground Screen
         self.screen = tk.Canvas(self.playframe, bg="Black", width=self.bordersize*self.pix, height=self.bordersize*self.pix, highlightthickness=0,bd=0)
@@ -37,18 +37,18 @@ class PlayMap:
 
         # Frame for settings
         self.configframe = tk.Frame(self.playframe)
-        self.configframe.place(relx=.1,rely=.2,anchor="nw")
+        self.configframe.place(relx=0.05,rely=.2,anchor="nw")
         self.createconfig()
 
         # set key controls
-        self.keyinput = input.SetPlayControls(self.playframe,self.screen,self.player,self.playercoord,self.speedmult,
+        self.keyinput = input.SetPlayControls(self.parent,self.playframe,self.screen,self.player,self.playercoord,self.speedmult,
                                               self.bordersize,self.zoomsize,self.camcoord,self.objectcoord,self.objectcolor,
-                                              self.objecttypes,self.objecttypecolor,self.screenobjectcoord,self.follow,self.pix,
-                                              self.playercoordxent,self.playercoordyent,self.speedmultent,
+                                              self.objecttypes,self.objecttypecolor,self.goalcoord,self.follow
+                                              ,self.pix,self.playercoordxent,self.playercoordyent,self.speedmultent,
                                               self.bordersizexent,self.bordersizeyent,self.zoomsizeent,self.pixent)
 
         # Command buttons frame
-        self.commandframe = tk.Frame(self.parent)
+        self.commandframe = tk.Frame(self.playframe)
         self.commandframe.place(relx=.9,rely=.2,anchor="ne")
 
         # Button to switch camera to follow
@@ -68,6 +68,8 @@ class PlayMap:
         for i in self.objectcoord:
             color = self.objectcolor[i[0],i[1]]
             self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color)
+        for i in self.goalcoord:
+            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill="lightgreen",outline="lightgreen")
 
     # Allows users to change settings/configurations
     def createconfig(self):

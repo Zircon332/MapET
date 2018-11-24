@@ -121,6 +121,10 @@ class MainApplication(tk.Frame):
             except:
                 pass
             try:
+                self.cm.pl.keyinput.win.place_forget()
+            except:
+                pass
+            try:
                 self.cm.mp.pl.screen.destroy()
                 self.cm.mp.pl.switch.destroy()
             except:
