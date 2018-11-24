@@ -5,7 +5,7 @@ import choosemap
 import pickle
 
 class PlayMap:
-    def __init__(self, parent, mapname, objectcoord, objectcolor, playercoord, objecttypes, objecttypecolor, goalcoord):
+    def __init__(self, parent, mapname, objectcoord, objectcolor, playercoord, objecttypes, objecttypecolor, goalcoord, movekey):
         self.parent = parent
         self.mapname = mapname  
         self.playercoord = playercoord  # Spawn point for player
@@ -20,6 +20,7 @@ class PlayMap:
         self.objecttypes = objecttypes
         self.objecttypecolor = objecttypecolor
         self.goalcoord = goalcoord
+        self.movekey = movekey
         self.follow = 0
 
         # Frame for this page
@@ -47,7 +48,7 @@ class PlayMap:
                                               self.bordersize,self.zoomsize,self.camcoord,self.objectcoord,self.objectcolor,
                                               self.objecttypes,self.objecttypecolor,self.goalcoord,self.follow
                                               ,self.pix,self.playercoordxent,self.playercoordyent,self.speedmultent,
-                                              self.bordersizexent,self.bordersizeyent,self.zoomsizeent,self.pixent)
+                                              self.bordersizexent,self.bordersizeyent,self.zoomsizeent,self.pixent,self.movekey)
 
         # Command buttons frame
         self.commandframe = tk.Frame(self.mainframe)

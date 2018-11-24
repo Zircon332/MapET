@@ -6,15 +6,16 @@ import mapet
 import pickle
 
 class ChooseMap():
-    def __init__(self, parent, file):
+    def __init__(self, parent, file, movekey):
         self.parent = parent
         self.file = file
+        self.movekey = movekey
 
         # container for this whole screen
-        self.mapall = tk.Frame(self.parent,width=1000,height=1000)
-        self.mapall.place(relx=.48,rely=.48, anchor="c")
+        self.mainframe = tk.Frame(self.parent,width=1000,height=1000)
+        self.mainframe.place(relx=.48,rely=.48, anchor="c")
 
-        parent.backbuttonpage(self.mapall)
+        parent.backbuttonpage(self.mainframe)
 
         ## Display files in folder
         # list of all files
@@ -30,7 +31,7 @@ class ChooseMap():
         for i in range(len(self.maps)+1):
             if i < len(self.maps):
                 mapname = str(self.maps[i])
-                self.mapbox.append(tk.Frame(self.mapall,width=200,height=200,bd=1,padx=50,pady=50))
+                self.mapbox.append(tk.Frame(self.mainframe,width=200,height=200,bd=1,padx=50,pady=50))
                 try:
                     self.banner = tk.PhotoImage(file=os.path.join("maps",mapname,"banner.gif"))
                     self.mapimg.append(tk.Label(self.mapbox[i],width=200,height=100,image=self.banner))
@@ -43,7 +44,7 @@ class ChooseMap():
 
             else:
                 # create-new-map frame
-                self.mapbox.append(tk.Frame(self.mapall,width=200,height=200,bd=1,padx=50,pady=50))
+                self.mapbox.append(tk.Frame(self.mainframe,width=200,height=200,bd=1,padx=50,pady=50))
                 self.mapimg.append(tk.Label(self.mapbox[i],width=20,height=10,bg="grey"))
                 self.maptext.append(tk.Label(self.mapbox[i],text="Create New",width=10,height=1,font=("arial",20)))
                 self.mapbtn.append(tk.Button(self.mapbox[i],text="Choose map",width=10,height=1,command=self.createmap,font=("arial",15)))
@@ -76,11 +77,11 @@ class ChooseMap():
     
         print("\n\nOpening",mapname)
         if self.file == "mapselect":
-            self.mapall.place_forget()
-            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor,goalcoord)
+            self.mainframe.place_forget()
+            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
         elif self.file == "mapeditor":
-            self.mapall.place_forget()
-            self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord)
+            self.mainframe.place_forget()
+            self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,self.movekey)
 
 ##        except:
 ##            print("Save file doesn't exist")
@@ -102,11 +103,11 @@ class ChooseMap():
             warnroot.destroy()
             
             if self.file == "mapselect":
-                self.mapall.place_forget()
-                self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord)
+                self.mainframe.place_forget()
+                self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
             elif self.file == "mapeditor":
-                self.mapall.place_forget()
-                self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor,goalcoord)
+                self.mainframe.place_forget()
+                self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor,goalcoord,self.movekey)
         
         # private function for button when creating map
         def makenewmap():
@@ -125,33 +126,33 @@ class ChooseMap():
                 newmaproot.destroy()
 
                 if self.file == "mapselect":
-                    self.mapall.place_forget()
-                    self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord)
+                    self.mainframe.place_forget()
+                    self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
                 elif self.file == "mapeditor":
-                    self.mapall.place_forget()
-                    self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor,goalcoord)
+                    self.mainframe.place_forget()
+                    self.mp = mapet.Mapedit(self.parent,mapname,20,[],{},objecttypes,objecttypecolor,goalcoord,self.movekey)
 
             # popup root when file already exists
             except FileExistsError:
                 warnroot = tk.Tk()
-                warnroot.geometry("200x100+250+250")
-                warning = tk.Label(warnroot, text="File already exists, do you want to replace it?")
+                warnroot.geometry("300x100+550+300")
+                warning = tk.Label(warnroot, text="File already exists, do you want to replace it?",font=("calibri",12))
                 warning.grid(row=0,columnspan=2)
-                yesbtn = tk.Button(warnroot, text="Replace",command=lambda name=mapname:replace(warnroot,name))
+                yesbtn = tk.Button(warnroot, text="Replace",command=lambda name=mapname:replace(warnroot,name),font=("calibri",12))
                 yesbtn.grid(row=1,column=0)
-                cancelbtn = tk.Button(warnroot, text="Cancel",command=lambda:warnroot.destroy())
+                cancelbtn = tk.Button(warnroot, text="Cancel",command=lambda:warnroot.destroy(),font=("calibri",12))
                 cancelbtn.grid(row=1,column=1)
                 warnroot.mainloop()
 
 
         # create tk for inputting name
         newmaproot = tk.Tk()
-        newmaproot.geometry("200x100+250+250")
-        text = tk.Label(newmaproot,text="Enter the name of the map")
+        newmaproot.geometry("300x200+500+250")
+        text = tk.Label(newmaproot,text="Enter the name of the map",width=25,font=("calibri",15))
         text.grid(row=0,pady=5)
-        entry = tk.Entry(newmaproot,width=15)
+        entry = tk.Entry(newmaproot,width=25,font=("calibri",15))
         entry.grid(row=1,pady=5)
         entry.focus_set()
-        button = tk.Button(newmaproot,text="Done",command=makenewmap)
+        button = tk.Button(newmaproot,text="Done",command=makenewmap,font=("calibri",15))
         button.grid(row=2,pady=5)
         
