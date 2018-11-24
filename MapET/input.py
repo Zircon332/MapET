@@ -225,7 +225,7 @@ class SetEditControls:
         self.end2 = self.end1
         self.end1 = [x,y]
         if self.color == "lightgreen":                                      # For goals
-            if self.pix[x,y].cget("bg") == self.color:
+            if self.pix[x,y].cget("bg") == self.color:      
                 self.goalcoord.remove([x+self.xshift,y+self.yshift])        # remove coord
                 self.pix[x,y].config(bg="white")                            # remove display on that grid
             elif self.pix[x,y].cget("bg") == "white":
@@ -247,9 +247,9 @@ class SetEditControls:
             elif self.pix[x,y].cget("bg") != "white":
                 self.objectcolor[x+self.xshift,y+self.yshift] = self.color  # changed object color at that coord
                 self.pix[x,y].config(bg=self.color)                         # Display color at that grid
-        else:
+        else:                                                               # When white is chosen, for removing object
             if self.pix[x,y].cget("bg") != "white":
-                self.objectcoord.remove([x+self.xshift,y+self.yshift])        # remove coord
+                self.objectcoord.remove([x+self.xshift,y+self.yshift])      # remove coord
                 del self.objectcolor[x+self.xshift,y+self.yshift]           # remove object color at that coord
                 self.pix[x,y].config(bg=self.color)                         # Display color at that grid
             

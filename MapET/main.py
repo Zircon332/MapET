@@ -17,6 +17,8 @@ class MainApplication(tk.Frame):
         self.parent.attributes("-fullscreen", False)
         self.creategui()
 
+        self.movekey = 0
+
     def creategui(self):    # Creates logo, menubar and buttons
         # MapET Logo Banner
         self.logoimg = tk.PhotoImage(file="images/logo.gif")
@@ -92,19 +94,35 @@ class MainApplication(tk.Frame):
     # Hides Settings buttons and display Main buttons
     def settingback(self):
         self.fullscreenbtn.grid_forget()
+        self.movecontrols.grid_forget()
         self.backbtn.grid_forget()
         self.placegui()
 
+    def changecontrol(self):
+        if self.movekey == 0:
+            self.movekey = 1
+            self.movecontrols.config(text="Move controls\n(W A S D)")
+        else:
+            self.movekey = 0
+            self.movecontrols.config(text="Move controls\n(↑ ↓ ← →)")
+    
     # display Settings button
     def settings(self):
         self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
                                     command=lambda:self.fullscreen(),
                                     width=12,padx=10,pady=10, font=("calibri",20))
-        self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10)
+        self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10,columnspan=2)
+        self.movecontrols =  tk.Button(self.buttonframe,text="Move controls\n(↑ ↓ ← →)",
+                                    command=lambda:self.changecontrol(),
+                                    width=12,padx=10,pady=10, font=("calibri",20))
+        self.movecontrols.grid(row=1,ipadx=10,ipady=10,column=0)
         self.backbtn = tk.Button(self.buttonframe, text="Back",
                                     command=lambda:self.settingback(),
                                     width=12,padx=10,pady=10, font=("calibri",20))
-        self.backbtn.grid(row=3,ipadx=10,ipady=10)
+        self.backbtn.grid(row=3,ipadx=10,ipady=10,columnspan=2)
+
+
+
     # Toggle Fullscreen
     def fullscreen(self):
         self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen'))
