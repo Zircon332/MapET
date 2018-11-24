@@ -18,7 +18,7 @@ class SetMainControl():
 
 # Controls for Map Play
 class SetPlayControls():
-    def __init__(self,parent,playframe,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizexent,bordersizeyent,zoomsizeent,pixent):
+    def __init__(self,parent,playframe,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizexent,bordersizeyent,zoomsizeent,pixent,movekey):
         # Carry over data
         self.parent = parent
         self.playframe = playframe
@@ -46,16 +46,20 @@ class SetPlayControls():
         self.bordersizeyent = bordersizeyent
         self.zoomsizeent = zoomsizeent
         self.pixent = pixent
+        self.movekey = movekey
         
         #Bind movements
-        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.move(x,y))
-        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
-        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
-        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
-        self.parent.bind_all("w", lambda event, x=0,y=-1: self.move(x,y))
-        self.parent.bind_all("s", lambda event, x=0,y=1: self.move(x,y))
-        self.parent.bind_all("a", lambda event, x=-1,y=0: self.move(x,y))
-        self.parent.bind_all("d", lambda event, x=1,y=0: self.move(x,y))
+        if self.movekey == 0 or self.movekey == 2:
+            self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.move(x,y))
+            self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
+            self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
+            self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
+        if self.movekey == 1 or self.movekey == 2:
+            self.parent.bind_all("w", lambda event, x=0,y=-1: self.move(x,y))
+            self.parent.bind_all("s", lambda event, x=0,y=1: self.move(x,y))
+            self.parent.bind_all("a", lambda event, x=-1,y=0: self.move(x,y))
+            self.parent.bind_all("d", lambda event, x=1,y=0: self.move(x,y))
+            
         self.parent.bind_all("<Return>", lambda event, key=None: self.setconfig(key))    # Also restarts the map
 
     

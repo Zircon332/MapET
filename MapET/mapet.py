@@ -7,7 +7,7 @@ import play
 import os
 
 class Mapedit:    
-    def __init__(self,parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord):
+    def __init__(self,parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,movekey):
         self.parent    =  parent
         self.gridsize  =  gridsize              # Number that represents the square size
         self.objectcoord = objectcoord          # Objects are stored as [xcoord, ycoord] (list)
@@ -16,6 +16,7 @@ class Mapedit:
         self.objecttypecolor = objecttypecolor  # List of color of each object
         self.mapname   =  mapname               # Name of opened map
         self.goalcoord = goalcoord              # List of coords
+        self.movekey = movekey
         
         # Stores the last two coords selected
         self.end1 = [0,0]
@@ -35,7 +36,7 @@ class Mapedit:
         self.createmapgrid()  # map the grid
         
         # Set input
-        self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.goalcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2)
+        self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.goalcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2, self.movekey)
 
         # Cell types select box
         self.typeframe = tk.Frame(self.mapeditframe)
