@@ -106,7 +106,7 @@ class MainApplication(tk.Frame):
     # display Settings button
     def settings(self):
         self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
-                                    command=self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen')),
+                                    command=lambda:self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen')),
                                     width=12,padx=10,pady=10, font=("calibri",20))
         self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10,columnspan=2)
         self.movecontrols =  tk.Button(self.buttonframe,text="Move controls\n(↑ ↓ ← →)",
