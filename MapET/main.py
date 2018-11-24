@@ -83,7 +83,7 @@ class MainApplication(tk.Frame):
         else: #3
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
-            self.cm = choosemap.ChooseMap(self, file) #calls choosemap
+            self.cm = choosemap.ChooseMap(self, file, self.movekey) #calls choosemap
 
     # Hides Settings buttons and display Main buttons
     def settingback(self):
