@@ -33,7 +33,7 @@ class MainApplication(tk.Frame):
         self.filemenu.add_command(label="Exit", command=root.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
-        self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100)    # creates buttons and their frame, then place with function
+        self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100,)    # creates buttons and their frame, then place with function
         self.mapselectbtn = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
@@ -43,10 +43,23 @@ class MainApplication(tk.Frame):
         self.settingsbtn = tk.Button(self.buttonframe,
                                     text="Settings",command=lambda:self.fileopening("settings"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
+        self.tutorialbtn = tk.Button(self.buttonframe,
+                                    text="Tutorial",command=lambda:self.tutorial(),
+                                    width=12,padx=10,pady=20,font=("calibri",20))
         self.programexitbtn = tk.Button(self.buttonframe, text="Quit",
                                      command=root.destroy,
                                      width=12,padx=10,pady=20, font=("calibri",20))
         self.placegui()
+    
+    def tutorial(self):
+        self.buttonframe.destroy()
+        self.mapetlogo.forget()
+        img = tk.PhotoImage(file="images/tutorial.gif")
+        self.tutorialpanel = tk.Label(self, image = img)
+        self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
+        self.tutorialpanel.pack(expand = "yes")
+        self.backbuttonpage()
+
 
     def placegui(self):    # display main buttons
         self.mapetlogo.place(relx=.5, rely=.15, anchor="c")
@@ -54,7 +67,8 @@ class MainApplication(tk.Frame):
         self.mapselectbtn.grid(row=0,ipadx=10,ipady=10)
         self.mapetbtn.grid(row=1,ipadx=10,ipady=10)
         self.settingsbtn.grid(row=2,ipadx=10,ipady=10)
-        self.programexitbtn.grid(row=3,ipadx=10,ipady=10)
+        self.tutorialbtn.grid(row=3,ipadx=10,ipady=10)
+        self.programexitbtn.grid(row=4,ipadx=10,ipady=10)
 
     
     def fileopening(self,file):    # #1-Hides Main buttons, #2-then display Settings buttons / #3-display Map Selection
@@ -69,11 +83,10 @@ class MainApplication(tk.Frame):
         else: #3
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
+            self.backbuttonpage()
             if file == "mapselect":
-                self.backbuttonpage()
                 self.cm = choosemap.ChooseMap(self.parent, file)
             elif file == "mapeditor":
-                self.backbuttonpage()
                 self.cm = choosemap.ChooseMap(self.parent, file)
 
     # Hides Settings buttons and display Main buttons
