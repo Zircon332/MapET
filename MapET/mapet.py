@@ -40,7 +40,7 @@ class Mapedit:
         self.createmapgrid()  # map the grid
         
         # Set input
-        self.keyinput = input.SetEditControls(self.mapeditframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.goalcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2, self.movekey)
+        self.keyinput = input.SetEditControls(self.mainframe, self.gridsize, self.objectcoord, self.objectcolor, self.objecttypes, self.objecttypecolor, self.goalcoord, self.gridaxisx, self.gridaxisy, self.xshift, self.yshift, self.pix, self.end1, self.end2, self.movekey)
 
         # Cell types select box
         self.typeframe = tk.Frame(self.mainframe)

@@ -149,7 +149,7 @@ class SetPlayControls():
         
 # Controls for MapEdit
 class SetEditControls:
-    def __init__(self,parent,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2):
+    def __init__(self,parent,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2,movekey):
         # Carry over data
         self.parent = parent
         self.gridsize = gridsize
@@ -162,6 +162,7 @@ class SetEditControls:
         self.gridaxisy = gridaxisy
         self.xshift = xshift
         self.yshift = yshift
+        self.movekey = movekey
         
         self.pix = pix
         self.end1 = end1
@@ -169,14 +170,16 @@ class SetEditControls:
         self.cameracoord = [0,0]
         self.color = "grey"             # Default chosen color
 
-        self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
-        self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
-        self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmap(x,y))
-        self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmap(x,y))
-        self.parent.bind_all("w", lambda event, x=0,y=-1: self.shiftmap(x,y))
-        self.parent.bind_all("s", lambda event, x=0,y=1: self.shiftmap(x,y))
-        self.parent.bind_all("a", lambda event, x=-1,y=0: self.shiftmap(x,y))
-        self.parent.bind_all("d", lambda event, x=1,y=0: self.shiftmap(x,y))
+        if self.movekey == 0 or self.movekey == 2:
+            self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
+            self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
+            self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmap(x,y))
+            self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmap(x,y))
+        if self.movekey == 1 or self.movekey == 2:
+            self.parent.bind_all("w", lambda event, x=0,y=-1: self.shiftmap(x,y))
+            self.parent.bind_all("s", lambda event, x=0,y=1: self.shiftmap(x,y))
+            self.parent.bind_all("a", lambda event, x=-1,y=0: self.shiftmap(x,y))
+            self.parent.bind_all("d", lambda event, x=1,y=0: self.shiftmap(x,y))
 
         # Bind clicks to grid
         for x in range(self.gridsize):
