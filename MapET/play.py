@@ -136,7 +136,7 @@ class PlayMap:
     def save(self):
         with open(os.path.join("maps",self.mapname,"data.txt"),"w") as self.datamap:
             self.datamap.write(self.mapname)
-            self.datamap.write(self.bgcolor)
+            # self.datamap.write(self.bgcolor)
 
         # Saves the location where the character is before quitting
         with open(os.path.join("maps",self.mapname,"playerdata.txt"),"w") as self.playerdata:
