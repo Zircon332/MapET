@@ -6,28 +6,28 @@ import pickle
 
 class PlayMap:
     def __init__(self, parent, mapname, objectcoord, objectcolor, playercoord, objecttypes, objecttypecolor, goalcoord, movekey):
-        self.parent = parent
-        self.mapname = mapname  
-        self.playercoord = playercoord  # Spawn point for player
-        self.speedmult = 1              # How far the player moves each press
-        self.bordersize = 60            # Size of still screen (in terms of how many pixels is shown in each axis)
-        self.zoomsize = 20              # Size of how much is shown when followig player
-        self.pix = 10                   # Size of each pixel in screen
+        self.parent         = parent
+        self.mapname        = mapname  
+        self.playercoord    = playercoord    # Spawn point for player
+        self.speedmult      = 1              # How far the player moves each press
+        self.bordersize     = 60             # Size of still screen (in terms of how many pixels is shown in each axis)
+        self.zoomsize       = 20             # Size of how much is shown when followig player
+        self.pix            = 10             # Size of each pixel in screen
         #Camera position, top left from position of player
-        self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
-        self.objectcoord = objectcoord
-        self.objectcolor = objectcolor
-        self.objecttypes = objecttypes
-        self.objecttypecolor = objecttypecolor
-        self.goalcoord = goalcoord
-        self.movekey = movekey
-        self.follow = 0
+        self.camcoord           = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]
+        self.objectcoord        = objectcoord
+        self.objectcolor        = objectcolor
+        self.objecttypes        = objecttypes
+        self.objecttypecolor    = objecttypecolor
+        self.goalcoord          = goalcoord
+        self.movekey            = movekey
+        self.follow             = 0
 
         # Frame for this page
         self.mainframe = tk.Frame(self.parent,height=800,width=1200)
         self.mainframe.place(relx=.5,rely=.5,anchor='c')
         parent.backbtn.destroy()
-        parent.backbuttonpage(self.mainframe)
+        parent.backbutton(self.mainframe)
 
         # Title of the map, that can be changed and saved
         self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri",20))

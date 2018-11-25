@@ -8,10 +8,10 @@ import pickle
 class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        self.parent = parent
+        self.parent         = parent
         self.parent.title("MapET")
-        self.screen_width = self.parent.winfo_screenwidth()
-        self.screen_height = self.parent.winfo_screenheight()
+        self.screen_width   = self.parent.winfo_screenwidth()
+        self.screen_height  = self.parent.winfo_screenheight()
         self.parent.geometry("%dx%d+%d+%d" % (self.screen_width,self.screen_height,0,0))
         self.parent.attributes("-fullscreen", False)
         self.creategui()
@@ -20,45 +20,36 @@ class MainApplication(tk.Frame):
 
     def creategui(self):    # Creates logo, menubar and buttons
         # MapET Logo Banner
-        self.logoimg = tk.PhotoImage(file="images/logo.gif")
-        self.mapetlogo =  tk.Label(self.parent, image=self.logoimg,anchor="c")
-        self.mapetlogo.image = self.logoimg
+        self.logoimg            = tk.PhotoImage(file="images/logo.gif")
+        self.mapetlogo          =  tk.Label(self.parent, image=self.logoimg,anchor="c")
+        self.mapetlogo.image    = self.logoimg
 
-        # Menu bar
-        self.menubar = tk.Menu(self.parent)
-        # 'File' Menu Bar
-        self.filemenu = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Open", command=lambda:self.filedialog())
-        self.filemenu.add_command(label="Save",  command=lambda:print("test"))
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Exit", command=self.parent.quit)
-        self.menubar.add_cascade(label="File", menu=self.filemenu)
-
-        self.buttonframe = tk.Frame(self, bg="black", height=1920,width=100,)    # creates buttons and their frame, then place with function
-        self.mapselectbtn = tk.Button(self.buttonframe,text="Play Map",
+        self.buttonframe        = tk.Frame(self, bg="black", height=1920,width=100,)    # creates buttons and their frame, then place with function
+        self.mapselectbtn       = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
-        self.mapetbtn = tk.Button(self.buttonframe,text="Map Editor",
+        self.mapetbtn           = tk.Button(self.buttonframe,text="Map Editor",
                                     command=lambda:self.fileopening("mapeditor"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
-        self.settingsbtn = tk.Button(self.buttonframe,
+        self.settingsbtn        = tk.Button(self.buttonframe,
                                     text="Settings",command=lambda:self.fileopening("settings"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
-        self.tutorialbtn = tk.Button(self.buttonframe,
+        self.tutorialbtn        = tk.Button(self.buttonframe,
                                     text="Tutorial",command=lambda:self.tutorial(),
                                     width=12,padx=10,pady=20,font=("calibri",20))
-        self.programexitbtn = tk.Button(self.buttonframe, text="Quit",
+        self.programexitbtn     = tk.Button(self.buttonframe, text="Quit",
                                      command=self.parent.destroy,
                                      width=12,padx=10,pady=20, font=("calibri",20))
         self.placegui()
     
-    # def tutorial(self):
-    #     self.buttonframe.forget()
-    #     self.mapetlogo.forget()
-    #     self.img = tk.PhotoImage(file="images/tutorial.gif")
-    #     self.tutorialpanel = tk.Label(self.parent, image = self.img, anchor="c")
-    #     self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
-    #     self.backbuttonpage()
+    def tutorial(self):
+        for child in self.buttonframe.winfo_children(): #1
+            child.grid_forget()
+        self.mainframe      = tk.Frame(self.parent,width=1000,height=1000)
+        self.backbutton()
+        self.img            = tk.PhotoImage(file="images/tutorial.gif")
+        self.tutorialpanel  = tk.Label(self.parent, image = self.img, anchor="c")
+        self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
 
     def placegui(self):    # display main buttons
         self.mapetlogo.place(relx=.5, rely=.15, anchor="c")
@@ -73,12 +64,21 @@ class MainApplication(tk.Frame):
     def fileopening(self,file):    # #1-Hides Main buttons, #2-then display Settings buttons / #3-display Map Selection
         for child in self.buttonframe.winfo_children(): #1
             child.grid_forget()
-        self.settingsbtn = tk.Button(self.buttonframe,
-                                    text="Settings",    #2
+        self.settingsbtn = tk.Button(self.buttonframe,text="Settings",    #2
                                     command=lambda:self.fileopening("settings"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
         if file == "settings":
-            self.settings()
+            self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
+                                    command=lambda:self.parent.attributes("-fullscreen",
+                                    not self.parent.attributes('-fullscreen')),
+                                    width=12,padx=10,pady=10, font=("calibri",20))
+            self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10,columnspan=2)
+            self.movecontrols =  tk.Button(self.buttonframe,text="Move controls\n(↑ ↓ ← →)",command=lambda:self.changecontrol(),
+                                        width=12,padx=10,pady=10, font=("calibri",20))
+            self.movecontrols.grid(row=1,ipadx=10,ipady=10,column=0)
+            self.backbtn = tk.Button(self.buttonframe, text="Back",command=lambda:self.settingback(),
+                                        width=12,padx=10,pady=10, font=("calibri",20))
+            self.backbtn.grid(row=3,ipadx=10,ipady=10,columnspan=2)
         else: #3
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
@@ -101,28 +101,16 @@ class MainApplication(tk.Frame):
         elif self.movekey == 2:
             self.movecontrols.config(text="Move controls\n(↑ ↓ ← →)")
             self.movekey = 0
-            
-    # display Settings button
-    def settings(self):
-        self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
-                                    command=lambda:self.parent.attributes("-fullscreen", not self.parent.attributes('-fullscreen')),
-                                    width=12,padx=10,pady=10, font=("calibri",20))
-        self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10,columnspan=2)
-        self.movecontrols =  tk.Button(self.buttonframe,text="Move controls\n(↑ ↓ ← →)",
-                                    command=lambda:self.changecontrol(),
-                                    width=12,padx=10,pady=10, font=("calibri",20))
-        self.movecontrols.grid(row=1,ipadx=10,ipady=10,column=0)
-        self.backbtn = tk.Button(self.buttonframe, text="Back",
-                                    command=lambda:self.settingback(),
-                                    width=12,padx=10,pady=10, font=("calibri",20))
-        self.backbtn.grid(row=3,ipadx=10,ipady=10,columnspan=2)
 
-    def backbuttonpage(self,frame):
-        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(frame),
-                                width=12,padx=3,pady=3, font=("calibri",15))
+    def backbutton(self,frame):
+        self.backbtn = tk.Button(self.parent, text="Back", command=lambda:deleteall(frame),width=12,padx=3,pady=3, font=("calibri",15))
         self.backbtn.place(anchor="nw", relx=0.02, rely=0.02)
         def deleteall(frame):
             frame.destroy()
+            try:
+                self.parent.win.destroy()
+            except:
+                pass
             self.backbtn.destroy()
             self.placegui()
 
@@ -137,18 +125,18 @@ class ChooseMap():
         self.mainframe = tk.Frame(self.parent,width=1000,height=1000)
         self.mainframe.place(relx=.48,rely=.48, anchor="c")
 
-        parent.backbuttonpage(self.mainframe)
+        parent.backbutton(self.mainframe)
 
         ## Display files in folder
         # list of all files
         self.maps = os.listdir("maps")
         # creating lists to contain every file
-        self.mapbox = []
-        self.mapimg = []
-        self.maptext = []
-        self.mapbtn = []
-        self.coli = 0
-        self.rowi = 0
+        self.mapbox  =  []
+        self.mapimg  =  []
+        self.maptext =  []
+        self.mapbtn  =  []
+        self.coli    =  0
+        self.rowi    =  0
         # append files as frames
         for i in range(len(self.maps)+1):
             if i < len(self.maps):
@@ -189,13 +177,13 @@ class ChooseMap():
             data = self.datamap.read().split(";")
         for i in data:
             print(i,end="")
-        playercoord = ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists
-        gridsize = ast.literal_eval(data[1].split("=")[1])
-        objectcoord = ast.literal_eval(data[2].split("=")[1])
-        objectcolor = ast.literal_eval(data[3].split("=")[1])
-        objecttypes = ast.literal_eval(data[4].split("=")[1])
-        objecttypecolor = ast.literal_eval(data[5].split("=")[1])
-        goalcoord = ast.literal_eval(data[6].split("=")[1])
+        playercoord     =   ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists
+        gridsize        =   ast.literal_eval(data[1].split("=")[1])
+        objectcoord     =   ast.literal_eval(data[2].split("=")[1])
+        objectcolor     =   ast.literal_eval(data[3].split("=")[1])
+        objecttypes     =   ast.literal_eval(data[4].split("=")[1])
+        objecttypecolor =   ast.literal_eval(data[5].split("=")[1])
+        goalcoord       =   ast.literal_eval(data[6].split("=")[1])
     
         print("\n\nOpening",mapname)
         if self.file == "mapselect":

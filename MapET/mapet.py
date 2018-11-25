@@ -8,15 +8,15 @@ import os
 
 class Mapedit:    
     def __init__(self,parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,movekey):
-        self.parent    =  parent
-        self.gridsize  =  gridsize              # Number that represents the square size
-        self.objectcoord = objectcoord          # Objects are stored as [xcoord, ycoord] (list)
-        self.objectcolor = objectcolor          # Objects' color for each object (set)
-        self.objecttypes = objecttypes          # List of object in the map
-        self.objecttypecolor = objecttypecolor  # List of color of each object
-        self.mapname   =  mapname               # Name of opened map
-        self.goalcoord = goalcoord              # List of coords
-        self.movekey = movekey
+        self.parent             = parent               # Previous Instance
+        self.gridsize           = gridsize             # Number that represents the square size
+        self.objectcoord        = objectcoord          # Objects are stored as [xcoord, ycoord] (list)
+        self.objectcolor        = objectcolor          # Objects' color for each object (set)
+        self.objecttypes        = objecttypes          # List of object in the map
+        self.objecttypecolor    = objecttypecolor      # List of color of each object
+        self.mapname            = mapname              # Name of opened map
+        self.goalcoord          = goalcoord            # List of coords
+        self.movekey            = movekey
         
         # Stores the last two coords selected
         self.end1 = [0,0]
@@ -28,7 +28,7 @@ class Mapedit:
         self.mainframe = tk.Frame(self.parent, width=1200, height= 800)
         self.mainframe.place(relx=.5,rely=.5,anchor="c")
         parent.backbtn.destroy()
-        parent.backbuttonpage(self.mainframe)
+        parent.backbutton(self.mainframe)
 
         # Title of the map, that can be changed and saved
         self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri",20))

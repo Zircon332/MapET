@@ -3,13 +3,13 @@ import pickle
 import os
 
 # Controls for main menu
-class SetMainControl():
-    def __init__(self,parent):
-        # Going back
-        self.parent.bind_all("<Escape>", self.backmenu)
+# class SetMainControl():
+#     def __init__(self,parent):
+#         # Going back
+#         self.parent.bind_all("<Escape>", self.backmenu)
 
-        def backmenu(self,key):
-            print()
+#         def backmenu(self,key):
+#             print()
     ##        self.frame.destroy()
     ##        self.showcoord.destroy()
     ##        self.typeframe.destroy()
@@ -20,39 +20,39 @@ class SetMainControl():
 class SetPlayControls():
     def __init__(self,parent,playframe,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizexent,bordersizeyent,zoomsizeent,pixent,movekey):
         # Carry over data
-        self.parent = parent
-        self.playframe = playframe
-        self.playercoord = playercoord
-        self.speedmult = speedmult
-        self.bordersizex = bordersize
-        self.bordersizey = bordersize
-        self.zoomsize = zoomsize
-        self.camcoord = camcoord
-        self.objectcoord = objectcoord
-        self.objectcolor = objectcolor
-        self.objecttypes = objecttypes
-        self.objecttypecolor = objecttypecolor
-        self.screenobjectcoord = []
-        self.screengoalcoord = []
-        self.goalcoord = goalcoord
-        self.follow = follow
-        self.screen = screen
-        self.player = player
-        self.pix = pix
-        self.playercoordxent = playercoordxent
-        self.playercoordyent = playercoordyent
-        self.speedmultent = speedmultent
-        self.bordersizexent = bordersizexent
-        self.bordersizeyent = bordersizeyent
-        self.zoomsizeent = zoomsizeent
-        self.pixent = pixent
-        self.movekey = movekey
+        self.parent             = parent
+        self.playframe          = playframe
+        self.playercoord        = playercoord
+        self.speedmult          = speedmult
+        self.bordersizex        = bordersize
+        self.bordersizey        = bordersize
+        self.zoomsize           = zoomsize
+        self.camcoord           = camcoord
+        self.objectcoord        = objectcoord
+        self.objectcolor        = objectcolor
+        self.objecttypes        = objecttypes
+        self.objecttypecolor    = objecttypecolor
+        self.screenobjectcoord  = []
+        self.screengoalcoord    = []
+        self.goalcoord          = goalcoord
+        self.follow             = follow
+        self.screen             = screen
+        self.player             = player
+        self.pix                = pix
+        self.playercoordxent    = playercoordxent
+        self.playercoordyent    = playercoordyent
+        self.speedmultent       = speedmultent
+        self.bordersizexent     = bordersizexent
+        self.bordersizeyent     = bordersizeyent
+        self.zoomsizeent        = zoomsizeent
+        self.pixent             = pixent
+        self.movekey            = movekey
         
         #Bind movements
         if self.movekey == 0 or self.movekey == 2:
-            self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.move(x,y))
-            self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.move(x,y))
-            self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.move(x,y))
+            self.parent.bind_all("<Up>",    lambda event, x=0,y=-1: self.move(x,y))
+            self.parent.bind_all("<Down>",  lambda event, x=0,y=1: self.move(x,y))
+            self.parent.bind_all("<Left>",  lambda event, x=-1,y=0: self.move(x,y))
             self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.move(x,y))
         if self.movekey == 1 or self.movekey == 2:
             self.parent.bind_all("w", lambda event, x=0,y=-1: self.move(x,y))
@@ -151,35 +151,35 @@ class SetPlayControls():
 class SetEditControls:
     def __init__(self,parent,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,gridaxisx,gridaxisy,xshift,yshift,pix,end1,end2,movekey):
         # Carry over data
-        self.parent = parent
-        self.gridsize = gridsize
-        self.objectcoord = objectcoord
-        self.objectcolor = objectcolor
-        self.objecttypes = objecttypes
-        self.objecttypecolor = objecttypecolor
-        self.goalcoord = goalcoord
-        self.gridaxisx = gridaxisx
-        self.gridaxisy = gridaxisy
-        self.xshift = xshift
-        self.yshift = yshift
-        self.movekey = movekey
+        self.parent          =  parent
+        self.gridsize        =  gridsize
+        self.objectcoord     =  objectcoord
+        self.objectcolor     =  objectcolor
+        self.objecttypes     =  objecttypes
+        self.objecttypecolor =  objecttypecolor
+        self.goalcoord       =  goalcoord
+        self.gridaxisx       =  gridaxisx
+        self.gridaxisy       =  gridaxisy
+        self.xshift          =  xshift
+        self.yshift          =  yshift
+        self.movekey         =  movekey
         
-        self.pix = pix
-        self.end1 = end1
-        self.end2 = end2
-        self.cameracoord = [0,0]
-        self.color = "grey"             # Default chosen color
+        self.pix            = pix
+        self.end1           = end1
+        self.end2           = end2
+        self.cameracoord    = [0,0]
+        self.color          = "grey"             # Default chosen color
 
         if self.movekey == 0 or self.movekey == 2:
-            self.parent.bind_all("<Up>", lambda event, x=0,y=-1: self.shiftmap(x,y))
-            self.parent.bind_all("<Down>", lambda event, x=0,y=1: self.shiftmap(x,y))
-            self.parent.bind_all("<Left>", lambda event, x=-1,y=0: self.shiftmap(x,y))
-            self.parent.bind_all("<Right>", lambda event, x=1,y=0: self.shiftmap(x,y))
+            self.parent.bind_all("<Up>",    lambda event, x=0,y=-1: self.shiftmap(x,y))
+            self.parent.bind_all("<Down>",  lambda event, x=0,y=1:  self.shiftmap(x,y))
+            self.parent.bind_all("<Left>",  lambda event, x=-1,y=0: self.shiftmap(x,y))
+            self.parent.bind_all("<Right>", lambda event, x=1,y=0:  self.shiftmap(x,y))
         if self.movekey == 1 or self.movekey == 2:
-            self.parent.bind_all("w", lambda event, x=0,y=-1: self.shiftmap(x,y))
-            self.parent.bind_all("s", lambda event, x=0,y=1: self.shiftmap(x,y))
-            self.parent.bind_all("a", lambda event, x=-1,y=0: self.shiftmap(x,y))
-            self.parent.bind_all("d", lambda event, x=1,y=0: self.shiftmap(x,y))
+            self.parent.bind_all("w", lambda event, x=0,y=-1:   self.shiftmap(x,y))
+            self.parent.bind_all("s", lambda event, x=0,y=1:    self.shiftmap(x,y))
+            self.parent.bind_all("a", lambda event, x=-1,y=0:   self.shiftmap(x,y))
+            self.parent.bind_all("d", lambda event, x=1,y=0:    self.shiftmap(x,y))
 
         # Bind clicks to grid
         for x in range(self.gridsize):
