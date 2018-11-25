@@ -23,7 +23,7 @@ class Mapedit:
         self.end2 = [0,0]
 
         # Frame for this page
-        self.mainframe = tk.Frame(self.parent, width=1200, height= 800,highlightbackground="#000", highlightcolor="#000", highlightthickness=1,bd=0)
+        self.mainframe = tk.Frame(self.parent, width=1200, height= 800,highlightbackground="#000", highlightcolor="#000", highlightthickness=2,bd=0)
         self.mainframe.place(relx=.5,rely=.5,anchor="c")
         parent.backbtn.destroy()
         parent.backbutton(self.mainframe)

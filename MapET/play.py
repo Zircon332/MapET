@@ -24,7 +24,7 @@ class PlayMap:
         self.follow             = 0
 
         # Frame for this page
-        self.mainframe = tk.Frame(self.parent,height=800,width=1200,highlightbackground="#000", highlightcolor="#000", highlightthickness=1,bd=0)
+        self.mainframe = tk.Frame(self.parent,height=800,width=1200,highlightbackground="#000", highlightcolor="#000", highlightthickness=2,bd=0)
         self.mainframe.place(relx=.5,rely=.5,anchor='c')
         parent.backbtn.destroy()
         parent.backbutton(self.mainframe)
@@ -136,8 +136,6 @@ class PlayMap:
     def save(self):
         with open(os.path.join("maps",self.mapname,"data.txt"),"w") as self.datamap:
             self.datamap.write(self.mapname)
-            # self.datamap.write(self.bgcolor)
-
         # Saves the location where the character is before quitting
         with open(os.path.join("maps",self.mapname,"playerdata.txt"),"w") as self.playerdata:
             self.playerdata.write(self.playercoord)
