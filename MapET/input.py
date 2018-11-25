@@ -18,10 +18,10 @@ import os
 
 # Controls for Map Play
 class SetPlayControls():
-    def __init__(self,parent,playframe,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizexent,bordersizeyent,zoomsizeent,pixent,movekey):
+    def __init__(self,parent,mainframe,screen,player,playercoord,speedmult,bordersize,zoomsize,camcoord,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,follow,pix,playercoordxent,playercoordyent,speedmultent,bordersizexent,bordersizeyent,zoomsizeent,pixent,movekey):
         # Carry over data
         self.parent             = parent
-        self.playframe          = playframe
+        self.mainframe          = mainframe
         self.playercoord        = playercoord
         self.speedmult          = speedmult
         self.bordersizex        = bordersize
@@ -119,8 +119,8 @@ class SetPlayControls():
     # Check if the player is at goal position
     def checkgoal(self):
         if self.playercoord in self.goalcoord:
-            self.playframe.place_forget()
-            self.win= tk.Label(self.parent,text="You win", font=("windings",100))
+            self.screen.place_forget()
+            self.win= tk.Label(self.mainframe,text="You win", font=("windings",100))
             self.win.place(relx=.5,rely=.5,anchor='c')
             print("You Win")
 
@@ -145,7 +145,9 @@ class SetPlayControls():
         # create new walls
         for i in self.objectcoord:
             color = self.objectcolor[i[0],i[1]]
-            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color) 
+            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill=color,outline=color)
+        for i in self.goalcoord:
+            self.screen.create_rectangle(i[0]*self.pix,i[1]*self.pix,i[0]*self.pix+self.pix,i[1]*self.pix+self.pix,fill="lightgreen",outline="lightgreen") 
         self.camcoord = [self.playercoord[0] - self.zoomsize/2, self.playercoord[1] - self.zoomsize/2]  # Reset camcoord
         #self.move(0,0)
         
