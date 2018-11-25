@@ -24,14 +24,14 @@ class PlayMap:
         self.follow             = 0
 
         # Frame for this page
-        self.mainframe = tk.Frame(self.parent,height=800,width=1200)
+        self.mainframe = tk.Frame(self.parent,height=800,width=1200,highlightbackground="#000", highlightcolor="#000", highlightthickness=1,bd=0)
         self.mainframe.place(relx=.5,rely=.5,anchor='c')
         parent.backbtn.destroy()
         parent.backbutton(self.mainframe)
 
         # Title of the map, that can be changed and saved
-        self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri",20))
-        self.mapnamelabel.place(relx=0,rely=.02)
+        self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri 30 underline"))
+        self.mapnamelabel.place(relx=.33,rely=.02)
 
         # Playground Screen
         self.screen = tk.Canvas(self.mainframe, bg="Black", width=self.bordersize*self.pix, height=self.bordersize*self.pix, highlightthickness=0,bd=0)

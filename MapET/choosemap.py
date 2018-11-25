@@ -1,10 +1,11 @@
-import os
+﻿import os
 import ast
 import tkinter as tk
 import play
 import mapet
 import pickle
 
+universalfont = ("Calibri 20")
 class MainApplication(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -14,6 +15,7 @@ class MainApplication(tk.Frame):
         self.screen_height  = self.parent.winfo_screenheight()
         self.parent.geometry("%dx%d+%d+%d" % (self.screen_width,self.screen_height,0,0))
         self.parent.attributes("-fullscreen", False)
+        self.parent.state('zoomed')
         self.creategui()
 
         self.movekey = 0    # initialise move key to decide which set of keys to use
@@ -24,26 +26,26 @@ class MainApplication(tk.Frame):
         self.mapetlogo          =  tk.Label(self.parent, image=self.logoimg,anchor="c")
         self.mapetlogo.image    = self.logoimg
 
-        self.buttonframe        = tk.Frame(self, bg="black", height=1920,width=100,)    # creates buttons and their frame, then place with function
+        self.buttonframe        = tk.Frame(self, bg="black", height=1920,width=100)    # creates buttons and their frame, then place with function
         self.mapselectbtn       = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
 
         self.mapetbtn           = tk.Button(self.buttonframe,text="Map Editor",
                                     command=lambda:self.fileopening("mapeditor"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
 
         self.settingsbtn        = tk.Button(self.buttonframe,text="Settings",
                                     command=lambda:self.fileopening("settings"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
 
         self.tutorialbtn        = tk.Button(self.buttonframe,text="Tutorial",
                                     command=lambda:self.tutorial(),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
                                     
         self.programexitbtn     = tk.Button(self.buttonframe, text="Quit",
                                      command=self.parent.destroy,
-                                     width=12,padx=10,pady=20, font=("calibri",20))
+                                     width=12,padx=10,pady=20, font=(universalfont))
         self.placegui()
     
     def tutorial(self):
@@ -66,18 +68,18 @@ class MainApplication(tk.Frame):
             child.grid_forget()
         self.settingsbtn = tk.Button(self.buttonframe,text="Settings",    #2
                                     command=lambda:self.fileopening("settings"),
-                                    width=12,padx=10,pady=20,font=("calibri",20))
+                                    width=12,padx=10,pady=20,font=(universalfont))
         if file == "settings":
             self.fullscreenbtn = tk.Button(self.buttonframe,text="Toggle Fullscreen",
                                     command=lambda:self.parent.attributes("-fullscreen",
                                     not self.parent.attributes('-fullscreen')),
-                                    width=12,padx=10,pady=10, font=("calibri",20))
+                                    width=12,padx=10,pady=10, font=(universalfont))
             self.fullscreenbtn.grid(row=0,ipadx=10,ipady=10,columnspan=2)
             self.movecontrols =  tk.Button(self.buttonframe,text="Move controls\n(↑ ↓ ← →)",command=lambda:self.changecontrol(),
-                                        width=12,padx=10,pady=10, font=("calibri",20))
+                                        width=12,padx=10,pady=10, font=(universalfont))
             self.movecontrols.grid(row=1,ipadx=10,ipady=10,column=0)
             self.backbtn = tk.Button(self.buttonframe, text="Back",command=lambda:self.settingback(),
-                                        width=12,padx=10,pady=10, font=("calibri",20))
+                                        width=12,padx=10,pady=10, font=(universalfont))
             self.backbtn.grid(row=3,ipadx=10,ipady=10,columnspan=2)
         else: #3
             self.mapetlogo.place_forget()
@@ -122,7 +124,7 @@ class ChooseMap():
         self.movekey = movekey
 
         # container for this whole screen
-        self.mainframe = tk.Frame(self.parent,width=1000,height=1000)
+        self.mainframe = tk.Frame(self.parent,width=1000,height=1000,highlightbackground="#000", highlightcolor="#000", highlightthickness=1,bd=0)
         self.mainframe.place(relx=.48,rely=.48, anchor="c")
 
         parent.backbutton(self.mainframe)

@@ -23,16 +23,14 @@ class Mapedit:
         self.end2 = [0,0]
 
         # Frame for this page
-        # self.mapeditframe = tk.Frame(self.mainframe,height=800,width=1200)
-        # self.mapeditframe.place(relx=.5,rely=.5,anchor='c')
-        self.mainframe = tk.Frame(self.parent, width=1200, height= 800)
+        self.mainframe = tk.Frame(self.parent, width=1200, height= 800,highlightbackground="#000", highlightcolor="#000", highlightthickness=1,bd=0)
         self.mainframe.place(relx=.5,rely=.5,anchor="c")
         parent.backbtn.destroy()
         parent.backbutton(self.mainframe)
 
         # Title of the map, that can be changed and saved
-        self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri",20))
-        self.mapnamelabel.place(relx=0,rely=.02)
+        self.mapnamelabel = tk.Label(self.mainframe,text=self.mapname,width=20,font=("Calibri 30 underline"))
+        self.mapnamelabel.place(relx=0.33,rely=.02)
 
         # Frame for grid
         self.gridframe = tk.Frame(self.mainframe)
