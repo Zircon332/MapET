@@ -34,13 +34,13 @@ class MainApplication(tk.Frame):
         self.mapetbtn           = tk.Button(self.buttonframe,text="Map Editor",
                                     command=lambda:self.fileopening("mapeditor"),
                                     width=12,padx=10,pady=20,font=(universalfont))
+        
+        self.tutorialbtn        = tk.Button(self.buttonframe,text="Tutorial",
+                                    command=lambda:self.fileopening("tutorial"),
+                                    width=12,padx=10,pady=20,font=(universalfont))
 
         self.settingsbtn        = tk.Button(self.buttonframe,text="Settings",
                                     command=lambda:self.fileopening("settings"),
-                                    width=12,padx=10,pady=20,font=(universalfont))
-
-        self.tutorialbtn        = tk.Button(self.buttonframe,text="Tutorial",
-                                    command=lambda:self.tutorial(),
                                     width=12,padx=10,pady=20,font=(universalfont))
                                     
         self.programexitbtn     = tk.Button(self.buttonframe, text="Quit",
@@ -48,11 +48,6 @@ class MainApplication(tk.Frame):
                                      width=12,padx=10,pady=20, font=(universalfont))
         self.placegui()
     
-    def tutorial(self):
-        self.img            = tk.PhotoImage(file="images/tutorial.gif")
-        self.tutorialpanel  = tk.Label(self.parent, image = self.img, anchor="c")
-        self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
-
     def placegui(self):    # display main buttons
         self.mapetlogo.place(relx=.5, rely=.15, anchor="c")
         self.buttonframe.place(x=10,y=10, anchor="c", relx=0.48, rely=0.5)
@@ -81,6 +76,15 @@ class MainApplication(tk.Frame):
             self.backbtn = tk.Button(self.buttonframe, text="Back",command=lambda:self.settingback(),
                                         width=12,padx=10,pady=10, font=(universalfont))
             self.backbtn.grid(row=3,ipadx=10,ipady=10,columnspan=2)
+        elif file == "tutorial":
+            self.mapetlogo.place_forget()
+            self.buttonframe.place_forget()
+            self.mainframe      = tk.Frame(self.parent, height=2000,width=2000)
+            self.mainframe.place(relx=.48,rely=.48, anchor="c")
+            self.backbutton(self.mainframe)
+            self.img            = tk.PhotoImage(file="images/tutorial.gif")
+            self.tutorialpanel  = tk.Label(self.mainframe, image = self.img, anchor="c")
+            self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
         else: #3
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
@@ -111,6 +115,7 @@ class MainApplication(tk.Frame):
             frame.destroy()
             try:
                 self.parent.win.destroy()
+                self.tutorialpanel.forget()
             except:
                 pass
             self.backbtn.destroy()
@@ -124,7 +129,7 @@ class ChooseMap():
         self.movekey = movekey
 
         # container for this whole screen
-        self.mainframe = tk.Frame(self.parent,width=1000,height=1000,highlightbackground="#000", highlightcolor="#000", highlightthickness=1,bd=0)
+        self.mainframe = tk.Frame(self.parent,width=1000,height=1000,highlightbackground="#000", highlightcolor="#000", highlightthickness=2,bd=0)
         self.mainframe.place(relx=.48,rely=.48, anchor="c")
 
         parent.backbutton(self.mainframe)
