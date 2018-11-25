@@ -12,9 +12,4 @@ root = tk.Tk()
 mainmenu = choosemap.MainApplication(root)
 mainmenu.pack(side="top", fill="both", expand=True)
 
-# When play is activated
-play = True
-if play == True:
-    play = False
-
 root.mainloop()
