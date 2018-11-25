@@ -62,7 +62,6 @@ class SetPlayControls():
             
         self.parent.bind_all("<Return>", lambda event, key=None: self.setconfig(key))    # Also restarts the map
 
-    
     # move the player according to input
     def move(self, x, y):
         self.x, self.y = x, y
@@ -127,14 +126,17 @@ class SetPlayControls():
 
     # Changes the settings, restarts the map
     def setconfig(self,key):
-        self.playercoord[0] = int(self.playercoordxent.get())
-        self.playercoord[1] = int(self.playercoordyent.get())
-        self.speedmult      = int(self.speedmultent.get())
-        self.bordersizex    = int(self.bordersizexent.get())
-        self.bordersizey    = int(self.bordersizeyent.get())
-        self.zoomsize       = int(self.zoomsizeent.get())
-        self.pix            = int(self.pixent.get())
-        
+        try:
+            self.playercoord[0] = int(self.playercoordxent.get())
+            self.playercoord[1] = int(self.playercoordyent.get())
+            self.speedmult      = int(self.speedmultent.get())
+            self.bordersizex    = int(self.bordersizexent.get())
+            self.bordersizey    = int(self.bordersizeyent.get())
+            self.zoomsize       = int(self.zoomsizeent.get())
+            self.pix            = int(self.pixent.get())
+        except:
+            print("Only integers are allowed in config. Please re-enter the value.")
+            
         self.screen.focus_set()                                                             # Set focus out of entry, focus to screen
         self.screen.config(width=self.bordersizex*self.pix, height=self.bordersizey*self.pix) # Change screen size
         self.screen.delete(tk.ALL)                                                          # Clear the screen
@@ -180,6 +182,16 @@ class SetEditControls:
             self.parent.bind_all("s", lambda event, x=0,y=1:    self.shiftmap(x,y))
             self.parent.bind_all("a", lambda event, x=-1,y=0:   self.shiftmap(x,y))
             self.parent.bind_all("d", lambda event, x=1,y=0:    self.shiftmap(x,y))
+
+        # Bind hot keys for selecting types
+        for i in range(1,len(self.objecttypecolor)+2):
+            self.parent.bind_all(str(i), lambda event,i=i: self.hotkeyselect(i))
+        
+    def hotkeyselect(self,i):
+        if i > len(self.objecttypecolor):
+            self.color = "lightgreen"
+        else:
+            self.color = self.objecttypecolor[i-1]
 
         # Bind clicks to grid
         for x in range(self.gridsize):

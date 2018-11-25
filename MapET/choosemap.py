@@ -172,29 +172,30 @@ class ChooseMap():
     # Opens selected file, hide map select container, display play/mapet
     def openmap(self,mapname):
         print("Loading file information...")
-##        try:
-        with open(os.path.join("maps",mapname,"data.txt"),"r") as self.datamap:
-            data = self.datamap.read().split(";")
-        for i in data:
-            print(i,end="")
-        playercoord     =   ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists
-        gridsize        =   ast.literal_eval(data[1].split("=")[1])
-        objectcoord     =   ast.literal_eval(data[2].split("=")[1])
-        objectcolor     =   ast.literal_eval(data[3].split("=")[1])
-        objecttypes     =   ast.literal_eval(data[4].split("=")[1])
-        objecttypecolor =   ast.literal_eval(data[5].split("=")[1])
-        goalcoord       =   ast.literal_eval(data[6].split("=")[1])
-    
-        print("\n\nOpening",mapname)
-        if self.file == "mapselect":
-            self.mainframe.place_forget()
-            self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
-        elif self.file == "mapeditor":
-            self.mainframe.place_forget()
-            self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,self.movekey)
+        try:
+            with open(os.path.join("maps",mapname,"data.txt"),"r") as self.datamap:
+                data = self.datamap.read().split(";")
+            for i in data:
+                print(i,end="")
+            playercoord     =   ast.literal_eval(data[0].split("=")[1])       # ast converts strings back to lists/dictionaries
+            gridsize        =   ast.literal_eval(data[1].split("=")[1])
+            objectcoord     =   ast.literal_eval(data[2].split("=")[1])
+            objectcolor     =   ast.literal_eval(data[3].split("=")[1])
+            objecttypes     =   ast.literal_eval(data[4].split("=")[1])
+            objecttypecolor =   ast.literal_eval(data[5].split("=")[1])
+            goalcoord       =   ast.literal_eval(data[6].split("=")[1])
 
-##        except:
-##            print("Save file doesn't exist")
+            # Start play/mapedit with stored data
+            print("\n\nOpening",mapname)
+            if self.file == "mapselect":
+                self.mainframe.place_forget()
+                self.pl = play.PlayMap(self.parent,mapname,objectcoord,objectcolor,playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
+            elif self.file == "mapeditor":
+                self.mainframe.place_forget()
+                self.mp = mapet.Mapedit(self.parent,mapname,gridsize,objectcoord,objectcolor,objecttypes,objecttypecolor,goalcoord,self.movekey)
+
+        except:
+            print("File does not exist, or is corrupted. Make sure to save before exiting.")
 
     # Function to create new map
     def createmap(self):
@@ -211,7 +212,8 @@ class ChooseMap():
 
             newmaproot.destroy()
             warnroot.destroy()
-            
+
+            # Start mapedit/play with default/empty data
             if self.file == "mapselect":
                 self.mainframe.place_forget()
                 self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
@@ -230,11 +232,13 @@ class ChooseMap():
         
             # create a directory for the map, if it already exists, ask if replace
             try:
+                # Make new dir
                 os.mkdir(os.path.join("maps",mapname))
 
                 # Destroy the popup
                 newmaproot.destroy()
 
+                # Start play/mapedit with empty/default data
                 if self.file == "mapselect":
                     self.mainframe.place_forget()
                     self.pl = play.PlayMap(self.parent,mapname,[],{},playercoord,objecttypes,objecttypecolor,goalcoord,self.movekey)
@@ -254,6 +258,8 @@ class ChooseMap():
                 cancelbtn.grid(row=1,column=1)
                 warnroot.mainloop()
 
+            except:
+                print("Error in naming. Choose a name that doesn't contain these 3 characters \n \" ' \\ ")
 
         # create tk for inputting name
         newmaproot = tk.Tk()
