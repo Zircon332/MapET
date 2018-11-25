@@ -138,10 +138,16 @@ class ChooseMap():
         self.coli    =  0
         self.rowi    =  0
         # append files as frames
+        if len(self.maps) > 7:
+            pad = 0
+            limit = 6
+        else:
+            pad = 50
+            limit = 4
         for i in range(len(self.maps)+1):
             if i < len(self.maps):
                 mapname = str(self.maps[i])
-                self.mapbox.append(tk.Frame(self.mainframe,width=200,height=200,bd=1,padx=50,pady=50))
+                self.mapbox.append(tk.Frame(self.mainframe,width=200,height=200,bd=1,padx=pad,pady=pad))
                 try:
                     self.banner = tk.PhotoImage(file=os.path.join("maps",mapname,"banner.gif"))
                     self.mapimg.append(tk.Label(self.mapbox[i],width=200,height=100,image=self.banner))
@@ -154,7 +160,7 @@ class ChooseMap():
 
             else:
                 # create-new-map frame
-                self.mapbox.append(tk.Frame(self.mainframe,width=200,height=200,bd=1,padx=50,pady=50))
+                self.mapbox.append(tk.Frame(self.mainframe,width=200,height=200,bd=1,padx=pad,pady=pad))
                 self.mapimg.append(tk.Label(self.mapbox[i],width=20,height=10,bg="grey"))
                 self.maptext.append(tk.Label(self.mapbox[i],text="Create New",width=10,height=1,font=("arial",20)))
                 self.mapbtn.append(tk.Button(self.mapbox[i],text="Choose map",width=10,height=1,command=self.createmap,font=("arial",15)))
@@ -165,7 +171,7 @@ class ChooseMap():
             self.mapbtn[i].grid(row=3)
             # count each column, when column reach 4, start next row
             self.coli += 1
-            if self.coli == 4:
+            if self.coli == limit:
                 self.coli = 0
                 self.rowi += 1
                 
