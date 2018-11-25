@@ -28,25 +28,25 @@ class MainApplication(tk.Frame):
         self.mapselectbtn       = tk.Button(self.buttonframe,text="Play Map",
                                     command=lambda:self.fileopening("mapselect"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
+
         self.mapetbtn           = tk.Button(self.buttonframe,text="Map Editor",
                                     command=lambda:self.fileopening("mapeditor"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
-        self.settingsbtn        = tk.Button(self.buttonframe,
-                                    text="Settings",command=lambda:self.fileopening("settings"),
+
+        self.settingsbtn        = tk.Button(self.buttonframe,text="Settings",
+                                    command=lambda:self.fileopening("settings"),
                                     width=12,padx=10,pady=20,font=("calibri",20))
-        self.tutorialbtn        = tk.Button(self.buttonframe,
-                                    text="Tutorial",command=lambda:self.tutorial(),
+
+        self.tutorialbtn        = tk.Button(self.buttonframe,text="Tutorial",
+                                    command=lambda:self.tutorial(),
                                     width=12,padx=10,pady=20,font=("calibri",20))
+                                    
         self.programexitbtn     = tk.Button(self.buttonframe, text="Quit",
                                      command=self.parent.destroy,
                                      width=12,padx=10,pady=20, font=("calibri",20))
         self.placegui()
     
     def tutorial(self):
-        for child in self.buttonframe.winfo_children(): #1
-            child.grid_forget()
-        self.mainframe      = tk.Frame(self.parent,width=1000,height=1000)
-        self.backbutton()
         self.img            = tk.PhotoImage(file="images/tutorial.gif")
         self.tutorialpanel  = tk.Label(self.parent, image = self.img, anchor="c")
         self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
