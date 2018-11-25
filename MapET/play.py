@@ -62,7 +62,7 @@ class PlayMap:
 
     # Sets player at his coordinates
     def set_player(self):
-        self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="red")
+        self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="gold")
 
     # Sets objects with coordinates and colour
     def set_map(self):

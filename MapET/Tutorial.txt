@@ -1,0 +1,23 @@
+Choosemap\n
+After choosing Play or Mapedit in main menu, another menu will be shown for choosing a map.\n
+Maps can be created with the last option.\n
+Maps can be found in the file 'maps'.\n
+'data.txt' contains the map dat.\n
+'banner.gif' can be optional added manually for an image.\n
+
+Play\n
+Move with 'up down left right', 'Enter' to restart.\n
+Player is Gold in color.\n
+Player coord - X and Y axis of where the player spawns.\n
+Speed multiplier - Moves the player that many times each move, stops at a wall.\n
+Bordersize - Size of canvas.\n
+Zoomsize - Size of how much is shown when following.\n
+Pixel Size - Size of each pixel.\n
+Switch to follow - Toggle camera between following player and static.\n
+
+Mapedit\n
+Move map with 'up down left right', hotkeys '123456789' to select type.\n
+Test map - Play the map\n
+Make a line - makes a line\n
+clear wall - deletes everything in the map\n
+save file - save the map\n

@@ -105,7 +105,7 @@ class SetPlayControls():
         self.zoomratioy = self.pix * self.bordersizey / self.zoomsize
         self.screen.delete(tk.ALL)      #Delete previous things in screen
         #Create player at center
-        self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratiox,self.zoomsize/2*self.zoomratioy,self.zoomsize/2*self.zoomratiox+self.zoomratiox,self.zoomsize/2*self.zoomratioy+self.zoomratioy,fill="red")
+        self.player = self.screen.create_rectangle(self.zoomsize/2*self.zoomratiox,self.zoomsize/2*self.zoomratioy,self.zoomsize/2*self.zoomratiox+self.zoomratiox,self.zoomsize/2*self.zoomratioy+self.zoomratioy,fill="gold")
         #Set then clear the object coordinates on the screen
         for i in self.screenobjectcoord:
             color = self.objectcolor[i[0]+self.camcoord[0],i[1]+self.camcoord[1]]
@@ -141,7 +141,7 @@ class SetPlayControls():
         self.screen.config(width=self.bordersizex*self.pix, height=self.bordersizey*self.pix) # Change screen size
         self.screen.delete(tk.ALL)                                                          # Clear the screen
         # create a new player
-        self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="red")
+        self.player = self.screen.create_rectangle(self.playercoord[0]*self.pix,self.playercoord[1]*self.pix,self.playercoord[0]*self.pix+self.pix,self.playercoord[1]*self.pix+self.pix,fill="gold")
         # create new walls
         for i in self.objectcoord:
             color = self.objectcolor[i[0],i[1]]

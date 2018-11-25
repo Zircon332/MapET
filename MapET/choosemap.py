@@ -84,7 +84,9 @@ class MainApplication(tk.Frame):
             self.backbutton(self.mainframe)
             self.img            = tk.PhotoImage(file="images/tutorial.gif")
             self.tutorialpanel  = tk.Label(self.mainframe, image = self.img, anchor="c")
-            self.tutorialpanel.place(relx=.5,rely=.5, anchor="c")
+            self.tutorialpanel.place(relx=.38,rely=.5, anchor="c")
+            self.text = tk.Label(self.mainframe, text="Choosemap\nAfter choosing Play or Mapedit in main menu, another menu will be shown for choosing a map.\nMaps can be created with the last option.\nMaps can be found in the file 'maps'.\n'data.txt' contains the map dat.\n'banner.gif' can be optional added manually for an image.\n\nPlay\nMove with 'up down left right', 'Enter' to restart.\nPlayer is Gold in color.\nPlayer coord - X and Y axis of where the player spawns.\nSpeed multiplier - Moves the player that many times each move, stops at a wall.\nBordersize - Size of canvas.\nZoomsize - Size of how much is shown when following.\nPixel Size - Size of each pixel.\nSwitch to follow - Toggle camera between following player and static.\n\nMapedit\nMove map with 'up down left right', hotkeys '123456789' to select type.\nTest map - Play the map\nMake a line - makes a line\nclear wall - deletes everything in the map\nsave file - save the map\n",font=("Calibri",14))
+            self.text.place(relx=.72,rely=.5, anchor="c")
         else: #3
             self.mapetlogo.place_forget()
             self.buttonframe.place_forget()
