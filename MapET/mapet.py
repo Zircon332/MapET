@@ -103,16 +103,16 @@ class Mapedit:
             # For coloured things you can't go through
             if i < len(self.objecttypes): 
                 self.typename.append(tk.Label(self.typeframe,height=2,width=9,pady=1,text=self.objecttypes[i],font=("Calibri",15)))
-                self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,pady=2,bg=self.objecttypecolor[i]))
-                self.typebtn.append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
+                self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,pady=1,bg=self.objecttypecolor[i]))
+                self.typebtn.append(tk.Button(self.typeframe,height=2,width=10,pady=1,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
                 self.typename[i].grid(row=i,column=0)
                 self.typeimg[i].grid(row=i,column=1)
                 self.typebtn[i].grid(row=i,column=2)
             # For goal
             if i == len(self.objecttypes):
-                self.typename.append(tk.Label(self.typeframe,height=2,width=9,pady=1,text="Goal",font=("Calibri",15)))
-                self.typeimg.append(tk.Label(self.typeframe,height=2,width=10,pady=2,bg="lightgreen"))
-                self.typebtn.append(tk.Button(self.typeframe,height=2,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
+                self.typename.append(tk.Label(self.typeframe,height=3,width=9,pady=1,text="Goal",font=("Calibri",15)))
+                self.typeimg.append(tk.Label(self.typeframe,height=3,width=10,pady=2,bg="lightgreen"))
+                self.typebtn.append(tk.Button(self.typeframe,height=3,width=10,pady=2,padx=1,text="Select",command=lambda i=i:self.selecttype(i)))
                 self.typename[i].grid(row=i,column=0)
                 self.typeimg[i].grid(row=i,column=1)
                 self.typebtn[i].grid(row=i,column=2)
@@ -135,7 +135,7 @@ class Mapedit:
     def switchplay(self):
         self.mainframe.destroy()
         self.playercoord=[2,2]
-        self.pl = play.PlayMap(self.parent, self.mapname, self.objectcoord, self.objectcolor, self.playercoord, self.objecttypes, self.objecttypecolor, self.goalcoord)
+        self.pl = play.PlayMap(self.parent, self.mapname, self.objectcoord, self.objectcolor, self.playercoord, self.objecttypes, self.objecttypecolor, self.goalcoord, self.movekey)
 
     # erase all coord in keyinput (cause everything is transfered there)
     def cleargrid(self):

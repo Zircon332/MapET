@@ -219,6 +219,10 @@ class SetEditControls:
         for objects in self.objectcoord:
             if objects[0]-self.xshift >= 0 and objects[0]-self.xshift < 20 and objects[1]-self.yshift >= 0 and objects[1]-self.yshift < 20:
                 self.pix[objects[0]-self.xshift,objects[1]-self.yshift].config(bg=self.objectcolor[objects[0],objects[1]])
+        for goals in self.goalcoord:
+            if goals[0]-self.xshift >= 0 and goals[0]-self.xshift < 20 and goals[1]-self.yshift >= 0 and goals[1]-self.yshift < 20:
+                self.pix[goals[0]-self.xshift,goals[1]-self.yshift].config(bg="lightgreen")
+                
 
     # makes every grid white (doesn't delete coords)
     def clearscreen(self):
@@ -262,55 +266,58 @@ class SetEditControls:
             
     # Create a line between last two points if they are on the same line
     def createline(self):
-        # Finding out which row
-        if self.end1[0] == self.end2[0]:
-            if self.end1[1] < self.end2[1]:
-                while self.end2[1]-1 > self.end1[1]:
-                    self.end2[1] -= 1                                                                        # one end gets closer to the other end
-                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":  # if white is chosen and the tile isnt white
-                        self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])         # remove the pix
-                        del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]              # remove object color at that coord
-                    else:                                                                                    # if the color chosen isnt white
-                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":                        # and if the pix in between are white
-                            self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])     # appends all the coords in between (only empty pix are appended)
-                            self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color # add object color at that coord
-                    if self.end2[1] >= 0 and self.end2[1] < 20:                                              # shows only the ones within the frame
-                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
-            elif self.end1[1] > self.end2[1]:
-                while self.end2[1]+1 < self.end1[1]:
-                    self.end2[1] += 1
-                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":
-                        self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                        del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]
-                    else:
-                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
-                            self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                            self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color
-                    if self.end2[1] >= 0 and self.end2[1] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)        
-        elif self.end1[1] == self.end2[1]:
-            if self.end1[0] < self.end2[0]:
-                while self.end2[0]-1 > self.end1[0]:
-                    self.end2[0] -= 1
-                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":
-                        self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                        del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]
-                    else:
-                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
-                            self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                            self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color
-                    if self.end2[0] >= 0 and self.end2[0] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
-            if self.end1[0] > self.end2[0]:
-                while self.end2[0]+1 < self.end1[0]:
-                    self.end2[0] += 1
-                    if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":
-                        self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                        del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]
-                    else:
-                        if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
-                            self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
-                            self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color
-                    if self.end2[0] >= 0 and self.end2[0] < 20:
-                        self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
+        if self.color == "lightgreen":
+            print("You can't make lines with goals. Do it manually.")
+        else:
+            # Finding out which row
+            if self.end1[0] == self.end2[0]:
+                if self.end1[1] < self.end2[1]:
+                    while self.end2[1]-1 > self.end1[1]:
+                        self.end2[1] -= 1                                                                        # one end gets closer to the other end
+                        if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":  # if white is chosen and the tile isnt white
+                            self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])         # remove the pix
+                            del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]              # remove object color at that coord
+                        else:                                                                                    # if the color chosen isnt white
+                            if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":                        # and if the pix in between are white
+                                self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])     # appends all the coords in between (only empty pix are appended)
+                                self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color # add object color at that coord
+                        if self.end2[1] >= 0 and self.end2[1] < 20:                                              # shows only the ones within the frame
+                            self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
+                elif self.end1[1] > self.end2[1]:
+                    while self.end2[1]+1 < self.end1[1]:
+                        self.end2[1] += 1
+                        if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":
+                            self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                            del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]
+                        else:
+                            if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
+                                self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                                self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color
+                        if self.end2[1] >= 0 and self.end2[1] < 20:
+                            self.pix[self.end2[0],self.end2[1]].config(bg=self.color)        
+            elif self.end1[1] == self.end2[1]:
+                if self.end1[0] < self.end2[0]:
+                    while self.end2[0]-1 > self.end1[0]:
+                        self.end2[0] -= 1
+                        if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":
+                            self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                            del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]
+                        else:
+                            if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
+                                self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                                self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color
+                        if self.end2[0] >= 0 and self.end2[0] < 20:
+                            self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
+                if self.end1[0] > self.end2[0]:
+                    while self.end2[0]+1 < self.end1[0]:
+                        self.end2[0] += 1
+                        if self.color == "white" and self.pix[self.end2[0],self.end2[1]].cget("bg") != "white":
+                            self.objectcoord.remove([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                            del self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift]
+                        else:
+                            if self.pix[self.end2[0],self.end2[1]].cget("bg") == "white":
+                                self.objectcoord.append([self.end2[0]+self.xshift,self.end2[1]+self.yshift])
+                                self.objectcolor[self.end2[0]+self.xshift,self.end2[1]+self.yshift] = self.color
+                        if self.end2[0] >= 0 and self.end2[0] < 20:
+                            self.pix[self.end2[0],self.end2[1]].config(bg=self.color)
 
